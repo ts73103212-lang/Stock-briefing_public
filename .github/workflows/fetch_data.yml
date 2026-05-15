@@ -1,0 +1,44 @@
+name: Fetch Screening Data
+
+on:
+  # 毎朝7:30 JST（= UTC 22:30 前日）に自動実行
+  schedule:
+    - cron: '30 22 * * 0-4'   # 日〜木（月〜金の前夜UTC）
+
+  # GitHubの画面から手動でも実行できるようにする（テスト用）
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest   # GitHub提供の無料Linuxサーバー
+
+    permissions:
+      contents: write        # リポジトリへのpush権限
+
+    steps:
+      # 1. リポジトリのファイル一式をサーバーに展開
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Pythonのセットアップ
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. 必要なライブラリをインストール
+      - name: Install dependencies
+        run: pip install requests tradingview-screener -q
+
+      # 4. データ取得スクリプトを実行
+      - name: Run fetch script
+        run: python fetch_data.py
+
+      # 5. 生成されたJSONをリポジトリにpush（保存）
+      - name: Commit and push result
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add screening_result.json
+          git diff --cached --quiet || git commit -m "chore: update screening result $(date '+%Y-%m-%d %H:%M JST' -d '+9 hours')"
+          git push
