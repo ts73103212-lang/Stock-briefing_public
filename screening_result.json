@@ -1,0 +1,42 @@
+{
+  "fetched_at": "2026-05-16 00:16 JST",
+  "status": "OK",
+  "total_hits": 3903,
+  "stocks": [
+    {
+      "ticker": "9444",
+      "close": 222.0,
+      "change": 29.07,
+      "volume": 618800,
+      "market_cap_bil": 11.1
+    },
+    {
+      "ticker": "4351",
+      "close": 1340.0,
+      "change": 28.85,
+      "volume": 55600,
+      "market_cap_bil": 44.3
+    },
+    {
+      "ticker": "3551",
+      "close": 1298.0,
+      "change": 25.41,
+      "volume": 255300,
+      "market_cap_bil": 87.7
+    },
+    {
+      "ticker": "4320",
+      "close": 1499.0,
+      "change": 25.02,
+      "volume": 31800,
+      "market_cap_bil": 201.7
+    },
+    {
+      "ticker": "5034",
+      "close": 2633.0,
+      "change": 23.44,
+      "volume": 18000,
+      "market_cap_bil": 79.8
+    }
+  ]
+}
