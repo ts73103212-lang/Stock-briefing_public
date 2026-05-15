@@ -57,10 +57,10 @@ try:
             col("change") <= 15,
             col("RSI") <= 70,
             col("market_cap_basic") >= 3e9,
-            col("volume") > col("average_volume_10d_calc") * 2,
+            col("volume") > col("average_volume_10d_calc"),  # 平均超え（2倍フィルタはPython側）
         )
         .order_by("change", ascending=False)
-        .limit(20)
+        .limit(50)  # 多めに取得してPython側で絞る
         .get_scanner_data()
     )
     print(f"スクリーニング成功: {n}件ヒット")
@@ -71,6 +71,11 @@ except Exception as e:
         json.dump(result, f, ensure_ascii=False, indent=2)
     print(f"ERROR: {e}")
     sys.exit(1)
+
+# ── 出来高比率2倍フィルタをPython側で適用（API側でColumn*intが非対応のため）
+df["vol_ratio_calc"] = df["volume"] / df["average_volume_10d_calc"].replace(0, 1)
+df = df[df["vol_ratio_calc"] >= 2].head(20)
+print(f"出来高2倍フィルタ後: {len(df)}件")
 
 # ── DataFrameをJSONに変換
 stocks = []
