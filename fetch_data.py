@@ -44,10 +44,12 @@ from datetime import datetime, timezone, timedelta
 # ══════════════════════════════════════════════
 HOLDINGS = [
     {"code": "TSE:6613", "shares": 100, "cost": 1600},  # QDレーザ
-    {"code": "TSE:6494", "shares": 500, "cost": 124},   # NFK
-    {"code": "TSE:7375", "shares": 100, "cost": 1540},  # リファインバース 
+    {"code": "TSE:7375", "shares": 0, "cost": 0},  # リファインバース
+    {"code": "TSE:7162", "shares": 0, "cost": 0},  # アストマックス  
     # ↓ 銘柄を追加する場合はここにコピー＆ペーストして編集
-    # {"code": "TSE:XXXX", "shares": 100, "cost": 0000},  # 銘柄名
+    # {"code": "TSE:XXXX", "shares": 100, "cost": nnnn},  # 銘柄名
+    #  監視銘柄（保有なし）は"shares": 0, "cost": 0とすること。
+  
 ]
 # ══════════════════════════════════════════════
 
