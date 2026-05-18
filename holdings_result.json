@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-19 00:27 JST",
+  "fetched_at": "2026-05-19 00:43 JST",
   "status": "OK",
   "holdings": [
     {
@@ -21,24 +21,6 @@
       "pnl_pct": 32.94
     },
     {
-      "ticker": "TSE:6494",
-      "close": 106.0,
-      "change": -14.52,
-      "volume": 3319100,
-      "vol_ratio": 1.6,
-      "turnover_mil": 351.8,
-      "market_cap_bil": 60.4,
-      "rsi": 42.0,
-      "vwap": 106.7,
-      "ema5": 115.8,
-      "ema25": 115.0,
-      "atr": 7.9,
-      "cost": 124,
-      "shares": 500,
-      "pnl_yen": -9000,
-      "pnl_pct": -14.52
-    },
-    {
       "ticker": "TSE:7375",
       "close": 1940.0,
       "change": 25.97,
@@ -51,10 +33,28 @@
       "ema5": 1720.9,
       "ema25": 1737.6,
       "atr": 229.7,
-      "cost": 1540,
-      "shares": 100,
-      "pnl_yen": 40000,
-      "pnl_pct": 25.97
+      "cost": 0,
+      "shares": 0,
+      "pnl_yen": 0,
+      "pnl_pct": null
+    },
+    {
+      "ticker": "TSE:7162",
+      "close": 332.0,
+      "change": 0.61,
+      "volume": 1099700,
+      "vol_ratio": 0.3,
+      "turnover_mil": 365.1,
+      "market_cap_bil": 42.4,
+      "rsi": 55.7,
+      "vwap": 327.0,
+      "ema5": 336.7,
+      "ema25": 292.9,
+      "atr": 44.0,
+      "cost": 0,
+      "shares": 0,
+      "pnl_yen": 0,
+      "pnl_pct": null
     }
   ]
 }
