@@ -1,0 +1,33 @@
+{
+  "fetched_at": "2026-05-18 21:00 JST",
+  "status": "OK",
+  "holdings": [
+    {
+      "ticker": "TSE:6613",
+      "cost": 1600,
+      "shares": 100,
+      "close": null,
+      "pnl_yen": null,
+      "pnl_pct": null,
+      "note": "データ取得不可"
+    },
+    {
+      "ticker": "TSE:6494",
+      "cost": 124,
+      "shares": 500,
+      "close": null,
+      "pnl_yen": null,
+      "pnl_pct": null,
+      "note": "データ取得不可"
+    },
+    {
+      "ticker": "TSE:7375",
+      "cost": 1540,
+      "shares": 100,
+      "close": null,
+      "pnl_yen": null,
+      "pnl_pct": null,
+      "note": "データ取得不可"
+    }
+  ]
+}
