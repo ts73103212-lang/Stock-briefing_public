@@ -165,9 +165,12 @@ if not HOLDINGS:
     print(f"[{now_jst}] 全処理完了")
     sys.exit(0)
 
-cost_map   = {h["code"]: h["cost"]   for h in HOLDINGS}
-shares_map = {h["code"]: h["shares"] for h in HOLDINGS}
-holding_ticker_list = [h["code"] for h in HOLDINGS]  # 例: ["TSE:6613", "TSE:2667"]
+# "TSE:6613" → "6613" に変換（APIのnameフィールドはプレフィックスなし形式）
+code_only  = lambda c: c.replace("TSE:", "")
+cost_map   = {code_only(h["code"]): h["cost"]   for h in HOLDINGS}
+shares_map = {code_only(h["code"]): h["shares"] for h in HOLDINGS}
+full_code  = {code_only(h["code"]): h["code"]   for h in HOLDINGS}
+holding_ticker_list = [code_only(h["code"]) for h in HOLDINGS]  # "6613"形式で検索
 
 try:
     nh, dfh = (
@@ -179,7 +182,7 @@ try:
             "change", "market_cap_basic", "RSI", "ATR",
         )
         .where(
-            col("name").isin(holding_ticker_list)
+            col("name").isin(holding_ticker_list)  # "6613"形式で検索
         )
         .get_scanner_data()
     )
@@ -187,24 +190,26 @@ try:
 
     holdings_data = []
     for _, row in dfh.iterrows():
-        ticker = row["name"]
-        cost   = cost_map.get(ticker, 0)
-        shares = shares_map.get(ticker, 0)
+        code   = row["name"]                        # APIは"6613"形式で返す
+        ticker = full_code.get(code, f"TSE:{code}") # 表示は"TSE:6613"形式に戻す
+        cost   = cost_map.get(code, 0)
+        shares = shares_map.get(code, 0)
         close  = float(row["close"]) if row["close"] else 0
 
         pnl_yen = round((close - cost) * shares, 0)
         pnl_pct = round((close - cost) / cost * 100, 2) if cost else None
 
         entry = stock_row_to_dict(row)
+        entry["ticker"] = ticker  # "TSE:6613"形式で上書き
         entry.update({"cost": cost, "shares": shares,
                       "pnl_yen": int(pnl_yen), "pnl_pct": pnl_pct})
         holdings_data.append(entry)
         print(f"  {ticker}: ¥{close} / 損益 {pnl_pct}% / ¥{pnl_yen}")
 
     # 取得できなかった銘柄を「データなし」として補完
-    fetched = [d["ticker"] for d in holdings_data]
+    fetched_codes = [code_only(d["ticker"]) for d in holdings_data]
     for h in HOLDINGS:
-        if h["code"] not in fetched:
+        if code_only(h["code"]) not in fetched_codes:
             print(f"  {h['code']}: 取得不可（市場閉鎖または銘柄コード確認要）")
             holdings_data.append({
                 "ticker": h["code"], "cost": h["cost"], "shares": h["shares"],
