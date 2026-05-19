@@ -115,10 +115,10 @@ if HOLDINGS_ONLY:
     pass                                             
 else:
     try:
-    n, df = (
-        Query()
-        .set_markets("japan")
-        .select(
+        n, df = (
+            Query()
+            .set_markets("japan")
+            .select(
             "name", "close", "VWAP", "EMA5", "EMA25",
             "volume", "average_volume_10d_calc",
             "change", "market_cap_basic", "RSI", "ATR",
