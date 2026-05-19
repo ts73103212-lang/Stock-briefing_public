@@ -39,6 +39,12 @@ import json
 import sys
 from datetime import datetime, timezone, timedelta
 
+# ──────────────────────────────────────────────
+# 実行モード判定
+# --holdings-only オプション時はPART1をスキップ
+# ──────────────────────────────────────────────
+HOLDINGS_ONLY = "--holdings-only" in sys.argv
+
 # ══════════════════════════════════════════════
 # ★ 保有銘柄リスト ── ここだけ編集する ★
 # ══════════════════════════════════════════════
@@ -103,6 +109,11 @@ except ImportError as e:
 # PART 1: スクリーニング（市場全体）
 # ══════════════════════════════════════════════
 print(f"[{now_jst}] PART1: スクリーニング開始")
+
+if HOLDINGS_ONLY:                                  
+    print("  --holdings-only モード: PART1スキップ") 
+    pass                                             
+else:
 
 try:
     n, df = (
