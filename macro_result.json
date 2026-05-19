@@ -1,0 +1,97 @@
+{
+  "fetched_at": "2026-05-19 23:42 JST",
+  "status": "OK",
+  "note": "前日米国市場終値ベース（15分ディレイ）。朝7:20取得なら実質前日終値。",
+  "macro": [
+    {
+      "name": "NASDAQ100",
+      "ticker": "^NDX",
+      "close": 28693.37,
+      "prev_close": 28994.37,
+      "change_pct": -1.04,
+      "comment": "ハイテク・半導体の方向性",
+      "status": "OK"
+    },
+    {
+      "name": "S&P500",
+      "ticker": "^GSPC",
+      "close": 7351.53,
+      "prev_close": 7403.05,
+      "change_pct": -0.7,
+      "comment": "米国全体のセンチメント",
+      "status": "OK"
+    },
+    {
+      "name": "ダウ平均",
+      "ticker": "^DJI",
+      "close": 49550.98,
+      "prev_close": 49686.12,
+      "change_pct": -0.27,
+      "comment": "景気敏感・バリュー動向",
+      "status": "OK"
+    },
+    {
+      "name": "SOX",
+      "ticker": "^SOX",
+      "close": 11037.33,
+      "prev_close": 11302.52,
+      "change_pct": -2.35,
+      "comment": "半導体セクター直結",
+      "status": "OK"
+    },
+    {
+      "name": "VIX",
+      "ticker": "^VIX",
+      "close": 17.99,
+      "prev_close": 17.82,
+      "change_pct": 0.95,
+      "comment": "20超え警戒 / 30超えパニック水準",
+      "status": "OK"
+    },
+    {
+      "name": "WTI原油",
+      "ticker": "CL=F",
+      "close": 103.05,
+      "prev_close": 108.66,
+      "change_pct": -5.16,
+      "comment": "エネルギー・ナフサ・輸送コスト",
+      "status": "OK"
+    },
+    {
+      "name": "金(XAUUSD)",
+      "ticker": "GC=F",
+      "close": 4494.6,
+      "prev_close": 4552.5,
+      "change_pct": -1.27,
+      "comment": "リスクオフ・インフレ指標",
+      "status": "OK"
+    },
+    {
+      "name": "ドル円",
+      "ticker": "JPY=X",
+      "close": 159.14,
+      "prev_close": 158.84,
+      "change_pct": 0.19,
+      "comment": "円安→輸出株サポート / 急変に注意",
+      "status": "OK"
+    },
+    {
+      "name": "日経225",
+      "ticker": "^N225",
+      "close": 60550.59,
+      "prev_close": 60815.95,
+      "change_pct": -0.44,
+      "comment": "日本市場の前日終値",
+      "status": "OK"
+    },
+    {
+      "name": "TOPIX",
+      "ticker": "1306.T",
+      "close": 408.3,
+      "prev_close": 405.9,
+      "change_pct": 0.59,
+      "comment": "ETF(1306)経由の概算値",
+      "status": "OK"
+    }
+  ]
+}
