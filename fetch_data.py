@@ -114,7 +114,6 @@ if HOLDINGS_ONLY:
     print("  --holdings-only モード: PART1スキップ") 
     pass                                             
 else:
-
 　　try:
     n, df = (
         Query()
