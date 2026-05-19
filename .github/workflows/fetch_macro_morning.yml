@@ -10,9 +10,9 @@ on:
 jobs:
   fetch-macro:
     runs-on: ubuntu-latest
-    
+
     permissions:
-  　  contents: write
+      contents: write
 
     steps:
       - name: Checkout repository
