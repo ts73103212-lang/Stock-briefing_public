@@ -1,0 +1,36 @@
+name: Fetch Macro Data (Morning)
+
+# 朝6:30 JST実行（UTC 21:30 前日）
+# fetch_data_morning.yml と同じタイミングで実行
+on:
+  schedule:
+    - cron: '30 21 * * 0-4'   # 月〜金 JST 6:30
+  workflow_dispatch:           # 手動実行ボタン（テスト用）
+
+jobs:
+  fetch-macro:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install yfinance pytz
+
+      - name: Run fetch_macro.py
+        run: python fetch_macro.py
+
+      - name: Commit and push macro_result.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add macro_result.json
+          git diff --cached --quiet || git commit -m "chore: update macro_result.json [skip ci]"
+          git push
