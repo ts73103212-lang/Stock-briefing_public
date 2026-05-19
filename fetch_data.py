@@ -114,7 +114,7 @@ if HOLDINGS_ONLY:
     print("  --holdings-only モード: PART1スキップ") 
     pass                                             
 else:
-　　try:
+    try:
     n, df = (
         Query()
         .set_markets("japan")
