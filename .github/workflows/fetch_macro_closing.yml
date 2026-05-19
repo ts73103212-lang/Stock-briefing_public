@@ -25,10 +25,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install yfinance pytz
+          pip install yfinance pytz requests tradingview-screener -q
 
       - name: Run fetch_macro_closing.py
         run: python fetch_macro_closing.py
+      
+      - name: Update holdings_result.json
+        run: python fetch_data.py --holdings-only
 
       - name: Commit and push macro_result_closing.json
         run: |
