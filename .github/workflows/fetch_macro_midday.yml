@@ -1,0 +1,39 @@
+name: Fetch Macro Data (Midday)
+
+# 昼11:40 JST実行（UTC 02:40）
+# fetch_data_midday.yml と同じタイミングで実行
+on:
+  schedule:
+    - cron: '40 2 * * 0-4'   # 月〜金 JST 11:40
+  workflow_dispatch:          # 手動実行ボタン（テスト用）
+
+jobs:
+  fetch-macro-midday:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install yfinance pytz
+
+      - name: Run fetch_macro_midday.py
+        run: python fetch_macro_midday.py
+
+      - name: Commit and push macro_result_midday.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add macro_result_midday.json
+          git diff --cached --quiet || git commit -m "chore: midday fetch $(date +'%Y-%m-%d %H:%M JST')"
+          git push
