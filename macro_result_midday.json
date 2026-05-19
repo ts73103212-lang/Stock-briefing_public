@@ -1,0 +1,79 @@
+{
+  "fetched_at": "2026-05-20 00:21 JST",
+  "status": "OK",
+  "note": "昼11:40取得。日経225・TOPIXは前場終値の近似値。米国先物・為替・VIXはリアルタイムに近い値（15分ディレイ）。statusがOK以外の項目はweb検索で補完すること。",
+  "macro": [
+    {
+      "name": "日経225",
+      "ticker": "^N225",
+      "close": 60815.95,
+      "prev_close": null,
+      "change_pct": null,
+      "comment": "前場終値。後場の方向性判断に使う",
+      "status": "OK"
+    },
+    {
+      "name": "TOPIX(ETF)",
+      "ticker": "1306.T",
+      "close": 408.3,
+      "prev_close": 405.9,
+      "change_pct": 0.59,
+      "comment": "ETF(1306)経由の概算値",
+      "status": "OK"
+    },
+    {
+      "name": "S&P500先物",
+      "ticker": "ES=F",
+      "close": 7373.25,
+      "prev_close": 7425.75,
+      "change_pct": -0.71,
+      "comment": "後場への米国影響度を確認",
+      "status": "OK"
+    },
+    {
+      "name": "NASDAQ100先物",
+      "ticker": "NQ=F",
+      "close": 28815.75,
+      "prev_close": 29096.0,
+      "change_pct": -0.96,
+      "comment": "ハイテク・半導体セクターの後場影響",
+      "status": "OK"
+    },
+    {
+      "name": "ドル円",
+      "ticker": "JPY=X",
+      "close": 159.11,
+      "prev_close": 158.84,
+      "change_pct": 0.17,
+      "comment": "円安→輸出株サポート / 急変に注意",
+      "status": "OK"
+    },
+    {
+      "name": "ユーロ円",
+      "ticker": "EURJPY=X",
+      "close": 184.48,
+      "prev_close": 184.48,
+      "change_pct": 0.0,
+      "comment": "リスクセンチメントの補助指標",
+      "status": "OK"
+    },
+    {
+      "name": "VIX",
+      "ticker": "^VIX",
+      "close": 18.14,
+      "prev_close": 17.82,
+      "change_pct": 1.8,
+      "comment": "20超え警戒 / 30超えパニック水準",
+      "status": "OK"
+    },
+    {
+      "name": "WTI原油",
+      "ticker": "CL=F",
+      "close": 103.36,
+      "prev_close": 108.66,
+      "change_pct": -4.88,
+      "comment": "エネルギー・ナフサ関連セクターへの影響",
+      "status": "OK"
+    }
+  ]
+}
