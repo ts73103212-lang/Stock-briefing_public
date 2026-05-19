@@ -50,12 +50,11 @@ HOLDINGS_ONLY = "--holdings-only" in sys.argv
 # ══════════════════════════════════════════════
 HOLDINGS = [
     {"code": "TSE:6613", "shares": 100, "cost": 1600},  # QDレーザ
-    {"code": "TSE:7375", "shares": 0, "cost": 0},  # リファインバース
-    {"code": "TSE:7162", "shares": 0, "cost": 0},  # アストマックス  
+    {"code": "TSE:7375", "shares": 0, "cost": 0},       # リファインバース
+    {"code": "TSE:7162", "shares": 0, "cost": 0},       # アストマックス
     # ↓ 銘柄を追加する場合はここにコピー＆ペーストして編集
     # {"code": "TSE:XXXX", "shares": 100, "cost": nnnn},  # 銘柄名
-    #  監視銘柄（保有なし）は"shares": 0, "cost": 0とすること。
-  
+    # 監視銘柄（保有なし）は"shares": 0, "cost": 0とすること。
 ]
 # ══════════════════════════════════════════════
 
@@ -110,56 +109,53 @@ except ImportError as e:
 # ══════════════════════════════════════════════
 print(f"[{now_jst}] PART1: スクリーニング開始")
 
-if HOLDINGS_ONLY:                                  
-    print("  --holdings-only モード: PART1スキップ") 
-    pass                                             
+if HOLDINGS_ONLY:
+    print("  --holdings-only モード: PART1スキップ")
 else:
     try:
         n, df = (
             Query()
             .set_markets("japan")
             .select(
-            "name", "close", "VWAP", "EMA5", "EMA25",
-            "volume", "average_volume_10d_calc",
-            "change", "market_cap_basic", "RSI", "ATR",
+                "name", "close", "VWAP", "EMA5", "EMA25",
+                "volume", "average_volume_10d_calc",
+                "change", "market_cap_basic", "RSI", "ATR",
+            )
+            .where(
+                col("close") <= 2500,
+                col("close") > col("VWAP"),
+                col("EMA5") > col("EMA25"),
+                col("change") >= 3,
+                col("change") <= 15,
+                col("RSI") <= 70,
+                col("market_cap_basic") >= 3e9,
+                col("volume") > col("average_volume_10d_calc"),
+            )
+            .order_by("change", ascending=False)
+            .limit(50)
+            .get_scanner_data()
         )
-        .where(
-            col("close") <= 2500,
-            col("close") > col("VWAP"),
-            col("EMA5") > col("EMA25"),
-            col("change") >= 3,
-            col("change") <= 15,
-            col("RSI") <= 70,
-            col("market_cap_basic") >= 3e9,
-            col("volume") > col("average_volume_10d_calc"),  # 平均超え（2倍はPython側）
-        )
-        .order_by("change", ascending=False)
-        .limit(50)
-        .get_scanner_data()
-    )
-    print(f"  スクリーニング取得: {n}件ヒット")
+        print(f"  スクリーニング取得: {n}件ヒット")
 
-    # 祝日・閑散日の0件処理
-    if n == 0 or len(df) == 0:
-        print("  ヒット0件（祝日または市場閑散）→ 正常終了")
-        result = {"fetched_at": now_jst, "status": "NO_DATA",
-                  "note": "スクリーニング通過銘柄なし（祝日または市場閑散の可能性）",
-                  "total_hits": 0, "stocks": []}
-    else:
-        # 出来高2倍フィルタをPython側で適用
-        df["vol_ratio_calc"] = df["volume"] / df["average_volume_10d_calc"].replace(0, 1)
-        df_filtered = df[df["vol_ratio_calc"] >= 2].head(20)
-        print(f"  出来高2倍フィルタ後: {len(df_filtered)}件")
-        stocks = [stock_row_to_dict(row) for _, row in df_filtered.iterrows()]
-        result = {"fetched_at": now_jst, "status": "OK",
-                  "total_hits": int(n), "stocks": stocks}
+        if n == 0 or len(df) == 0:
+            print("  ヒット0件（祝日または市場閑散）→ 正常終了")
+            result = {"fetched_at": now_jst, "status": "NO_DATA",
+                      "note": "スクリーニング通過銘柄なし（祝日または市場閑散の可能性）",
+                      "total_hits": 0, "stocks": []}
+        else:
+            df["vol_ratio_calc"] = df["volume"] / df["average_volume_10d_calc"].replace(0, 1)
+            df_filtered = df[df["vol_ratio_calc"] >= 2].head(20)
+            print(f"  出来高2倍フィルタ後: {len(df_filtered)}件")
+            stocks = [stock_row_to_dict(row) for _, row in df_filtered.iterrows()]
+            result = {"fetched_at": now_jst, "status": "OK",
+                      "total_hits": int(n), "stocks": stocks}
 
-    with open("screening_result.json", "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
-    print(f"  screening_result.json 保存完了")
+        with open("screening_result.json", "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+        print(f"  screening_result.json 保存完了")
 
-except Exception as e:
-    save_error("screening_result.json", str(e))
+    except Exception as e:
+        save_error("screening_result.json", str(e))
 
 
 # ══════════════════════════════════════════════
@@ -167,7 +163,6 @@ except Exception as e:
 # ══════════════════════════════════════════════
 print(f"[{now_jst}] PART2: 保有銘柄データ取得")
 
-# 保有なし → 空ファイルを保存して終了
 if not HOLDINGS:
     print("  保有銘柄なし → holdings_result.json に空データを保存")
     with open("holdings_result.json", "w", encoding="utf-8") as f:
@@ -177,12 +172,11 @@ if not HOLDINGS:
     print(f"[{now_jst}] 全処理完了")
     sys.exit(0)
 
-# "TSE:6613" → "6613" に変換（APIのnameフィールドはプレフィックスなし形式）
 code_only  = lambda c: c.replace("TSE:", "")
 cost_map   = {code_only(h["code"]): h["cost"]   for h in HOLDINGS}
 shares_map = {code_only(h["code"]): h["shares"] for h in HOLDINGS}
 full_code  = {code_only(h["code"]): h["code"]   for h in HOLDINGS}
-holding_ticker_list = [code_only(h["code"]) for h in HOLDINGS]  # "6613"形式で検索
+holding_ticker_list = [code_only(h["code"]) for h in HOLDINGS]
 
 try:
     nh, dfh = (
@@ -194,7 +188,7 @@ try:
             "change", "market_cap_basic", "RSI", "ATR",
         )
         .where(
-            col("name").isin(holding_ticker_list)  # "6613"形式で検索
+            col("name").isin(holding_ticker_list)
         )
         .get_scanner_data()
     )
@@ -202,8 +196,8 @@ try:
 
     holdings_data = []
     for _, row in dfh.iterrows():
-        code   = row["name"]                        # APIは"6613"形式で返す
-        ticker = full_code.get(code, f"TSE:{code}") # 表示は"TSE:6613"形式に戻す
+        code   = row["name"]
+        ticker = full_code.get(code, f"TSE:{code}")
         cost   = cost_map.get(code, 0)
         shares = shares_map.get(code, 0)
         close  = float(row["close"]) if row["close"] else 0
@@ -212,13 +206,12 @@ try:
         pnl_pct = round((close - cost) / cost * 100, 2) if cost else None
 
         entry = stock_row_to_dict(row)
-        entry["ticker"] = ticker  # "TSE:6613"形式で上書き
+        entry["ticker"] = ticker
         entry.update({"cost": cost, "shares": shares,
                       "pnl_yen": int(pnl_yen), "pnl_pct": pnl_pct})
         holdings_data.append(entry)
         print(f"  {ticker}: ¥{close} / 損益 {pnl_pct}% / ¥{pnl_yen}")
 
-    # 取得できなかった銘柄を「データなし」として補完
     fetched_codes = [code_only(d["ticker"]) for d in holdings_data]
     for h in HOLDINGS:
         if code_only(h["code"]) not in fetched_codes:
