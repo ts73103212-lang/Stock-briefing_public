@@ -1,6 +1,6 @@
 name: Fetch Macro Data (Midday)
 
-# 昼11:40 JST実行（UTC 02:40）
+# 昼11:27 JST実行（UTC 02:27）
 # fetch_data_midday.yml と同じタイミングで実行
 on:
   schedule:
