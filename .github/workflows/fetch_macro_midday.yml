@@ -4,7 +4,7 @@ name: Fetch Macro Data (Midday)
 # fetch_data_midday.yml と同じタイミングで実行
 on:
   schedule:
-    - cron: '40 2 * * 0-4'   # 月〜金 JST 11:40
+    - cron: '27 2 * * 0-4'   # 月〜金 11:27 JST（UTC 02:27）
   workflow_dispatch:          # 手動実行ボタン（テスト用）
 
 jobs:
