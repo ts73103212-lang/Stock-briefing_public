@@ -4,6 +4,12 @@ fetch_macro.py
 GitHub Actions から実行する指数・為替・コモディティデータ取得スクリプト。
 fetch_data.py とは完全に独立しており、既存処理に影響しない。
 
+【v2修正点】
+  - period="2d"の日足取得をやめ、fast_info.last_price（最新値）を主軸にした
+  - 日足のズレで「1日古い終値」が出る問題を解消
+  - 取得した実際の日付（data_date）をJSONに記録し、ズレを可視化
+  - last_price取得失敗時のみ日足にフォールバック
+
 出力: macro_result.json
 実行: python fetch_macro.py
 依存: yfinance, pytz  （pip install yfinance pytz）
@@ -11,32 +17,24 @@ fetch_data.py とは完全に独立しており、既存処理に影響しない
 
 import json
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pytz
 import yfinance as yf
 
-# ──────────────────────────────────────────
-# 取得対象シンボル定義
-# ──────────────────────────────────────────
 SYMBOLS = {
-    # 米国指数
     "NASDAQ100":    "^NDX",
     "S&P500":       "^GSPC",
     "ダウ平均":     "^DJI",
     "SOX":          "^SOX",
     "VIX":          "^VIX",
-    # コモディティ
     "WTI原油":      "CL=F",
     "金(XAUUSD)":   "GC=F",
-    # 為替
     "ドル円":       "JPY=X",
-    # 日本株指数（前日終値）
     "日経225":      "^N225",
-    "TOPIX":        "1306.T",   # ETF経由（^TPX は取れない場合がある）
+    "TOPIX":        "1306.T",
 }
 
-# コメントテンプレート（Routineへのヒント）
 COMMENTS = {
     "NASDAQ100":    "ハイテク・半導体の方向性",
     "S&P500":       "米国全体のセンチメント",
@@ -57,95 +55,91 @@ def jst_now() -> str:
 
 
 def fetch_symbol(name: str, ticker_str: str) -> dict:
-    """1銘柄分のデータを取得して辞書で返す。失敗時はエラー情報を返す。"""
+    base = {
+        "name": name, "ticker": ticker_str,
+        "close": None, "prev_close": None, "change_pct": None,
+        "data_date": None, "source": None,
+        "comment": COMMENTS.get(name, ""), "status": "NO_DATA",
+    }
+
+    # 方法1: fast_info（最新値・最優先）
     try:
         ticker = yf.Ticker(ticker_str)
+        fi = ticker.fast_info
+        last_price = fi.last_price
+        prev_close = fi.previous_close
+        if last_price is not None and prev_close is not None and prev_close != 0:
+            change_pct = round((last_price - prev_close) / prev_close * 100, 2)
+            base.update({
+                "close": round(float(last_price), 2),
+                "prev_close": round(float(prev_close), 2),
+                "change_pct": change_pct,
+                "source": "fast_info", "status": "OK",
+            })
+            return base
+    except Exception as e:
+        base["status"] = f"fast_info_failed: {str(e)[:50]}"
 
-        # 直近2営業日分を取得（前日終値を確実に得るため）
-        hist = ticker.history(period="2d", interval="1d")
-
+    # 方法2: 日足フォールバック
+    try:
+        ticker = yf.Ticker(ticker_str)
+        hist = ticker.history(period="5d", interval="1d")
         if hist.empty:
-            return {
-                "name": name,
-                "ticker": ticker_str,
-                "close": None,
-                "prev_close": None,
-                "change_pct": None,
-                "comment": COMMENTS.get(name, ""),
-                "status": "NO_DATA",
-            }
-
+            base["status"] = "NO_DATA"
+            return base
         close = round(float(hist["Close"].iloc[-1]), 2)
-
-        # 前日比計算（2日分あれば算出）
+        data_date = hist.index[-1].strftime("%Y-%m-%d")
         if len(hist) >= 2:
             prev_close = round(float(hist["Close"].iloc[-2]), 2)
             change_pct = round((close - prev_close) / prev_close * 100, 2)
         else:
             prev_close = None
             change_pct = None
-
-        return {
-            "name": name,
-            "ticker": ticker_str,
-            "close": close,
-            "prev_close": prev_close,
-            "change_pct": change_pct,       # プラスなら上昇・マイナスなら下落
-            "comment": COMMENTS.get(name, ""),
-            "status": "OK",
-        }
-
+        base.update({
+            "close": close, "prev_close": prev_close, "change_pct": change_pct,
+            "data_date": data_date, "source": "daily_history", "status": "OK",
+        })
+        return base
     except Exception as e:
-        return {
-            "name": name,
-            "ticker": ticker_str,
-            "close": None,
-            "prev_close": None,
-            "change_pct": None,
-            "comment": COMMENTS.get(name, ""),
-            "status": f"ERROR: {str(e)[:80]}",
-        }
+        base["status"] = f"ERROR: {str(e)[:80]}"
+        return base
 
 
 def main():
     fetched_at = jst_now()
     results = []
     errors = []
-
     print(f"[fetch_macro] 開始: {fetched_at}")
 
     for name, ticker_str in SYMBOLS.items():
         row = fetch_symbol(name, ticker_str)
         results.append(row)
-
         if row["status"] == "OK":
             sign = "+" if (row["change_pct"] or 0) >= 0 else ""
-            print(f"  ✅ {name:15s} {row['close']:>12,.2f}  "
-                  f"({sign}{row['change_pct']}%)")
+            date_tag = f" [{row['data_date']}]" if row.get("data_date") else ""
+            print(f"  OK {name:15s} {row['close']:>12,.2f}  "
+                  f"({sign}{row['change_pct']}%)  src={row['source']}{date_tag}")
         else:
-            print(f"  ❌ {name:15s} {row['status']}")
+            print(f"  NG {name:15s} {row['status']}")
             errors.append(name)
 
-    # ──────────────────────────────────────────
-    # JSON出力
-    # ──────────────────────────────────────────
     output = {
         "fetched_at": fetched_at,
         "status": "OK" if not errors else f"PARTIAL_ERROR: {errors}",
-        "note": "前日米国市場終値ベース（15分ディレイ）。朝7:20取得なら実質前日終値。",
+        "note": (
+            "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。"
+            "sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。"
+            "change_pctは前営業日終値比。statusがOK以外はweb検索で補完。"
+        ),
         "macro": results,
     }
-
     with open("macro_result.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-
     print(f"\n[fetch_macro] 完了 → macro_result.json 出力")
     print(f"  取得成功: {len(results) - len(errors)}/{len(results)} シンボル")
-
     if errors:
         print(f"  取得失敗: {errors}")
-        sys.exit(1)  # Actionsでエラー検知させる場合はexit(1)
-
+        sys.exit(1)
     sys.exit(0)
 
 
