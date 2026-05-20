@@ -2,7 +2,7 @@ name: Fetch Screening Data - Morning
 
 on:
   schedule:
-    - cron: '30 12 * * 0-4'   # 月〜金 6:30 JST（UTC 前日21:30）
+    - cron: '30 21 * * 0-4'   # 月〜金 6:30 JST（UTC 前日21:30）
   workflow_dispatch:            # 手動実行も可能
 
 jobs:
