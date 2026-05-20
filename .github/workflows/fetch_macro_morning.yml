@@ -1,6 +1,6 @@
 name: Fetch Macro Data (Morning)
 
-# 朝6:30 JST実行（UTC 21:30 前日）
+# 朝6:00 JST（UTC 前日21:00）
 # fetch_data_morning.yml と同じタイミングで実行
 on:
   schedule:
