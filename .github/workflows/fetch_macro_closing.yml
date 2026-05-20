@@ -4,7 +4,7 @@ name: Fetch Macro Data (Closing)
 # 大引け15:30から10分後。当日終値が確実に確定している時刻。
 on:
   schedule:
-    - cron: '40 6 * * 0-4'   # 月〜金 JST 15:40
+    - cron: '37 6 * * 0-4'  # 月〜金 15:37 JST（UTC 06:37）
   workflow_dispatch:          # 手動実行ボタン（テスト用）
 
 jobs:
