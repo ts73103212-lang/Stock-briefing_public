@@ -9,7 +9,7 @@ fetch_data.py  ── GitHub Actions上で実行されるデータ取得スク�
   - 騰落率 +3% 〜 +15%（ストップ高除外）
   - RSI <= 70（過熱除外）
   - 時価総額 30億円以上（板薄除外）
-  - 出来高 > 10日平均の2倍（本物の資金流入）
+  - 出来高 > 10日平均の1.5倍（本物の資金流入）
 
 【出力ファイル】
   - screening_result.json（スクリーニング通過銘柄・上位20件）
@@ -49,7 +49,7 @@ HOLDINGS_ONLY = "--holdings-only" in sys.argv
 # ★ 保有銘柄リスト ── ここだけ編集する ★
 # ══════════════════════════════════════════════
 HOLDINGS = [
-    {"code": "TSE:6613", "shares": 100, "cost": 1600},  # QDレーザ
+    {"code": "TSE:6613", "shares": 100, "cost": 3000},  # QDレーザ
     {"code": "TSE:7375", "shares": 0, "cost": 0},       # リファインバース
     {"code": "TSE:7162", "shares": 0, "cost": 0},       # アストマックス
     # ↓ 銘柄を追加する場合はここにコピー＆ペーストして編集
@@ -144,7 +144,7 @@ else:
                       "total_hits": 0, "stocks": []}
         else:
             df["vol_ratio_calc"] = df["volume"] / df["average_volume_10d_calc"].replace(0, 1)
-            df_filtered = df[df["vol_ratio_calc"] >= 2].head(20)
+            df_filtered = df[df["vol_ratio_calc"] >= 1.5].head(20)
             print(f"  出来高2倍フィルタ後: {len(df_filtered)}件")
             stocks = [stock_row_to_dict(row) for _, row in df_filtered.iterrows()]
             result = {"fetched_at": now_jst, "status": "OK",
