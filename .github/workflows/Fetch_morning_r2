@@ -1,0 +1,59 @@
+name: Fetch Data - Morning
+
+on:
+  schedule:
+    - cron: '0 21 * * 0-4'   # 月〜金 6:00 JST（UTC 前日21:00）
+  workflow_dispatch:
+
+# 同一グループの多重起動を防ぐ（前の実行が終わるまで待つ）
+# concurrency:
+#  group: data-update
+#  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests tradingview-screener yfinance pytz -q
+
+      - name: Show trigger info
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "UTC: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "JST: $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M:%S JST')"
+
+      - name: Run screening fetch (screening + holdings)
+        run: python fetch_data.py
+
+      - name: Run macro fetch
+        run: python fetch_macro.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add screening_result.json holdings_result.json macro_result.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: morning fetch $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M JST')"
+          # push競合に備えてrebase→push、失敗時は1回リトライ
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "push retry $i ..."
+            sleep 5
+          done
