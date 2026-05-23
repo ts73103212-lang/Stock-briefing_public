@@ -1,0 +1,63 @@
+name: Fetch Screening and Macro Data - Morning
+
+on:
+  schedule:
+    # Mon-Fri 6:00 JST
+    # UTC previous day 21:00
+    - cron: '0 21 * * 0-4'
+  workflow_dispatch:
+
+concurrency:
+  group: morning-data-update
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests tradingview-screener yfinance pytz -q
+
+      - name: Show trigger info
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "UTC: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "JST: $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M:%S JST')"
+
+      - name: Run screening fetch script
+        run: python fetch_data.py
+
+      - name: Run macro fetch script
+        run: python fetch_macro.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add screening_result.json holdings_result.json macro_result.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: morning fetch screening and macro $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M JST')"
+
+          git pull --rebase origin main
+          git push
