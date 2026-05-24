@@ -3,8 +3,8 @@ name: Fetch Macro Data (Closing)
 # 15:37 JST実行（UTC 06:37）
 # 大引け15:30から7分後。当日終値が確実に確定していることを想定。
 on:
-#  schedule:
-#    - cron: '37 6 * * 0-4'  # 月〜金 15:37 JST（UTC 06:37）
+  schedule:
+    - cron: '37 6 * * 0-4'  # 月〜金 15:37 JST（UTC 06:37）
   workflow_dispatch:          # 手動実行ボタン（テスト用）
 
 jobs:
