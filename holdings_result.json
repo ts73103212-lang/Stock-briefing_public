@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-24 18:30 JST",
+  "fetched_at": "2026-05-24 22:10 JST",
   "status": "OK",
   "holdings": [
     {
@@ -15,10 +15,10 @@
       "ema5": 2620.6,
       "ema25": 1866.3,
       "atr": 312.1,
-      "cost": 3000,
+      "cost": 1600,
       "shares": 100,
-      "pnl_yen": 10000,
-      "pnl_pct": 3.33
+      "pnl_yen": 150000,
+      "pnl_pct": 93.75
     },
     {
       "ticker": "TSE:7375",

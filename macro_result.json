@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-24 06:13 JST",
+  "fetched_at": "2026-05-24 22:10 JST",
   "status": "OK",
   "note": "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。change_pctは前営業日終値比。statusがOK以外はweb検索で補完。",
   "macro": [
@@ -72,9 +72,9 @@
     {
       "name": "金(XAUUSD)",
       "ticker": "GC=F",
-      "close": 4521.0,
+      "close": 4523.2,
       "prev_close": 4529.9,
-      "change_pct": -0.2,
+      "change_pct": -0.15,
       "data_date": null,
       "source": "fast_info",
       "comment": "リスクオフ・インフレ指標",
