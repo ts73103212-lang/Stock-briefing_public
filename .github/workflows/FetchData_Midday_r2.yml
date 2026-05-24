@@ -44,7 +44,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add screening_result.json holdings_result.json macro_result_midday.json
+          git add screening_result_midday.json holdings_result_midday.json macro_result_midday.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
