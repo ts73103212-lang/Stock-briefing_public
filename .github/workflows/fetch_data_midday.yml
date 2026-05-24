@@ -1,9 +1,9 @@
 name: Fetch Screening Data - Midday
 
-on:
-  schedule:
-    - cron: '27 2 * * 0-4'    # 月〜金 11:27 JST（UTC 02:27）
-  workflow_dispatch:            # 手動実行も可能
+# on:
+#  schedule:
+#    - cron: '27 2 * * 0-4'    # 月〜金 11:27 JST（UTC 02:27）
+#  workflow_dispatch:            # 手動実行も可能
 
 jobs:
   fetch:
