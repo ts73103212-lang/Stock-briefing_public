@@ -79,7 +79,7 @@ VOL_RATIO_THRESHOLD = 1.8
 HOLDINGS = [
     {"code": "TSE:6613", "shares": 100, "cost": 1600},  # QDレーザ
     {"code": "TSE:7375", "shares": 0, "cost": 0},       # リファインバース
-    {"code": "TSE:7162", "shares": 0, "cost": 0},       # アストマックス
+    {"code": "TSE:9227", "shares": 0, "cost": 0},       # マイクロ波化学
     # ↓ 銘柄を追加する場合はここにコピー＆ペーストして編集
     # {"code": "TSE:XXXX", "shares": 100, "cost": nnnn},  # 銘柄名
     # 監視銘柄（保有なし）は"shares": 0, "cost": 0とすること。
