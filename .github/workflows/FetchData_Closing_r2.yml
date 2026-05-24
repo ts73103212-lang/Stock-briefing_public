@@ -35,7 +35,7 @@ jobs:
           echo "JST: $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M:%S JST')"
 
       - name: Run screening fetch (screening + holdings)
-        run: python fetch_data.py
+        run: python fetch_data.py --suffix closing
 
       - name: Run macro fetch (closing)
         run: python fetch_macro_closing.py
