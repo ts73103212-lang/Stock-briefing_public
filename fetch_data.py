@@ -7,7 +7,7 @@ fetch_data.py  ── GitHub Actions上で実行されるデータ取得スク�
   - 終値 > VWAP（強気引け）
   - EMA5 > EMA25（上昇トレンド②）
   - 騰落率 +3% 〜 +15%（ストップ高除外）
-  - RSI <= 70（過熱除外）
+  - RSI <= 80（過熱除外）
   - 時価総額 30億円以上（板薄除外）
   - 出来高 > 10日平均の1.8倍（本物の資金流入）
 
@@ -155,7 +155,7 @@ else:
                 col("EMA5") > col("EMA25"),
                 col("change") >= 3,
                 col("change") <= 15,
-                col("RSI") <= 70,
+                col("RSI") <= 80,
                 col("market_cap_basic") >= 3e9,
                 col("volume") > col("average_volume_10d_calc"),
             )
