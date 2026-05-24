@@ -4,7 +4,7 @@ on:
   schedule:
     # Mon-Fri 6:00 JST
     # UTC previous day 21:00
-    - cron: '0 21 * * 0-4'
+#    - cron: '0 21 * * 0-4'
   workflow_dispatch:
 
 # concurrency:
