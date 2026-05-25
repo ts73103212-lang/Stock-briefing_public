@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-24 22:45 JST",
+  "fetched_at": "2026-05-25 20:59 JST",
   "status": "OK",
   "note": "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。change_pctは前営業日終値比。statusがOK以外はweb検索で補完。",
   "macro": [
@@ -50,9 +50,9 @@
     {
       "name": "VIX",
       "ticker": "^VIX",
-      "close": 16.7,
-      "prev_close": 16.76,
-      "change_pct": -0.36,
+      "close": 16.62,
+      "prev_close": 16.7,
+      "change_pct": -0.48,
       "data_date": null,
       "source": "fast_info",
       "comment": "20超え警戒 / 30超えパニック水準",
@@ -83,9 +83,9 @@
     {
       "name": "ドル円",
       "ticker": "JPY=X",
-      "close": 159.15,
-      "prev_close": 158.99,
-      "change_pct": 0.11,
+      "close": 158.93,
+      "prev_close": 159.15,
+      "change_pct": -0.14,
       "data_date": null,
       "source": "fast_info",
       "comment": "円安→輸出株サポート / 急変に注意",
@@ -94,9 +94,9 @@
     {
       "name": "日経225",
       "ticker": "^N225",
-      "close": 63339.07,
-      "prev_close": 61701.07,
-      "change_pct": 2.65,
+      "close": 65158.19,
+      "prev_close": 63324.21,
+      "change_pct": 2.9,
       "data_date": null,
       "source": "fast_info",
       "comment": "日本市場の前日終値",
@@ -105,9 +105,9 @@
     {
       "name": "TOPIX",
       "ticker": "1306.T",
-      "close": 412.4,
-      "prev_close": 409.2,
-      "change_pct": 0.78,
+      "close": 418.0,
+      "prev_close": 413.0,
+      "change_pct": 1.21,
       "data_date": null,
       "source": "fast_info",
       "comment": "ETF(1306)経由の概算値",
