@@ -2,7 +2,7 @@ name: Fetch Data - Midday
 
 on:
   schedule:
-    - cron: '37 2 * * 0-4'   # 月〜金 11:37 JST（UTC 02:37）
+    - cron: '37 20 * * 0-4'   # 月〜金 11:37 JST
   workflow_dispatch:
 
 # concurrency:
@@ -31,6 +31,11 @@ jobs:
       - name: Show trigger info
         run: |
           echo "Event: ${{ github.event_name }}"
+          echo "Schedule: ${{ github.event.schedule }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Workflow ref: ${{ github.workflow_ref }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "SHA: ${{ github.sha }}"
           echo "UTC: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
           echo "JST: $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M:%S JST')"
 
