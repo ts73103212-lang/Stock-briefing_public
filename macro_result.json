@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-25 20:59 JST",
+  "fetched_at": "2026-05-26 05:16 JST",
   "status": "OK",
   "note": "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。change_pctは前営業日終値比。statusがOK以外はweb検索で補完。",
   "macro": [
@@ -50,9 +50,9 @@
     {
       "name": "VIX",
       "ticker": "^VIX",
-      "close": 16.62,
+      "close": 16.59,
       "prev_close": 16.7,
-      "change_pct": -0.48,
+      "change_pct": -0.66,
       "data_date": null,
       "source": "fast_info",
       "comment": "20超え警戒 / 30超えパニック水準",
@@ -83,9 +83,9 @@
     {
       "name": "ドル円",
       "ticker": "JPY=X",
-      "close": 158.93,
+      "close": 158.9,
       "prev_close": 159.15,
-      "change_pct": -0.14,
+      "change_pct": -0.16,
       "data_date": null,
       "source": "fast_info",
       "comment": "円安→輸出株サポート / 急変に注意",
