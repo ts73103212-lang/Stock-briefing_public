@@ -2,7 +2,7 @@ name: Fetch Data - Closing
 
 on:
   schedule:
-    - cron: '37 0 * * 1-5'   # 月〜金 15:37 JST
+    - cron: '25 18 * * 1-5'   # 月〜金 15:25 JST
   workflow_dispatch:
 
 # concurrency:
