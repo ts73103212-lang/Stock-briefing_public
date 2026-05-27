@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-27 21:43 JST",
+  "fetched_at": "2026-05-28 08:05 JST",
   "status": "OK",
   "holdings": [
     {
@@ -15,10 +15,10 @@
       "ema5": 2860.2,
       "ema25": 2114.3,
       "atr": 361.4,
-      "cost": 1600,
-      "shares": 100,
-      "pnl_yen": 102000,
-      "pnl_pct": 63.75
+      "cost": 0,
+      "shares": 0,
+      "pnl_yen": 0,
+      "pnl_pct": null
     },
     {
       "ticker": "TSE:9227",
@@ -39,22 +39,22 @@
       "pnl_pct": null
     },
     {
-      "ticker": "TSE:7375",
-      "close": 1606.0,
-      "change": -4.8,
-      "volume": 152800,
+      "ticker": "TSE:3719",
+      "close": 214.0,
+      "change": 0.47,
+      "volume": 1213000,
       "vol_ratio": 0.5,
-      "turnover_mil": 245.4,
-      "market_cap_bil": 56.5,
-      "rsi": 45.3,
-      "vwap": 1624.0,
-      "ema5": 1747.9,
-      "ema25": 1771.2,
-      "atr": 221.9,
-      "cost": 0,
-      "shares": 0,
-      "pnl_yen": 0,
-      "pnl_pct": null
+      "turnover_mil": 259.6,
+      "market_cap_bil": 68.3,
+      "rsi": 47.8,
+      "vwap": 210.0,
+      "ema5": 213.8,
+      "ema25": 216.6,
+      "atr": 17.3,
+      "cost": 216,
+      "shares": 100,
+      "pnl_yen": -200,
+      "pnl_pct": -0.93
     }
   ]
 }
