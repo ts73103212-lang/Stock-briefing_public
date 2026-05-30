@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-29 20:56 JST",
+  "fetched_at": "2026-05-30 17:41 JST",
   "status": "OK",
   "holdings": [
     {
@@ -9,7 +9,7 @@
       "volume": 6206100,
       "vol_ratio": 0.4,
       "turnover_mil": 15043.6,
-      "market_cap_bil": 1145.4,
+      "market_cap_bil": 1016.2,
       "rsi": 55.7,
       "vwap": 2493.3,
       "ema5": 2686.3,
@@ -27,7 +27,7 @@
       "volume": 805900,
       "vol_ratio": 0.5,
       "turnover_mil": 830.9,
-      "market_cap_bil": 178.1,
+      "market_cap_bil": 164.0,
       "rsi": 52.8,
       "vwap": 1053.0,
       "ema5": 1066.0,
