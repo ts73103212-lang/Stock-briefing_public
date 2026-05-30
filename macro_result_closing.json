@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-30 17:41 JST",
+  "fetched_at": "2026-05-31 01:29 JST",
   "status": "OK",
   "note": "15:40 JST取得。fast_info.last_price優先。日経225・TOPIXは当日終値。米国指数（NASDAQ・S&P500・SOX）は前日終値（米国市場未開場）。先物・為替・VIXはリアルタイムに近い値。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。statusがOK以外はweb検索で補完すること。",
   "macro": [
