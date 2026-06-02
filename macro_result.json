@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-03 06:10 JST",
+  "fetched_at": "2026-06-03 07:29 JST",
   "status": "OK",
   "note": "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。change_pctは前営業日終値比。statusがOK以外はweb検索で補完。",
   "macro": [
@@ -61,9 +61,9 @@
     {
       "name": "WTI原油",
       "ticker": "CL=F",
-      "close": 93.39,
+      "close": 93.97,
       "prev_close": 91.45,
-      "change_pct": 2.12,
+      "change_pct": 2.76,
       "data_date": null,
       "source": "fast_info",
       "comment": "エネルギー・ナフサ・輸送コスト",
@@ -72,9 +72,9 @@
     {
       "name": "金(XAUUSD)",
       "ticker": "GC=F",
-      "close": 4519.2,
+      "close": 4517.9,
       "prev_close": 4528.4,
-      "change_pct": -0.2,
+      "change_pct": -0.23,
       "data_date": null,
       "source": "fast_info",
       "comment": "リスクオフ・インフレ指標",
@@ -83,9 +83,9 @@
     {
       "name": "ドル円",
       "ticker": "JPY=X",
-      "close": 159.87,
+      "close": 159.91,
       "prev_close": 159.65,
-      "change_pct": 0.14,
+      "change_pct": 0.16,
       "data_date": null,
       "source": "fast_info",
       "comment": "円安→輸出株サポート / 急変に注意",
