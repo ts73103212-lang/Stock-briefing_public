@@ -2,7 +2,7 @@ name: Fetch Data - Morning
 
 on:
   schedule:
-    - cron: '01 14 * * 0-4'   # 月〜金 6:00 JSTねらい
+#    - cron: '01 14 * * 0-4'   # 月〜金 6:00 JSTねらい
   workflow_dispatch:
 
 # 同一グループの多重起動を防ぐ（前の実行が終わるまで待つ）
