@@ -2,7 +2,7 @@ name: Fetch Data - Midday
 
 on:
   schedule:
-#    - cron: '37 22 * * 0-4'   # 月〜金 11:37 JST
+    - cron: '37 22 * * 0-4'   # 月〜金 11:37 JST
   workflow_dispatch:
 
 # concurrency:
