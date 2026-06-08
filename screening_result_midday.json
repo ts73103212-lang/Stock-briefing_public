@@ -1,21 +1,63 @@
 {
-  "fetched_at": "2026-06-08 11:35 JST",
+  "fetched_at": "2026-06-08 23:33 JST",
   "status": "OK",
-  "total_hits": 3,
+  "total_hits": 9,
   "stocks": [
     {
+      "ticker": "4496",
+      "close": 775.0,
+      "change": 10.4,
+      "volume": 56200,
+      "vol_ratio": 2.5,
+      "turnover_mil": 43.6,
+      "market_cap_bil": 50.5,
+      "rsi": 68.1,
+      "vwap": 750.7,
+      "ema5": 719.3,
+      "ema25": 714.3,
+      "atr": 23.3
+    },
+    {
       "ticker": "6858",
-      "close": 880.0,
-      "change": 3.17,
-      "volume": 232300,
-      "vol_ratio": 3.3,
-      "turnover_mil": 204.4,
+      "close": 905.0,
+      "change": 6.1,
+      "volume": 382900,
+      "vol_ratio": 4.4,
+      "turnover_mil": 346.5,
       "market_cap_bil": 95.6,
-      "rsi": 65.6,
-      "vwap": 877.0,
-      "ema5": 850.7,
-      "ema25": 823.5,
-      "atr": 25.9
+      "rsi": 69.5,
+      "vwap": 892.0,
+      "ema5": 859.0,
+      "ema25": 825.5,
+      "atr": 27.3
+    },
+    {
+      "ticker": "3182",
+      "close": 1568.0,
+      "change": 5.8,
+      "volume": 259400,
+      "vol_ratio": 2.6,
+      "turnover_mil": 406.7,
+      "market_cap_bil": 525.7,
+      "rsi": 68.7,
+      "vwap": 1544.7,
+      "ema5": 1502.3,
+      "ema25": 1451.9,
+      "atr": 42.3
+    },
+    {
+      "ticker": "262A",
+      "close": 2085.0,
+      "change": 5.3,
+      "volume": 511400,
+      "vol_ratio": 2.0,
+      "turnover_mil": 1066.3,
+      "market_cap_bil": 450.2,
+      "rsi": 57.6,
+      "vwap": 2065.3,
+      "ema5": 1975.2,
+      "ema25": 1962.6,
+      "atr": 104.1
     }
   ]
 }
