@@ -8,7 +8,7 @@ fetch_macro_closing.py・fetch_data.py とは完全に独立。
   - 騰落率 +15%以上（ストップ高圏）
   - 終値 > VWAP（強気引け）
   - 時価総額 ≥ 30億円（板の厚み）
-  - close/high ≥ 0.97（高値引け・上ヒゲ3%以内）
+  - close/high ≥ 0.95（高値引け・上ヒゲ5%以内）
 
 【記録項目（フィルタなし・ルーティン判断用）】
   - stock_type: 寄らずストップ高 / ザラ場ストップ高 / ストップ高（通常）
@@ -123,7 +123,7 @@ try:
             "total_hits": 0, "candidates": []
         }
     else:
-        # close/high ≥ 0.97 フィルタ（高値引け）をPython側で適用
+        # close/high ≥ 0.95 フィルタ（高値引け）をPython側で適用
         # ※ high列が取得できない場合は除外しない（スキップ）
         candidates = []
         skipped = 0
@@ -132,7 +132,7 @@ try:
             high  = float(row["high"])  if row.get("high")  else 0
             if high > 0:
                 ratio = close / high
-                if ratio < 0.97:
+                if ratio < 0.95:
                     skipped += 1
                     continue   # 上ヒゲ大きい → 除外
             candidates.append(build_candidate(row))
