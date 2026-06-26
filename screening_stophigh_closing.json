@@ -1,8 +1,8 @@
 {
-  "fetched_at": "2026-06-26 10:33 JST",
+  "fetched_at": "2026-06-26 15:35 JST",
   "status": "OK",
   "note": "騰落率+15%以上・強気引け・高値引け(close/high≥0.97)の銘柄。stock_typeで寄らず/ザラ場を判別。ema5_above_ema25・close_above_ema25・change_1dはフィルタなし参考値。ルーティン側で3銘柄に絞ること。",
-  "total_hits": 5,
+  "total_hits": 3,
   "candidates": [
     {
       "ticker": "5333",
@@ -26,23 +26,23 @@
     },
     {
       "ticker": "3696",
-      "close": 2068.0,
-      "change": 21.72,
+      "close": 2037.0,
+      "change": 19.89,
       "high": 2095.0,
-      "close_to_high": 0.987,
-      "volume": 593000,
-      "vol_ratio": 3.8,
+      "close_to_high": 0.972,
+      "volume": 1303100,
+      "vol_ratio": 5.8,
       "stock_type": "ザラ場ストップ高（出来高急増）",
-      "turnover_mil": 1226.3,
+      "turnover_mil": 2654.4,
       "market_cap_bil": 198.7,
-      "rsi": 68.5,
-      "vwap": 2054.3,
-      "ema5": 1838.3,
-      "ema25": 1784.6,
+      "rsi": 67.3,
+      "vwap": 2034.7,
+      "ema5": 1827.9,
+      "ema25": 1782.2,
       "atr": 89.5,
       "ema5_above_ema25": true,
       "close_above_ema25": true,
-      "change_1d": 0.05
+      "change_1d": null
     },
     {
       "ticker": "4107",
@@ -63,46 +63,6 @@
       "ema5_above_ema25": false,
       "close_above_ema25": true,
       "change_1d": 0.11
-    },
-    {
-      "ticker": "6620",
-      "close": 880.0,
-      "change": 16.25,
-      "high": 880.0,
-      "close_to_high": 1.0,
-      "volume": 312100,
-      "vol_ratio": 1.2,
-      "stock_type": "ストップ高（通常）",
-      "turnover_mil": 274.6,
-      "market_cap_bil": 270.5,
-      "rsi": 73.4,
-      "vwap": 840.0,
-      "ema5": 753.9,
-      "ema25": 673.4,
-      "atr": 43.5,
-      "ema5_above_ema25": true,
-      "close_above_ema25": true,
-      "change_1d": 4.02
-    },
-    {
-      "ticker": "2962",
-      "close": 1921.0,
-      "change": 15.1,
-      "high": 2012.0,
-      "close_to_high": 0.955,
-      "volume": 1178700,
-      "vol_ratio": 2.6,
-      "stock_type": "ストップ高（通常）",
-      "turnover_mil": 2264.3,
-      "market_cap_bil": 125.9,
-      "rsi": 76.5,
-      "vwap": 1841.0,
-      "ema5": 1584.5,
-      "ema25": 1234.5,
-      "atr": 160.1,
-      "ema5_above_ema25": true,
-      "close_above_ema25": true,
-      "change_1d": -0.67
     }
   ]
 }
