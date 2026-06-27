@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-26 15:35 JST",
+  "fetched_at": "2026-06-27 10:25 JST",
   "status": "OK",
   "note": "騰落率+15%以上・強気引け・高値引け(close/high≥0.97)の銘柄。stock_typeで寄らず/ザラ場を判別。ema5_above_ema25・close_above_ema25・change_1dはフィルタなし参考値。ルーティン側で3銘柄に絞ること。",
   "total_hits": 3,
@@ -14,7 +14,7 @@
       "vol_ratio": 1.6,
       "stock_type": "ストップ高（通常）",
       "turnover_mil": 3.1,
-      "market_cap_bil": 20338.0,
+      "market_cap_bil": 21357.9,
       "rsi": 92.9,
       "vwap": 7803.0,
       "ema5": 4790.4,
@@ -26,23 +26,23 @@
     },
     {
       "ticker": "3696",
-      "close": 2037.0,
-      "change": 19.89,
+      "close": 2039.0,
+      "change": 20.01,
       "high": 2095.0,
-      "close_to_high": 0.972,
-      "volume": 1303100,
-      "vol_ratio": 5.8,
+      "close_to_high": 0.973,
+      "volume": 1383400,
+      "vol_ratio": 5.9,
       "stock_type": "ザラ場ストップ高（出来高急増）",
-      "turnover_mil": 2654.4,
-      "market_cap_bil": 198.7,
-      "rsi": 67.3,
-      "vwap": 2034.7,
-      "ema5": 1827.9,
-      "ema25": 1782.2,
+      "turnover_mil": 2820.8,
+      "market_cap_bil": 197.5,
+      "rsi": 67.4,
+      "vwap": 2035.3,
+      "ema5": 1828.6,
+      "ema25": 1782.4,
       "atr": 89.5,
       "ema5_above_ema25": true,
       "close_above_ema25": true,
-      "change_1d": null
+      "change_1d": 0.69
     },
     {
       "ticker": "4107",
@@ -50,11 +50,11 @@
       "change": 19.0,
       "high": 4385.0,
       "close_to_high": 1.0,
-      "volume": 379700,
-      "vol_ratio": 1.4,
+      "volume": 467000,
+      "vol_ratio": 1.7,
       "stock_type": "ストップ高（通常）",
-      "turnover_mil": 1665.0,
-      "market_cap_bil": 1878.1,
+      "turnover_mil": 2047.8,
+      "market_cap_bil": 1890.9,
       "rsi": 57.6,
       "vwap": 4235.0,
       "ema5": 3954.8,
@@ -62,7 +62,7 @@
       "atr": 234.7,
       "ema5_above_ema25": false,
       "close_above_ema25": true,
-      "change_1d": 0.11
+      "change_1d": null
     }
   ]
 }
