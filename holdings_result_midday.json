@@ -1,15 +1,15 @@
 {
-  "fetched_at": "2026-07-07 11:35 JST",
+  "fetched_at": "2026-07-08 08:31 JST",
   "status": "OK",
   "holdings": [
     {
       "ticker": "TSE:6613",
       "close": 2600.0,
       "change": -4.06,
-      "volume": 1099000,
-      "vol_ratio": 0.3,
-      "turnover_mil": 2857.4,
-      "market_cap_bil": 1089.8,
+      "volume": 1684300,
+      "vol_ratio": 0.4,
+      "turnover_mil": 4379.2,
+      "market_cap_bil": 1138.1,
       "rsi": 49.6,
       "vwap": 2618.0,
       "ema5": 2665.5,
