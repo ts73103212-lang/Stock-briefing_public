@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-26 23:56 JST",
+  "fetched_at": "2026-07-27 06:35 JST",
   "status": "OK",
   "note": "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。change_pctは前営業日終値比。statusがOK以外はweb検索で補完。",
   "macro": [
@@ -39,7 +39,7 @@
     {
       "name": "SOX",
       "ticker": "^SOX",
-      "close": 11818.88,
+      "close": 11818.89,
       "prev_close": 12343.84,
       "change_pct": -4.25,
       "data_date": null,
@@ -83,9 +83,9 @@
     {
       "name": "ドル円",
       "ticker": "JPY=X",
-      "close": 163.79,
+      "close": 163.62,
       "prev_close": 163.84,
-      "change_pct": -0.03,
+      "change_pct": -0.14,
       "data_date": null,
       "source": "fast_info",
       "comment": "円安→輸出株サポート / 急変に注意",
