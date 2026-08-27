@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-28 06:35 JST",
+  "fetched_at": "2026-08-28 08:22 JST",
   "status": "OK",
   "note": "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。change_pctは前営業日終値比。statusがOK以外はweb検索で補完。",
   "macro": [
@@ -61,9 +61,9 @@
     {
       "name": "WTI原油",
       "ticker": "CL=F",
-      "close": 83.54,
+      "close": 83.59,
       "prev_close": 81.84,
-      "change_pct": 2.08,
+      "change_pct": 2.14,
       "data_date": null,
       "source": "fast_info",
       "comment": "エネルギー・ナフサ・輸送コスト",
@@ -72,9 +72,9 @@
     {
       "name": "金(XAUUSD)",
       "ticker": "GC=F",
-      "close": 4654.8,
+      "close": 4657.0,
       "prev_close": 4679.0,
-      "change_pct": -0.52,
+      "change_pct": -0.47,
       "data_date": null,
       "source": "fast_info",
       "comment": "リスクオフ・インフレ指標",
@@ -83,9 +83,9 @@
     {
       "name": "ドル円",
       "ticker": "JPY=X",
-      "close": 159.38,
-      "prev_close": 159.27,
-      "change_pct": 0.07,
+      "close": 159.35,
+      "prev_close": 159.41,
+      "change_pct": -0.04,
       "data_date": null,
       "source": "fast_info",
       "comment": "円安→輸出株サポート / 急変に注意",
@@ -105,9 +105,9 @@
     {
       "name": "日経CME先物",
       "ticker": "NKD=F",
-      "close": 66165.0,
+      "close": 66175.0,
       "prev_close": 66460.0,
-      "change_pct": -0.44,
+      "change_pct": -0.43,
       "data_date": null,
       "source": "fast_info",
       "comment": "ドル建てCME先物。^N225終値との差分でGU/GD予測に使う",
