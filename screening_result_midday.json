@@ -1,6 +1,21 @@
 {
-  "fetched_at": "2026-09-25 09:44 JST",
+  "fetched_at": "2026-09-25 11:35 JST",
   "status": "OK",
-  "total_hits": 2,
-  "stocks": []
+  "total_hits": 8,
+  "stocks": [
+    {
+      "ticker": "1401",
+      "close": 1437.0,
+      "change": 4.51,
+      "volume": 21700,
+      "vol_ratio": 4.6,
+      "turnover_mil": 31.2,
+      "market_cap_bil": 100.8,
+      "rsi": 71.3,
+      "vwap": 1427.3,
+      "ema5": 1369.3,
+      "ema25": 1329.2,
+      "atr": 29.1
+    }
+  ]
 }
