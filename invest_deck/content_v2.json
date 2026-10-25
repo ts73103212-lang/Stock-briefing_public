@@ -1,0 +1,648 @@
+{
+ "meta": {
+  "version": 2,
+  "note": "既存の積立・インフレ・NISA計算は content.json を流用(変更なし)。本ファイルは『なぜ増えるのか』パート新設の全体構成+根拠データ。",
+  "tool_limit": "調査環境は多くのドメインに接続不可(OWID/世銀/UN/OECD/S&P/MSCI直接取得不可)。検索スニペットと、GitHub上のShillerデータ(datasets/s-and-p-500)、世銀由来データ(datasets/gdp, population)で裏取り。直接未確認は『要確認』。"
+ },
+ "reuse": {
+  "from": "content.json",
+  "keys": [
+   "extra.power_and_deposit",
+   "extra.series_10000_30y",
+   "tables",
+   "age",
+   "tax",
+   "nisa",
+   "stress"
+  ]
+ },
+ "pages": [
+  {
+   "no": 1,
+   "title": "20代のうちに知りたい、NISA積立のはじめ方",
+   "catch": "お金が増える『理由』から、数字で確かめよう。",
+   "bullets": [
+    "投資ってなんで儲かるの?",
+    "減り続けることはないの?",
+    "12ページで、理由と数字を順番に見ていきます"
+   ],
+   "chart": {
+    "type": "none",
+    "note": "表紙"
+   }
+  },
+  {
+   "no": 2,
+   "title": "株を買う = 会社の「オーナーの一人」になること",
+   "catch": "自分が寝ている間も、世界中の会社が働いてくれる。",
+   "bullets": [
+    "株は『会社の一部』を持つ権利。会社が稼ぐと、配当や株価の上昇で分けてもらえる",
+    "インデックス投資は、世界中の何千社を『まとめて』持つ方法",
+    "お金を貸す(預金)のではなく、会社の持ち主になるので、会社の成長が自分の成長になる"
+   ],
+   "chart": {
+    "type": "diagram",
+    "title": "あなた→ファンド→世界の会社(利益が戻ってくる)",
+    "note": "図解。数値なし"
+   }
+  },
+  {
+   "no": 3,
+   "title": "なぜ増える①:世界の人が増えてきた",
+   "catch": "働く人・買う人が増えると、会社の売上も増える。",
+   "bullets": [
+    "世界の人口は1950年の約25億人から、2024年に約81億人へ(約3.3倍)",
+    "国連の予測では、2080年代に約103億人でピークに",
+    "人口の伸びは遅くなる。だから次の『技術』が大事になる"
+   ],
+   "chart": {
+    "type": "line",
+    "title": "世界人口(1950-2024実績、〜2100予測)",
+    "data_ref": "datasets.world_population"
+   }
+  },
+  {
+   "no": 4,
+   "title": "なぜ増える②:技術と工夫で、同じ人数でもたくさん作れる",
+   "catch": "1人あたりの豊かさも増え続けてきた。",
+   "bullets": [
+    "機械・電気・コンピュータ・AIなど、新しい技術が生産性を上げる",
+    "世界の経済規模は1950年から約13倍(OWID, 2016年頃までの試算。要確認)。人口3倍×1人あたり4倍強",
+    "働く人が工夫を重ねる限り、この力は止まりにくい(ただし将来の保証はない)"
+   ],
+   "chart": {
+    "type": "bar",
+    "title": "1950年を1とした倍率(人口/1人あたり/経済全体)",
+    "data_ref": "datasets.growth_multiples_since_1950"
+   }
+  },
+  {
+   "no": 5,
+   "title": "なぜ増える③:会社の利益が増え、株価はそれについていく",
+   "catch": "経済が大きくなる → 利益が増える → 株価が上がる。",
+   "bullets": [
+    "世界のGDP(経済規模)は長期で右肩上がり(2000年→2023年で約3.1倍・名目ドル、世界銀行)",
+    "企業の利益が増えれば、株価も長期では連動して上がってきた",
+    "短期は気分(不安・熱狂)で上下。長期は利益が決める"
+   ],
+   "chart": {
+    "type": "line_log_or_bar",
+    "title": "世界のGDP(名目US$、1960-2023)",
+    "data_ref": "datasets.world_gdp_nominal"
+   }
+  },
+  {
+   "no": 6,
+   "title": "100年の株価:ギザギザでも、大きく右肩上がり",
+   "catch": "米国株は1926年からの約100年で、配当込みで約1万倍超(約12,000倍)。",
+   "bullets": [
+    "米国S&P500は、配当込みで年約10%(インフレ後で約7%)だった(1926年〜、Shiller/Morningstar系)",
+    "1926年を1とすると、2023年6月は約12,000倍(月平均値ベースの概算)",
+    "グラフは『対数』なので、傾きがほぼ一定=一定率で増え続けた、と読む"
+   ],
+   "chart": {
+    "type": "line_log",
+    "title": "S&P500(配当込み)1926=1・対数目盛、暴落に注釈",
+    "data_ref": "datasets.sp500_long",
+    "annotations": "datasets.drawdowns"
+   }
+  },
+  {
+   "no": 7,
+   "title": "大暴落は何度もあった。でも、そのたび回復した",
+   "catch": "下げ幅は大きく、回復には年単位かかることも。",
+   "bullets": [
+    "コロナ(2020):約-34%、約5か月(126日)で高値更新",
+    "リーマン(2007-09):約-57%、約5年半で回復 / ITバブル(2000-02):約-49%、約7年",
+    "大恐慌(1929-32):約-85%、価格の回復に約25年(配当込みなら約15年)"
+   ],
+   "chart": {
+    "type": "timeline_bar",
+    "title": "下落率と高値回復までの年数",
+    "data_ref": "datasets.drawdowns"
+   }
+  },
+  {
+   "no": 8,
+   "title": "それでも減ることはある:個別株と日本株1989",
+   "catch": "1社に賭けると、ゼロになることもある。",
+   "bullets": [
+    "個別の会社は倒産・衰退する。株価がゼロになれば戻らない",
+    "日経平均は1989年末の38,915円から下落、2024年2月に更新するまで約34年かかった",
+    "『全部まとめて持つ』ことで1社の失敗の影響を小さくできる"
+   ],
+   "chart": {
+    "type": "line",
+    "title": "日経平均 年末値(1989-2024)・高値更新までの期間を注釈",
+    "data_ref": "datasets.nikkei_yearend"
+   }
+  },
+  {
+   "no": 9,
+   "title": "だから「インデックス(まとめ買い)」× 長期・積立",
+   "catch": "会社の新陳代謝は、インデックスが自動でやってくれる。",
+   "bullets": [
+    "S&P500は約500社、全世界株式(MSCI ACWI)は約2,500社を1本で持てる",
+    "衰退した会社は指数から外れ、成長した会社が入る(定期的な入れ替え)",
+    "20年以上持てば元本割れしなかった(米国株1926〜の配当込み。独自計算・要確認)。積立は高い時も安い時も買うので、タイミングに悩まない"
+   ],
+   "chart": {
+    "type": "stat_cards",
+    "title": "500社/約2,500社/保有期間別の元本割れ頻度",
+    "data_ref": "datasets.holding_period_loss"
+   }
+  },
+  {
+   "no": 10,
+   "title": "年3%・5%・7%は、どこから来た数字?",
+   "catch": "過去の実績より、かなり控えめに置いた仮定。",
+   "bullets": [
+    "過去の長期実績:S&P500は年約10%(インフレ後約7%)、全世界株式も1987年以降約8〜9%(名目)",
+    "7%は『インフレ後の過去実績』に近く、5%・3%はそこから大きく割り引いた慎重な数字",
+    "ただし将来の保証ではない。名目(額面)と実質(物価を引いた価値)は別。年3%でも物価2%なら実質は約1%"
+   ],
+   "chart": {
+    "type": "bar",
+    "title": "過去実績 vs 本資料の想定(名目)",
+    "data_ref": "datasets.return_basis"
+   }
+  },
+  {
+   "no": 11,
+   "title": "預金 vs 投資、そして積立で何が変わる?",
+   "catch": "月1万円×30年。差は時間が作る。",
+   "bullets": [
+    "預金(金利0.1%)はインフレ2%で実質目減り",
+    "月1万円30年:元本360万円→年5%で約815万円(再利用)",
+    "25歳開始と35歳開始で約1.8倍の差。NISAなら利益に税金0円"
+   ],
+   "chart": {
+    "type": "line",
+    "title": "月1万円×30年の資産推移",
+    "data_ref": "extra.series_10000_30y (content.json再利用)",
+    "also": [
+     "age",
+     "tax",
+     "extra.power_and_deposit"
+    ]
+   },
+   "merge_note": "旧p2,3,4,5,7を統合。必要なら旧p4(grouped_bar)/p5(age)/p7(tax)を別ページに分割して13p。"
+  },
+  {
+   "no": 12,
+   "title": "今日からできる3ステップ",
+   "catch": "完璧なタイミングより、今日の1,000円。",
+   "bullets": [
+    "①証券口座を開き、NISA口座を申し込む ②全世界株式かS&P500のインデックスを選ぶ ③月1,000円〜で自動積立",
+    "生活防衛資金(生活費3〜6か月分)を確保してから。短期で使うお金は投資しない",
+    "情報提供であり将来の成果は保証されません。元本割れの可能性あり"
+   ],
+   "chart": {
+    "type": "steps"
+   }
+  }
+ ],
+ "datasets": {
+  "world_population": {
+   "unit": "人",
+   "source": "1960-2024: 世界銀行 SP.POP.TOTL(datasets/population経由); 1950/2050/ピーク: 国連WPP2024",
+   "points": [
+    {
+     "year": 1900,
+     "value": "約16億",
+     "status": "要確認(HYDE/OWID。直接未取得)"
+    },
+    {
+     "year": 1950,
+     "value": 2470000000.0,
+     "status": "検索スニペット(UN WPP, JetPunk/Worldometer経由)"
+    },
+    {
+     "year": 1960,
+     "value": 3022000000.0
+    },
+    {
+     "year": 1970,
+     "value": 3680000000.0
+    },
+    {
+     "year": 1980,
+     "value": 4437000000.0
+    },
+    {
+     "year": 1990,
+     "value": 5299000000.0
+    },
+    {
+     "year": 2000,
+     "value": 6162000000.0,
+     "note": "UN WPP系は6.13e9"
+    },
+    {
+     "year": 2010,
+     "value": 7001000000.0
+    },
+    {
+     "year": 2020,
+     "value": 7854000000.0
+    },
+    {
+     "year": 2024,
+     "value": 8141000000.0
+    },
+    {
+     "year": 2050,
+     "value": 9660000000.0,
+     "status": "UN WPP2024中位推計(Worldometer経由)"
+    },
+    {
+     "year": 2085,
+     "value": 10300000000.0,
+     "status": "UN WPP2024: 2080年代半ばに約103億人でピーク、2100年に約102億人(報道経由。要確認)"
+    }
+   ]
+  },
+  "growth_multiples_since_1950": {
+   "source": "Our World in Data 'Economic growth since 1950'(旧版・2016年頃まで)",
+   "points": [
+    {
+     "label": "人口",
+     "x": 3
+    },
+    {
+     "label": "1人あたりGDP",
+     "x": 4.4
+    },
+    {
+     "label": "経済全体",
+     "x": 13
+    }
+   ],
+   "status": "要確認(最新版で再計算推奨。マディソンの実質GDP絶対値は未取得)"
+  },
+  "world_gdp_nominal": {
+   "unit": "兆US$(名目・当年価格)",
+   "source": "世界銀行 NY.GDP.MKTP.CD(datasets/gdp経由)",
+   "points": [
+    {
+     "year": 1960,
+     "world_gdp_current_usd_trillion": 1.36
+    },
+    {
+     "year": 1970,
+     "world_gdp_current_usd_trillion": 3.0
+    },
+    {
+     "year": 1980,
+     "world_gdp_current_usd_trillion": 11.42
+    },
+    {
+     "year": 1990,
+     "world_gdp_current_usd_trillion": 22.82
+    },
+    {
+     "year": 2000,
+     "world_gdp_current_usd_trillion": 33.84
+    },
+    {
+     "year": 2010,
+     "world_gdp_current_usd_trillion": 66.51
+    },
+    {
+     "year": 2020,
+     "world_gdp_current_usd_trillion": 85.58
+    },
+    {
+     "year": 2023,
+     "world_gdp_current_usd_trillion": 105.44
+    }
+   ],
+   "caveat": "名目なので物価上昇を含む。実質の長期系列(Maddison/OWID 1900,1950,2000)は未取得=要確認"
+  },
+  "sp500_long": {
+   "unit": "指数",
+   "source": "Shiller (Yale) / github.com/datasets/s-and-p-500。月平均価格。総収益=配当再投資の独自計算(配当は月次補間)。2023-06以降はFRED価格のみ",
+   "points": [
+    {
+     "year": 1900,
+     "index_price_monthly_avg": 6.1,
+     "total_return_index_1926eq1": null
+    },
+    {
+     "year": 1910,
+     "index_price_monthly_avg": 10.08,
+     "total_return_index_1926eq1": null
+    },
+    {
+     "year": 1920,
+     "index_price_monthly_avg": 8.83,
+     "total_return_index_1926eq1": null
+    },
+    {
+     "year": 1930,
+     "index_price_monthly_avg": 21.71,
+     "total_return_index_1926eq1": 2.05
+    },
+    {
+     "year": 1940,
+     "index_price_monthly_avg": 12.3,
+     "total_return_index_1926eq1": 2.01
+    },
+    {
+     "year": 1950,
+     "index_price_monthly_avg": 16.88,
+     "total_return_index_1926eq1": 4.86
+    },
+    {
+     "year": 1960,
+     "index_price_monthly_avg": 58.03,
+     "total_return_index_1926eq1": 27.15
+    },
+    {
+     "year": 1970,
+     "index_price_monthly_avg": 90.31,
+     "total_return_index_1926eq1": 57.93
+    },
+    {
+     "year": 1980,
+     "index_price_monthly_avg": 110.9,
+     "total_return_index_1926eq1": 106.23
+    },
+    {
+     "year": 1990,
+     "index_price_monthly_avg": 339.97,
+     "total_return_index_1926eq1": 494.55
+    },
+    {
+     "year": 2000,
+     "index_price_monthly_avg": 1425.59,
+     "total_return_index_1926eq1": 2641.19
+    },
+    {
+     "year": 2010,
+     "index_price_monthly_avg": 1123.58,
+     "total_return_index_1926eq1": 2491.91
+    },
+    {
+     "year": 2020,
+     "index_price_monthly_avg": 3278.2028571428577,
+     "total_return_index_1926eq1": 8865.32
+    },
+    {
+     "year": 2023.5,
+     "label": "2023-06",
+     "index_price_monthly_avg": 4345.372857142857,
+     "total_return_index_1926eq1": 12413.4
+    },
+    {
+     "year": 2026.7,
+     "label": "2026-09",
+     "index_price_monthly_avg": 7669.41,
+     "total_return_index_1926eq1": null,
+     "note": "FRED由来の価格のみ。配当なし"
+    }
+   ]
+  },
+  "sp500_stats": {
+   "period_start": "1926-01 to 2023-06",
+   "tr_nominal_cagr_pct": {
+    "1926-": 10.2,
+    "1950-": 11.3,
+    "1980-": 11.6,
+    "2000-": 6.8
+   },
+   "tr_real_cagr_pct": {
+    "1926-": 7.0,
+    "1950-": 7.5,
+    "1980-": 8.1,
+    "2000-": 4.2
+   },
+   "external_check": "Morningstar/Hartford: 1926-2023 約10.28%; Dimensional: 1926- 実質7.0%",
+   "status": "独自計算+外部2件で整合。区間により4〜11%台と幅がある点も正直に表示"
+  },
+  "holding_period_loss": {
+   "basis": "S&P500総収益、1926-01〜2023-06のローリング(月次開始)、独自計算(Shiller月平均データ)。公式統計ではない",
+   "nominal_loss_pct": {
+    "10y": 4.8,
+    "15y": 0.1,
+    "20y": 0.0
+   },
+   "real_loss_pct": {
+    "10y": 13.4,
+    "15y": 5.1,
+    "20y": 0.0
+   },
+   "worst_annualized_pct": {
+    "10y_nominal": -4.0,
+    "20y_nominal": 2.0
+   },
+   "status": "要確認(S&P DJI等の公表値で裏取り推奨)。米国株のみで日本株では当てはまらない点を注記"
+  },
+  "drawdowns": {
+   "unit": "S&P500(米国)",
+   "rows": [
+    {
+     "event": "大恐慌",
+     "peak": "1929-09",
+     "trough": "1932-06",
+     "drop_pct": -85,
+     "recovery_price": "1954-09(約25年)",
+     "recovery_total_return": "約1945-01(約15年、配当再投資)",
+     "source": "Shiller月平均の独自計算。日次ベースは約-86%とされる(要確認)"
+    },
+    {
+     "event": "ブラックマンデー",
+     "peak": "1987-08",
+     "trough": "1987-12",
+     "drop_pct": -34,
+     "recovery": "約1989-07(約2年)",
+     "source": "-34%は日次の一般的数値(要確認)、月平均計算では-27%、回復は計算・検索表(1989-05)で約18-23か月"
+    },
+    {
+     "event": "ITバブル崩壊",
+     "peak": "2000-03",
+     "trough": "2002-10",
+     "drop_pct": -49,
+     "recovery": "2007-05-30終値(約7年)",
+     "source": "検索結果(終値ベース -49.1%, 2007-05-30)。配当込みでは2006-10"
+    },
+    {
+     "event": "リーマン",
+     "peak": "2007-10",
+     "trough": "2009-03",
+     "drop_pct": -57,
+     "recovery": "2013-03(約5.5年)",
+     "source": "-57%は広く報道される値(要確認)。検索表は別測定で-51%/2013-03"
+    },
+    {
+     "event": "コロナ",
+     "peak": "2020-02-19(3,386.15)",
+     "trough": "2020-03-23",
+     "drop_pct": -34,
+     "recovery": "2020-08-18(約126日)",
+     "source": "検索結果(Fortune/AP等)"
+    }
+   ]
+  },
+  "nikkei_yearend": {
+   "unit": "円",
+   "source": "Wikipedia/Macrotrends/Reuters・Bloomberg報道(日経本体は未取得)",
+   "points": [
+    {
+     "year": 1989,
+     "value": 38915.87,
+     "note": "史上最高値(当時)12/29"
+    },
+    {
+     "year": 1990,
+     "value": 23849
+    },
+    {
+     "year": 2000,
+     "value": 13786,
+     "status": "要確認(±1円)"
+    },
+    {
+     "year": 2008,
+     "value": 8860,
+     "status": "要確認"
+    },
+    {
+     "year": 2012,
+     "value": 10395
+    },
+    {
+     "year": 2020,
+     "value": 27444
+    },
+    {
+     "year": 2023,
+     "value": 33464,
+     "status": "要確認(Macrotrendsは32,204と表示、自分の記憶は33,464)"
+    },
+    {
+     "year": 2024.15,
+     "label": "2024-02-22",
+     "value": 39098.68,
+     "note": "終値で1989年を更新、約34年。3/4に40,000円超"
+    }
+   ]
+  },
+  "return_basis": {
+   "points": [
+    {
+     "label": "S&P500 配当込み 1926-(名目)",
+     "pct": 10.2
+    },
+    {
+     "label": "S&P500 同(実質)",
+     "pct": 7.0
+    },
+    {
+     "label": "MSCI ACWI 1987末-(USD, グロス)",
+     "pct": 8.8,
+     "status": "MSCIファクトシート(2026-01時点)の検索結果。要確認"
+    },
+    {
+     "label": "S&P500 2000-2023(名目)",
+     "pct": 6.8,
+     "note": "低い時期もある"
+    },
+    {
+     "label": "本資料 年7%/5%/3%",
+     "pct": [
+      7,
+      5,
+      3
+     ]
+    }
+   ]
+  },
+  "index_composition": {
+   "S&P500": "500社",
+   "MSCI_ACWI": "約2,460〜2,515社(2026年ファクトシート。約85%の時価総額をカバー)",
+   "status": "ACWIは先進国+新興国、時価総額上位の約85%"
+  }
+ },
+ "sources": [
+  {
+   "title": "UN World Population Prospects 2024",
+   "url": "https://population.un.org/wpp/"
+  },
+  {
+   "title": "UN News/Arab News: 人口2080年代ピーク103億人",
+   "url": "https://www.arabnews.com/node/2548601/world"
+  },
+  {
+   "title": "World Bank Open Data: GDP / Population",
+   "url": "https://data.worldbank.org/"
+  },
+  {
+   "title": "datasets/gdp (World Bank mirror)",
+   "url": "https://github.com/datasets/gdp"
+  },
+  {
+   "title": "datasets/population (World Bank mirror)",
+   "url": "https://github.com/datasets/population"
+  },
+  {
+   "title": "Our World in Data: Global GDP over the long run (Maddison+WB)",
+   "url": "https://ourworldindata.org/grapher/global-gdp-over-the-long-run"
+  },
+  {
+   "title": "OWID: Economic growth since 1950",
+   "url": "https://ourworldindata.org/economic-growth-since-1950"
+  },
+  {
+   "title": "Maddison Project Database 2023",
+   "url": "https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023"
+  },
+  {
+   "title": "Robert Shiller data (Yale)",
+   "url": "http://www.econ.yale.edu/~shiller/data.htm"
+  },
+  {
+   "title": "datasets/s-and-p-500 (Shiller mirror, 実際に計算に使用)",
+   "url": "https://github.com/datasets/s-and-p-500"
+  },
+  {
+   "title": "Hartford Funds (Morningstar引用: 1926- 10.28%)",
+   "url": "https://www.hartfordfunds.com/practice-management/client-conversations/investing-for-growth/high-long-term-returns-require-patience.html"
+  },
+  {
+   "title": "Dimensional: 実質7.0% (1926-)",
+   "url": "https://www.dimensional.com/insights/will-inflation-hurt-stock-returns-not-necessarily"
+  },
+  {
+   "title": "MSCI ACWI ファクトシート",
+   "url": "https://www.msci.com/documents/10199/255599/msci-acwi-net.pdf"
+  },
+  {
+   "title": "Bloomberg: 日経平均が1989年高値を更新(2024-02-22)",
+   "url": "https://www.bloomberg.com/news/articles/2024-02-22/nikkei-225-heads-to-close-above-record-high-reached-in-1989"
+  },
+  {
+   "title": "Wikipedia: Nikkei 225(1989年12/29終値38,915.87)",
+   "url": "https://en.wikipedia.org/wiki/Nikkei_225"
+  },
+  {
+   "title": "Fortune: S&P500 2020-08-18 最高値更新",
+   "url": "https://fortune.com/2020/08/18/sp-500-new-record-pandemic"
+  },
+  {
+   "title": "Advisor Perspectives: Bear Markets",
+   "url": "https://www.advisorperspectives.com/commentaries/2014/11/04/bear-markets-corrections-and-benchmarks"
+  }
+ ],
+ "needs_confirmation": [
+  "世界の実質GDPの長期系列(1900/1950/2000/2023の絶対値・倍率): 未取得。掲載するならOWID/Maddisonから取得。現状は世銀の名目US$(1960-2023)と、OWIDの『1950年から約13倍(2016年頃まで)』のみ",
+  "1900年の世界人口(約16億)",
+  "UN: 2080年代103億人ピーク・2100年102億人は報道経由。UN原典で確認",
+  "MSCI ACWI 年8.8%(1987末-)と構成約2,500社: ファクトシートの最新版で確認",
+  "リーマン-57%、ブラックマンデー-34%、大恐慌-86%(日次基準): 日次データで確認。本資料の月平均計算値は-51%/-27%/-85%",
+  "保有期間別元本割れ率は独自計算(月平均価格+補間配当)。S&P DJI/Morningstar等の公表値で裏取り",
+  "日経平均 2000/2008/2023年末値",
+  "S&P500の10年ごと指数値は月平均(日次終値ではない)。グラフの目的上は十分だが、年末終値が必要なら要確認",
+  "同じ『年率』でも区間で4〜11%台と幅が大きい(2000年〜は名目約6.8%)ので、『7〜10%台』という旧表現はやや強め。『約6〜11%台』『実質で約4〜8%』が妥当"
+ ]
+}
