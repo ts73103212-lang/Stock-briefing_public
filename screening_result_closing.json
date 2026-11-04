@@ -1,6 +1,105 @@
 {
-  "fetched_at": "2026-11-04 12:02 JST",
+  "fetched_at": "2026-11-04 15:35 JST",
   "status": "OK",
-  "total_hits": 1,
-  "stocks": []
+  "total_hits": 13,
+  "stocks": [
+    {
+      "ticker": "5955",
+      "close": 84.0,
+      "change": 9.09,
+      "volume": 3959900,
+      "vol_ratio": 3.0,
+      "turnover_mil": 332.6,
+      "market_cap_bil": 104.8,
+      "rsi": 61.7,
+      "vwap": 82.7,
+      "ema5": 79.7,
+      "ema25": 79.5,
+      "atr": 2.4
+    },
+    {
+      "ticker": "7218",
+      "close": 1252.0,
+      "change": 8.59,
+      "volume": 31500,
+      "vol_ratio": 5.0,
+      "turnover_mil": 39.4,
+      "market_cap_bil": 112.5,
+      "rsi": 77.1,
+      "vwap": 1248.3,
+      "ema5": 1167.8,
+      "ema25": 1129.1,
+      "atr": 34.8
+    },
+    {
+      "ticker": "3202",
+      "close": 133.0,
+      "change": 5.56,
+      "volume": 307700,
+      "vol_ratio": 6.6,
+      "turnover_mil": 40.9,
+      "market_cap_bil": 38.1,
+      "rsi": 67.1,
+      "vwap": 130.7,
+      "ema5": 128.1,
+      "ema25": 127.2,
+      "atr": 2.2
+    },
+    {
+      "ticker": "1967",
+      "close": 2195.0,
+      "change": 4.82,
+      "volume": 55400,
+      "vol_ratio": 3.4,
+      "turnover_mil": 121.6,
+      "market_cap_bil": 468.8,
+      "rsi": 60.9,
+      "vwap": 2170.3,
+      "ema5": 2138.5,
+      "ema25": 2131.5,
+      "atr": 47.5
+    },
+    {
+      "ticker": "6255",
+      "close": 715.0,
+      "change": 4.08,
+      "volume": 1540800,
+      "vol_ratio": 4.1,
+      "turnover_mil": 1101.7,
+      "market_cap_bil": 147.5,
+      "rsi": 55.7,
+      "vwap": 707.3,
+      "ema5": 690.1,
+      "ema25": 685.0,
+      "atr": 36.1
+    },
+    {
+      "ticker": "2124",
+      "close": 1144.0,
+      "change": 3.62,
+      "volume": 943400,
+      "vol_ratio": 2.3,
+      "turnover_mil": 1079.2,
+      "market_cap_bil": 1816.4,
+      "rsi": 68.9,
+      "vwap": 1142.7,
+      "ema5": 1112.7,
+      "ema25": 1083.3,
+      "atr": 27.8
+    },
+    {
+      "ticker": "3491",
+      "close": 1450.0,
+      "change": 3.5,
+      "volume": 784900,
+      "vol_ratio": 1.8,
+      "turnover_mil": 1138.1,
+      "market_cap_bil": 575.1,
+      "rsi": 61.0,
+      "vwap": 1438.7,
+      "ema5": 1406.4,
+      "ema25": 1364.5,
+      "atr": 60.2
+    }
+  ]
 }
