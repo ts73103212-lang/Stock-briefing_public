@@ -14,7 +14,13 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
 from .style import PALETTE, TONE, blank_axes, new_canvas, save_jpeg, style_axes
 
 
-def _fmt_num(v: float) -> str:
+def _is_num(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def _fmt_num(v) -> str:
+    if v is None:
+        return "—"
     if isinstance(v, str):
         return v
     if abs(v) >= 1000:
@@ -112,16 +118,18 @@ def chart_c(spec: dict, out: Path, number: int) -> Path:
     shade = set(spec.get("shade_cols", range(len(cols))))
     ranges = {}
     for j in shade:
-        vals = [r["values"][j] for r in rows if isinstance(r["values"][j], (int, float))]
+        vals = [r["values"][j] for r in rows if _is_num(r["values"][j])]
         ranges[j] = (min(vals), max(vals)) if vals else (0, 1)
 
     def alpha(i, j):
         lo, hi = ranges[j]
         v = rows[i]["values"][j]
+        if not _is_num(v):
+            return 0.0
         return 0.08 + 0.5 * ((v - lo) / (hi - lo) if hi > lo else 0.5)
 
     def cell_color(i, j):
-        if j == 0 or (j - 1) not in shade:
+        if j == 0 or (j - 1) not in shade or not _is_num(rows[i]["values"][j - 1]):
             return PALETTE["paper"]
         a = alpha(i, j - 1)
         r, g, b = (int(PALETTE["navy"][k:k + 2], 16) for k in (1, 3, 5))

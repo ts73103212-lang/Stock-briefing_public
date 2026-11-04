@@ -68,3 +68,10 @@ def test_fonts_are_static_400_700():
         f = TTFont(paths[key])
         assert "fvar" not in f
         assert f["OS/2"].usWeightClass == weight
+
+
+def test_comparison_table_allows_missing_values(tmp_path):
+    spec = {"type": "C", **COMMON, "columns": ["PER", "騰落率"],
+            "rows": [{"name": "赤字社", "values": ["—", 3.0]}, {"name": "B社", "values": [20.0, None]},
+                     {"name": "C社", "values": [10.0, -1.0]}], "shade_cols": [0, 1]}
+    assert Image.open(charts.render(spec, tmp_path / "c.jpg", number=1)).size == (1920, 1080)
