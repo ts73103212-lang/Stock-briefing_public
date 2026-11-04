@@ -1,0 +1,54 @@
+/* 初回有料記事（中間選挙）の納品ページから移植。単一の読みやすい列＋コピー用の固定バー */
+:root{
+  --bg:#FAF8F3; --paper:#FFFFFF; --fg:#1F2328; --muted:#5E6470; --navy:#1E3A5F; --gold:#8A6D12; --goldbg:#FBF3DC; --line:#E5E1D8; --paybg:#F3EEDF; --green:#2E8B57;
+  --ui:"Meiryo UI","Noto Sans JP",system-ui,sans-serif; --display:"Noto Serif JP","Noto Sans JP",serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#14181F;--paper:#1B2029;--fg:#E8E6E1;--muted:#A3A9B4;--navy:#9DB8DD;--gold:#E2C26A;--goldbg:#2A2618;--line:#2E3440;--paybg:#232019;--green:#7CC79B;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181F;--paper:#1B2029;--fg:#E8E6E1;--muted:#A3A9B4;--navy:#9DB8DD;--gold:#E2C26A;--goldbg:#2A2618;--line:#2E3440;--paybg:#232019;--green:#7CC79B;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:16px;line-height:1.9}
+img{max-width:100%}
+.wrap{max-width:720px;margin:0 auto;padding-block:24px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--gold);font-weight:700}
+h1{font-family:var(--display);font-size:clamp(22px,4.5vw,30px);line-height:1.45;color:var(--navy);text-wrap:balance;margin:6px 0 12px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:12px;margin:16px 0}
+.panel h2,.panel h3.ph{font-size:14px;margin:0;color:var(--muted);letter-spacing:.04em}
+.row{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.row p{margin:0;flex:1 1 240px;min-width:0;font-size:14px;line-height:1.7}
+button{font:inherit;font-size:13px;font-weight:700;border:1px solid var(--navy);color:var(--navy);background:transparent;border-radius:6px;padding:6px 12px;cursor:pointer;white-space:nowrap}
+button.primary{background:var(--navy);color:var(--paper)}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;margin-bottom:8px}
+.status{font-size:12px;color:var(--gold);align-self:center}
+.meta{font-size:13px;color:var(--muted);line-height:1.7}
+.notice{font-size:13px;line-height:1.7;background:var(--goldbg);border-left:3px solid var(--gold);padding:8px 12px;border-radius:4px;margin:8px 0}
+article{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px clamp(16px,4vw,36px)}
+article h2{font-size:20px;color:var(--navy);margin:36px 0 8px;line-height:1.5;text-wrap:balance}
+article h3{font-size:17px;margin:24px 0 4px}
+article p{margin:0 0 1em}
+article figure{margin:20px 0}
+article figure img{display:block;width:100%;border-radius:6px;border:1px solid var(--line)}
+article figcaption{font-size:12px;color:var(--gold);font-weight:700;margin-top:4px}
+article ul{padding-left:1.3em;margin:0 0 1em}
+.paywall{margin:32px 0;padding:14px;text-align:center;background:var(--paybg);border:1px dashed var(--gold);border-radius:8px;color:var(--gold);font-weight:700;font-size:14px}
+.note{font-size:13px;color:var(--muted)}
+blockquote{margin:0 0 1em;padding:8px 14px;border-left:3px solid var(--gold);background:var(--goldbg)}
+.xpost{white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.7;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;margin:0;flex:1 1 280px;min-width:0}
+details summary{cursor:pointer;font-weight:700;font-size:14px}
+details ul{font-size:13px;line-height:1.7;padding-left:1.2em}
+details a{color:var(--navy);word-break:break-all}
+/* 日次ページ：一覧と記事カード */
+.toc{display:grid;gap:10px;margin:16px 0;padding:0;list-style:none}
+.toc-item a{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px;color:inherit;text-decoration:none}
+.toc-item img{border-radius:6px;display:block}
+.toc-item b{display:block;color:var(--navy);font-size:15px;line-height:1.5}
+.toc-item span{font-size:13px;color:var(--muted);line-height:1.6}
+.kind{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;padding:1px 8px;border-radius:999px;border:1px solid currentColor;margin-bottom:2px}
+.kind-theme{color:var(--navy)} .kind-stock{color:var(--green)} .kind-paid{color:var(--gold)}
+.card{margin:40px 0;scroll-margin-top:12px}
+.card > h2{font-family:var(--display);font-size:clamp(19px,4vw,24px);line-height:1.5;color:var(--navy);margin:4px 0 8px;text-wrap:balance}
+.hint{font-size:12px;color:var(--muted)}
+.cands{padding-left:1.2em;font-size:14px;line-height:1.7}
+.cands span{color:var(--muted);font-size:13px}
+@media (max-width:420px){.toc-item a{grid-template-columns:88px 1fr}}
