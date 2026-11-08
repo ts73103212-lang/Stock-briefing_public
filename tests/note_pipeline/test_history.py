@@ -30,3 +30,12 @@ def test_meta_tag_escapes_quotes():
     tag = history.meta_tag({"2026-11-04": ['"><script>']})
     assert "<script>" not in tag
     assert history.parse_history(tag) == {"2026-11-04": ['"><script>']}
+
+
+def test_digest_roundtrip_and_expiry():
+    dig = {"2026-10-27": [{"kind": "theme", "title": "古い", "summary": ""}]}
+    out = history.update_digest(dig, date(2026, 11, 4), [{"kind": "stock", "title": "新しい", "summary": "s"}])
+    assert "2026-10-27" not in out  # 8日前
+    tag = history.meta_tag(out, name=history.DIGEST_META)
+    assert history.parse_meta(f"<head>{tag}</head>", history.DIGEST_META) == out
+    assert history.parse_meta("<head></head>", history.DIGEST_META) == {}

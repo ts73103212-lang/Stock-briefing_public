@@ -54,3 +54,15 @@ def test_history_carried(tmp_path):
     assert build.main(["--input", str(FIX / "daily_sample.json"), "--out", str(out), "--prev-page", str(prev)]) == 0
     h = history.parse_history((out / "index.html").read_text(encoding="utf-8"))
     assert h == {"2026-11-02": ["9999"], "2026-11-04": ["1111", "2222"]}
+
+
+def test_digest_embedded_and_carried(tmp_path):
+    prev = tmp_path / "prev.html"
+    prev.write_text("<html><head>" + history.meta_tag(
+        {"2026-11-03": [{"kind": "theme", "title": "前日", "summary": ""}]}, name=history.DIGEST_META)
+        + "</head></html>", encoding="utf-8")
+    out = tmp_path / "out"
+    build.main(["--input", str(FIX / "daily_sample.json"), "--out", str(out), "--prev-page", str(prev)])
+    dig = history.parse_meta((out / "index.html").read_text(encoding="utf-8"), history.DIGEST_META)
+    assert dig["2026-11-03"][0]["title"] == "前日"
+    assert [d["title"] for d in dig["2026-11-04"]] == ["ダミータイトル1-案1", "ダミータイトル2-案1", "ダミータイトル3-案1"]

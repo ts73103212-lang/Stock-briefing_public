@@ -47,10 +47,14 @@ def build(day: dict, out: Path, mode: str, prev_page: Path | None = None) -> lis
         for k, spec in enumerate(a.get("figures", []), 1):
             charts.render(spec, img_dir / n["figs"][k - 1], number=k)
         problems += _check_article(a)
-    hist = history.parse_history(prev_page.read_text(encoding="utf-8")) if prev_page else {}
+    prev_html = prev_page.read_text(encoding="utf-8") if prev_page else ""
+    today = date.fromisoformat(day["date"])
     codes = [c for a in day["articles"] if a["kind"] == "stock" for c in a.get("codes", [])]
-    hist = history.update_history(hist, date.fromisoformat(day["date"]), codes)
-    meta = history.meta_tag(hist) if hist else ""
+    hist = history.update_history(history.parse_history(prev_html), today, codes)
+    items = [{"kind": a["kind"], "title": a["titles"][0], "summary": a.get("summary", "")} for a in day["articles"]]
+    dig = history.update_digest(history.parse_meta(prev_html, history.DIGEST_META), today, items)
+    meta = "\n".join(t for t in (history.meta_tag(hist) if hist else "",
+                                  history.meta_tag(dig, name=history.DIGEST_META) if dig else "") if t)
     (out / "index.html").write_text(page.render(day, mode, names, meta), encoding="utf-8")
     return problems
 

@@ -11,20 +11,31 @@ import re
 from datetime import date, timedelta
 
 HISTORY_META = "note-pipeline:history"
-_META_RE = re.compile(r'<meta\s+name="' + re.escape(HISTORY_META) + r'"\s+content="([^"]*)"\s*/?>')
+DIGEST_META = "note-pipeline:digest"  # 直近7日の記事一覧（週末の有料記事のネタ選び用）
 
 
-def parse_history(page_html: str) -> dict[str, list[str]]:
-    m = _META_RE.search(page_html or "")
+def parse_meta(page_html: str, name: str) -> dict:
+    m = re.search(r'<meta\s+name="' + re.escape(name) + r'"\s+content="([^"]*)"\s*/?>', page_html or "")
     if not m:
         return {}
     try:
         data = json.loads(html.unescape(m.group(1)))
     except ValueError:
         return {}
-    if not isinstance(data, dict):
-        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def parse_history(page_html: str) -> dict[str, list[str]]:
+    data = parse_meta(page_html, HISTORY_META)
     return {str(k): [str(c) for c in v] for k, v in data.items() if isinstance(v, list)}
+
+
+def update_digest(dig: dict, today: date, items: list[dict], keep_days: int = 7) -> dict:
+    cutoff = today - timedelta(days=keep_days)
+    out = {k: v for k, v in dig.items() if date.fromisoformat(k) > cutoff}
+    if items:
+        out[today.isoformat()] = items
+    return dict(sorted(out.items()))
 
 
 def update_history(hist: dict[str, list[str]], today: date, codes: list[str],
@@ -42,6 +53,6 @@ def recent_codes(hist: dict[str, list[str]], today: date, days: int = 14) -> set
     return {c for k, v in hist.items() if cutoff <= date.fromisoformat(k) <= today for c in v}
 
 
-def meta_tag(hist: dict[str, list[str]]) -> str:
+def meta_tag(hist: dict, name: str = HISTORY_META) -> str:
     payload = json.dumps(hist, ensure_ascii=False, sort_keys=True)
-    return f'<meta name="{HISTORY_META}" content="{html.escape(payload, quote=True)}">'
+    return f'<meta name="{name}" content="{html.escape(payload, quote=True)}">'
