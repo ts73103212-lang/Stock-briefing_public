@@ -16,7 +16,14 @@ note `aicorgi_frank17` / X の記事を作るチームの共通ルール。各�
 - 確認できない数字は「未確認」と書いて記事に使わない。銘柄の材料が裏付けできなければ、その銘柄は使わない。
 - 日経平均の終値は、引けJSON（15:35取得）より**報道の大引け値を優先**し、差異があれば出典欄に記す。
 - 引けJSONが古い・取得失敗のときは Web 検索で補完し、その値を使った図に「Web検索値」と明記する（spec の `"web_search": true`）。
-- Yahoo Finance は環境のネットワーク設定で拒否・制限されることがある。取れなければ株探・日経・会社IR・TDnet 等の Web 検索で補う。
+
+## 2a. Web の取り方（クラウド環境の制約）
+
+- **WebFetch はこの環境のプロキシを通らず、名前解決に失敗することがある。** ページ本文は Bash の `curl -s -m 20 <URL>` で取得する（User-Agent の偽装はしない）。PDF は `curl -s -o file.pdf <URL>` で保存して `pdftotext -layout file.pdf -` で読む。
+- 本文を読める主なサイト（環境の許可リスト）: TDnet `www.release.tdnet.info`（決算短信・業績修正のPDF。一覧は `/inbs/I_list_001_YYYYMMDD.html`、続きは `_002`…）、`www.jpx.co.jp`、`www.nikkei.com`、`www.jiji.com`、`www3.nhk.or.jp`、`jp.reuters.com`、`minkabu.jp`、`finance.yahoo.co.jp`、`www.traders.co.jp`。
+- **サイト側が自動アクセスを拒否するもの**（403・429・ブラウザ確認）: 株探 `kabutan.jp`、IR BANK、stooq、Yahoo Finance API。回避しない。WebSearch の要約で見出しを拾うのは可、数字は上の一次情報で確認する。
+- 会社IRサイトは許可リストにないことが多い。決算資料は TDnet で取る。
+- 個別株の6か月の日次株価が取れないときは、確認できた点データで型Aを描くか、型Aをやめて型D（指標カード）にする。
 
 ## 3. 文体
 
