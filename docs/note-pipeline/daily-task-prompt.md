@@ -57,7 +57,7 @@ python -c "from datetime import date; from note_pipeline.market import is_tse_cl
 
 ## フェーズ5: 図（並列、記事ごと）
 
-- `note-viz`（記事id）を記事の数だけ。続けて仮ビルド:
+- `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。続けて仮ビルド:
 
 ```bash
 python -m note_pipeline.assemble --work $WORK --out $WORK/day.json

@@ -43,7 +43,7 @@ def build(day: dict, out: Path, mode: str, prev_page: Path | None = None) -> lis
         n = names[str(a["id"])]
         h = a.get("header", {})
         header.render_header(a["kind"], a.get("label", ""), h.get("title") or a["titles"][0], h.get("lead", ""),
-                             img_dir / n["header"])
+                             img_dir / n["header"], callouts=h.get("callouts"))
         for k, spec in enumerate(a.get("figures", []), 1):
             charts.render(spec, img_dir / n["figs"][k - 1], number=k)
         problems += _check_article(a)

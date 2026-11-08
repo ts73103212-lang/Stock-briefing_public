@@ -76,3 +76,14 @@ def test_figs_cli_renders_each_spec(tmp_path):
     assert figs.main(["--spec", str(spec), "--out", str(tmp_path / "out")]) == 0
     assert sorted(p.name for p in (tmp_path / "out").iterdir()) == ["fig1.jpg", "fig2.jpg"]
     assert Image.open(tmp_path / "out" / "fig1.jpg").size == (1920, 1080)
+
+
+def test_header_proposal_merged(tmp_path):
+    w = _work(tmp_path)
+    (w / "figs" / "a1_header.json").write_text(json.dumps(
+        {"concept": "構図案", "prompt": "a corgi ...", "callouts": ["−3,643円"]}, ensure_ascii=False), encoding="utf-8")
+    day = assemble.assemble(w)
+    a1 = day["articles"][0]
+    assert a1["header_proposal"]["prompt"] == "a corgi ..."
+    assert a1["header"]["callouts"] == ["−3,643円"]
+    assert "header_proposal" not in day["articles"][1]

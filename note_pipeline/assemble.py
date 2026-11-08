@@ -5,6 +5,7 @@
 WORK/plan.json            PM のネタ決定（date, mode, price, meta, articles[{id, kind, …}], candidates, notes）
 WORK/drafts/a{id}.json    証券アナリストの記事（page.py の記事 dict。figure_requests は除去する）
 WORK/figs/a{id}.json      視覚化スペシャリストの図 spec の配列
+WORK/figs/a{id}_header.json 見出し画像の提案 {concept, prompt, callouts}（任意）
 WORK/review/verdict.json  PM の最終判定 {"a1": "approve" | "drop"}（任意）
 """
 from __future__ import annotations
@@ -48,6 +49,11 @@ def assemble(work: Path) -> dict:
         draft["id"] = aid
         draft.setdefault("kind", p.get("kind"))
         draft["figures"] = _load(work / "figs" / f"a{aid}.json", []) or []
+        proposal = _load(work / "figs" / f"a{aid}_header.json")
+        if proposal:
+            draft["header_proposal"] = {k: proposal[k] for k in ("concept", "prompt") if k in proposal}
+            if proposal.get("callouts"):
+                draft.setdefault("header", {})["callouts"] = proposal["callouts"]
         articles.append(draft)
     day["articles"] = articles
     day["candidates"] = plan.get("candidates", [])

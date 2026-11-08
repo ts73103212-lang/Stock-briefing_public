@@ -73,3 +73,12 @@ def test_history_meta_embedded():
     day = load("daily_sample.json")
     html = page.render_daily(day, names(day, "daily"), '<meta name="note-pipeline:history" content="{}">')
     assert 'name="note-pipeline:history"' in html.split("</head>")[0]
+
+
+def test_header_proposal_panel_escaped():
+    day = load("daily_sample.json")
+    day["articles"][0]["header_proposal"] = {"concept": "構図<案>", "prompt": 'prompt "x" & y'}
+    html = page.render_daily(day, names(day, "daily"), "")
+    assert "見出し画像の提案" in html
+    assert "構図&lt;案&gt;" in html and "prompt &quot;x&quot; &amp; y" in html
+    assert html.count("見出し画像の提案") == 1

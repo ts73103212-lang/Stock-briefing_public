@@ -52,14 +52,31 @@ def test_web_search_note_in_source():
     assert "Web検索値" not in style.source_text("出典：株探", web_search=False)
 
 
-@pytest.mark.parametrize("kind,rgb", [("theme", (0x1E, 0x3A, 0x5F)), ("stock", (0x2E, 0x8B, 0x57)),
-                                      ("paid", (0xE6, 0xC4, 0x6E))])
-def test_header_sizes_and_bg(kind, rgb, tmp_path):
-    out = header.render_header(kind, "テーマ", "見出しのテスト", "リード文", tmp_path / f"h_{kind}.jpg")
+@pytest.mark.parametrize("kind", ["theme", "stock", "paid"])
+def test_header_sizes_and_dark_bg(kind, tmp_path):
+    out = header.render_header(kind, "テーマ", "見出しのテスト", "リード文", tmp_path / f"h_{kind}.jpg",
+                               callouts=["+22%", "営業益 26億円"])
     im = Image.open(out).convert("RGB")
     assert im.size == (1920, 1005)
-    px = im.getpixel((5, 5))
-    assert all(abs(a - b) < 40 for a, b in zip(px, rgb)), px
+    r, g, b = im.getpixel((1900, 990))
+    assert (r + g + b) / 3 < 110, (r, g, b)  # 暗い背景（インパクト重視）
+
+
+def test_header_kinds_differ(tmp_path):
+    px = {k: Image.open(header.render_header(k, "", "見出し", "", tmp_path / f"{k}.jpg")).convert("RGB").getpixel((1900, 20))
+          for k in ("theme", "stock", "paid")}
+    assert len(set(px.values())) == 3
+
+
+def test_figures_have_no_logo(tmp_path):
+    spec = {"type": "D", **COMMON, **SPECS["D"]}
+    im = Image.open(charts.render(spec, tmp_path / "d.jpg", number=1)).convert("RGB")
+    r, g, b = im.getpixel((1860, 1040))
+    assert min(r, g, b) > 235, (r, g, b)  # 右下は背景のまま（ロゴを貼らない）
+
+
+def test_title_is_large_for_phone():
+    assert style.SIZES["title"] >= 34 and style.SIZES["tick"] >= 17 and style.SIZES["label"] >= 20
 
 
 def test_fonts_are_static_400_700():
@@ -114,3 +131,24 @@ def test_volume_tick_format():
     assert charts.fmt_volume(2_000_000) == "200万"
     assert charts.fmt_volume(1.2e8) == "1.2億"
     assert charts.fmt_volume(0) == "0"
+
+
+def test_header_wrap_keeps_numbers_together():
+    from PIL import ImageDraw, ImageFont
+    f = ImageFont.truetype(str(fonts.ensure_fonts()["bold"]), 104)
+    d = ImageDraw.Draw(Image.new("RGB", (10, 10)))
+    for width in range(500, 1100, 17):
+        lines = header._wrap(d, "日経平均3,643円安の理由とSOX指数", f, width)
+        assert not any(ln.endswith(("3", "3,", "3,6", "3,64")) and nxt[:1].isdigit()
+                       for ln, nxt in zip(lines, lines[1:])), lines
+
+
+def test_table_font_fits_cell():
+    size = charts.fit_fontsize("終値前日比(%)", col_w=0.2, base=20)
+    assert size < 20
+    assert charts.fit_fontsize("A社", col_w=0.2, base=20) == 20
+
+
+def test_header_wrap_keeps_unit_with_number():
+    toks = header._TOKEN_RE.findall("日経平均3,643円安")
+    assert "3,643円" in toks

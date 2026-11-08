@@ -79,6 +79,15 @@ def _article_block(a: dict, names: dict, heading_tag: str = "h2") -> str:
         else f"<li>{_e(s['label'])}</li>" for s in a.get("sources", []))
     notes = "\n".join(f"<li>{_e(n)}</li>" for n in a.get("notes", []))
     hdr_alt = _e(f"見出し画像：{a.get('header', {}).get('title', '')}")
+    prop = a.get("header_proposal") or {}
+    proposal = ""
+    if prop.get("prompt"):
+        proposal = f"""
+  <section class="panel">
+    <{heading_tag} class="ph">見出し画像の提案（画像生成AI用）</{heading_tag}>
+    <p class="note">{_e(prop.get('concept', ''))}</p>
+    <div class="row"><pre class="xpost" id="hp{aid}">{_e(prop['prompt'])}</pre><button data-copy="hp{aid}">コピー</button></div>
+  </section>"""
     return f"""
   <section class="panel">
     <{heading_tag} class="ph">タイトル案</{heading_tag}>
@@ -87,8 +96,8 @@ def _article_block(a: dict, names: dict, heading_tag: str = "h2") -> str:
   <section class="panel">
     <{heading_tag} class="ph">見出し画像（note推奨 1280×670）</{heading_tag}>
     <img src="img/{names['header']}" alt="{hdr_alt}">
-    <p class="hint">画像は長押し（PCは右クリック）で保存できます。</p>
-  </section>
+    <p class="hint">仮の見出し画像です。長押し（PCは右クリック）で保存できます。</p>
+  </section>{proposal}
   <div class="bar">
     <button class="primary" data-copy-body="body{aid}" data-status="st{aid}">本文をコピー（見出し・太字つき）</button>
     <button data-copy-plain="body{aid}" data-status="st{aid}">プレーンテキストでコピー</button>
