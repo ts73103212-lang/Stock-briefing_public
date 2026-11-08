@@ -33,6 +33,14 @@ def _canvas(spec: dict, number: int):
                       number, web_search=bool(spec.get("web_search")))
 
 
+def fmt_volume(v: float) -> str:
+    if v >= 1e8:
+        return f"{v / 1e8:.1f}億"
+    if v >= 1e4:
+        return f"{v / 1e4:,.0f}万"
+    return f"{v:,.0f}"
+
+
 def _date_axis(dates: list[datetime]):
     """期間に応じて重複しない日付目盛りを返す（月が重複して並ぶのを防ぐ）。"""
     span = (max(dates) - min(dates)).days
@@ -74,8 +82,10 @@ def chart_a(spec: dict, out: Path, number: int) -> Path:
     vd = [(d, v, c) for d, v, c in zip(dates, volume, colors) if v is not None]
     if vd:
         vol.bar([d for d, _, _ in vd], [v for _, v, _ in vd], color=[c for _, _, c in vd], width=width)
-    vol.set_yticks([])
-    vol.text(0.0, 1.02, "出来高", transform=vol.transAxes, fontsize=10, color=PALETTE["muted"])
+    vol.yaxis.set_major_locator(MaxNLocator(nbins=2, min_n_ticks=2))
+    vol.yaxis.set_major_formatter(lambda v, _: fmt_volume(v))
+    vol.tick_params(axis="y", labelsize=9)
+    vol.text(0.0, 1.02, "出来高（株）", transform=vol.transAxes, fontsize=10, color=PALETTE["muted"])
     loc, fmt = _date_axis(dates)
     vol.xaxis.set_major_locator(loc)
     vol.xaxis.set_major_formatter(fmt)

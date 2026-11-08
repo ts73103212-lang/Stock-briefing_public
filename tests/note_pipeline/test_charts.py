@@ -107,3 +107,10 @@ def test_header_wrap_prefers_break_after_punctuation():
     d = ImageDraw.Draw(Image.new("RGB", (10, 10)))
     lines = header._balanced_wrap(d, "日経平均3,643円安の理由、中間選挙とデータセンター", f, 1002)
     assert lines[0].endswith("、")
+
+
+def test_volume_tick_format():
+    assert charts.fmt_volume(500000) == "50万"
+    assert charts.fmt_volume(2_000_000) == "200万"
+    assert charts.fmt_volume(1.2e8) == "1.2億"
+    assert charts.fmt_volume(0) == "0"
