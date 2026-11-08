@@ -30,7 +30,7 @@ PALETTE = {
 TONE = {"up": PALETTE["up"], "down": PALETTE["down"], "navy": PALETTE["navy"], "gold": PALETTE["gold"]}
 
 WIDTH_IN, HEIGHT_IN, DPI = 12.8, 7.2, 150  # 1280×720 を 1.5 倍（1920×1080）で書き出す
-BODY_RECT = (0.06, 0.15, 0.88, 0.64)  # 本体領域（figure 座標）
+BODY_RECT = (0.06, 0.17, 0.86, 0.62)  # 本体領域（figure 座標）
 BRAND_DIR = Path(__file__).resolve().parent.parent / "assets" / "brand"
 JPEG_QUALITY = 90
 

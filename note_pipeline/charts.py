@@ -33,6 +33,19 @@ def _canvas(spec: dict, number: int):
                       number, web_search=bool(spec.get("web_search")))
 
 
+def _date_axis(dates: list[datetime]):
+    """期間に応じて重複しない日付目盛りを返す（月が重複して並ぶのを防ぐ）。"""
+    span = (max(dates) - min(dates)).days
+    if span > 60:
+        return mdates.MonthLocator(interval=1 if span <= 240 else 2), mdates.DateFormatter("%y/%m")
+    return mdates.DayLocator(interval=max(1, span // 6)), mdates.DateFormatter("%m/%d")
+
+
+def date_tick_labels(dates: list[datetime]) -> list[str]:
+    loc, fmt = _date_axis(dates)
+    return [fmt(t) for t in loc.tick_values(min(dates), max(dates))]
+
+
 def chart_a(spec: dict, out: Path, number: int) -> Path:
     """株価（終値線）＋出来高、重要日に注釈。"""
     fig, ax = _canvas(spec, number)
@@ -58,10 +71,15 @@ def chart_a(spec: dict, out: Path, number: int) -> Path:
                            ha="center", fontsize=12, fontweight="bold", color=PALETTE["gold_text"],
                            arrowprops={"arrowstyle": "-", "color": PALETTE["gold"], "lw": 1.5})
             price.plot([d], [close[i]], "o", color=PALETTE["gold"], markersize=8)
-    vol.bar(dates, volume, color=colors, width=width)
+    vd = [(d, v, c) for d, v, c in zip(dates, volume, colors) if v is not None]
+    if vd:
+        vol.bar([d for d, _, _ in vd], [v for _, v, _ in vd], color=[c for _, _, c in vd], width=width)
     vol.set_yticks([])
     vol.text(0.0, 1.02, "出来高", transform=vol.transAxes, fontsize=10, color=PALETTE["muted"])
-    vol.xaxis.set_major_formatter(mdates.DateFormatter("%y/%m"))
+    loc, fmt = _date_axis(dates)
+    vol.xaxis.set_major_locator(loc)
+    vol.xaxis.set_major_formatter(fmt)
+    price.margins(x=0.04)
     return save_jpeg(fig, out)
 
 
@@ -175,13 +193,15 @@ def chart_d(spec: dict, out: Path, number: int) -> Path:
 def chart_e(spec: dict, out: Path, number: int) -> Path:
     """横棒の順位グラフ（騰落率）。highlight の1本だけゴールド。"""
     fig, ax = _canvas(spec, number)
+    x0, y0, w, h = ax.get_position().bounds
+    ax.set_position((x0 + 0.09, y0, w - 0.09, h))  # 業種名などの長いラベル用に左を空ける
     pairs = sorted(zip(spec["labels"], spec["values"]), key=lambda p: p[1])
     labels, values = [p[0] for p in pairs], [p[1] for p in pairs]
     hl = spec.get("highlight")
     colors = [PALETTE["gold"] if lab == hl else (PALETTE["up"] if v >= 0 else PALETTE["down"])
               for lab, v in zip(labels, values)]
     ax.barh(range(len(values)), values, color=colors, height=0.62)
-    ax.set_yticks(range(len(labels)), labels, fontsize=12, color=PALETTE["fg"])
+    ax.set_yticks(range(len(labels)), labels, fontsize=12 if len(labels) <= 12 else 10, color=PALETTE["fg"])
     ax.grid(axis="y", visible=False)
     ax.grid(axis="x", color=PALETTE["grid"])
     ax.axvline(0, color="#8A8578", lw=1)

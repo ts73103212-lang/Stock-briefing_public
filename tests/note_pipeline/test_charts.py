@@ -75,3 +75,17 @@ def test_comparison_table_allows_missing_values(tmp_path):
             "rows": [{"name": "赤字社", "values": ["—", 3.0]}, {"name": "B社", "values": [20.0, None]},
                      {"name": "C社", "values": [10.0, -1.0]}], "shade_cols": [0, 1]}
     assert Image.open(charts.render(spec, tmp_path / "c.jpg", number=1)).size == (1920, 1080)
+
+
+def test_price_chart_allows_missing_volume_and_sparse_dates(tmp_path):
+    spec = {"type": "A", **COMMON, "dates": ["2026-07-17", "2026-08-06", "2026-09-02", "2026-11-05", "2026-11-06"],
+            "close": [1500, 1800, 1850, 1919, 2076], "volume": [None, 120000, None, None, 457900],
+            "annotations": [{"date": "2026-11-06", "text": "上方修正"}]}
+    assert Image.open(charts.render(spec, tmp_path / "a.jpg", number=1)).size == (1920, 1080)
+
+
+def test_month_labels_not_duplicated():
+    import matplotlib.dates as mdates
+    from datetime import datetime
+    labels = charts.date_tick_labels([datetime(2026, 7, 17), datetime(2026, 11, 6)])
+    assert len(labels) == len(set(labels))
