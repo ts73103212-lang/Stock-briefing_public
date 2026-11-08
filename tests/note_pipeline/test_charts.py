@@ -89,3 +89,21 @@ def test_month_labels_not_duplicated():
     from datetime import datetime
     labels = charts.date_tick_labels([datetime(2026, 7, 17), datetime(2026, 11, 6)])
     assert len(labels) == len(set(labels))
+
+
+def test_header_wrap_no_leading_punctuation():
+    from PIL import ImageDraw, ImageFont
+    f = ImageFont.truetype(str(fonts.ensure_fonts()["bold"]), 84)
+    d = ImageDraw.Draw(Image.new("RGB", (10, 10)))
+    text = "全面安の日にストップ高、決算とガイダンスが示した次の論点は何か"
+    for width in range(600, 1000, 13):
+        lines = header._wrap(d, text, f, width)
+        assert all(ln[:1] not in header.NO_LINE_START for ln in lines[1:]), lines
+
+
+def test_header_wrap_prefers_break_after_punctuation():
+    from PIL import ImageDraw, ImageFont
+    f = ImageFont.truetype(str(fonts.ensure_fonts()["bold"]), 84)
+    d = ImageDraw.Draw(Image.new("RGB", (10, 10)))
+    lines = header._balanced_wrap(d, "日経平均3,643円安の理由、中間選挙とデータセンター", f, 1002)
+    assert lines[0].endswith("、")

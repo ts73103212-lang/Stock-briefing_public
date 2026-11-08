@@ -21,9 +21,10 @@ note `aicorgi_frank17` / X の記事を作るチームの共通ルール。各�
 
 - **WebFetch はこの環境のプロキシを通らず、名前解決に失敗することがある。** ページ本文は Bash の `curl -s -m 20 <URL>` で取得する（User-Agent の偽装はしない）。PDF は `curl -s -o file.pdf <URL>` で保存して `pdftotext -layout file.pdf -` で読む。
 - 本文を読める主なサイト（環境の許可リスト）: TDnet `www.release.tdnet.info`（決算短信・業績修正のPDF。一覧は `/inbs/I_list_001_YYYYMMDD.html`、続きは `_002`…）、`www.jpx.co.jp`、`www.nikkei.com`、`www.jiji.com`、`www3.nhk.or.jp`、`jp.reuters.com`、`minkabu.jp`、`finance.yahoo.co.jp`、`www.traders.co.jp`。
-- **サイト側が自動アクセスを拒否するもの**（403・429・ブラウザ確認）: 株探 `kabutan.jp`、IR BANK、stooq、Yahoo Finance API。回避しない。WebSearch の要約で見出しを拾うのは可、数字は上の一次情報で確認する。
+- **個別株の日足は Yahoo!ファイナンスの時系列ページで取れる**: `curl -s -m 20 "https://finance.yahoo.co.jp/quote/{コード}.T/history?page=N"`（1ページ20営業日、N=1〜7で約6か月）。型Aの図と出来高倍率の計算はこれを使う（引けJSONの vol_ratio は算出期間が不明なので記事に使わない）。
+- **サイト側が自動アクセスを拒否するもの**（403・429・ブラウザ確認）: 株探 `kabutan.jp`、IR BANK、stooq、Yahoo Finance API（query1/query2）。回避しない。WebSearch の要約で見出しを拾うのは可、数字は上の一次情報で確認する。
 - 会社IRサイトは許可リストにないことが多い。決算資料は TDnet で取る。
-- 個別株の6か月の日次株価が取れないときは、確認できた点データで型Aを描くか、型Aをやめて型D（指標カード）にする。
+- それでも日足が取れないときは、確認できた点データで型Aを描くか、型D（指標カード）にする。
 
 ## 3. 文体
 
@@ -66,3 +67,4 @@ note `aicorgi_frank17` / X の記事を作るチームの共通ルール。各�
 - 使うタグ: `<h2>` `<h3>` `<p>` `<b>` `<ul><li>` `<blockquote>`。クラスや style は付けない。
 - 図の位置に `<!--fig:1-->`（番号は記事内の通し番号）。有料記事は有料エリアの境界に `<!--paywall-->`。
 - 本文の中で［図①］などを手書きしない（自動で入る）。
+- 見出し画像の文字（`header.title`）は自動で折り返すが、語の途中で切れるのを避けたいときは `\n` で改行位置を指定してよい。

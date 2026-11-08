@@ -26,12 +26,17 @@ def _font(weight: str, size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(str(fonts.ensure_fonts()[weight]), size)
 
 
+NO_LINE_START = set("、。，．,.）)」』】！？!?ー…・ぁぃぅぇぉっゃゅょァィゥェォッャュョ")
+BREAK_AFTER = set("、。，,）)」』】！？!? ─—")
+
+
 def _wrap(draw: ImageDraw.ImageDraw, text: str, font, max_w: int) -> list[str]:
+    """文字単位で折り返す。行頭禁則（句読点・小書き文字）は前の行に追い出す。"""
     lines: list[str] = []
     for para in text.split("\n"):
         line = ""
         for ch in para:
-            if draw.textlength(line + ch, font=font) > max_w and line:
+            if draw.textlength(line + ch, font=font) > max_w and line and ch not in NO_LINE_START:
                 lines.append(line)
                 line = ch
             else:
@@ -40,17 +45,26 @@ def _wrap(draw: ImageDraw.ImageDraw, text: str, font, max_w: int) -> list[str]:
     return lines
 
 
+def _break_score(lines: list[str]) -> int:
+    """句読点の直後で改行している行の数（多いほど自然）。"""
+    return sum(1 for ln in lines[:-1] if ln and ln[-1] in BREAK_AFTER)
+
+
 def _balanced_wrap(draw: ImageDraw.ImageDraw, text: str, font, max_w: int) -> list[str]:
-    """行数を増やさない範囲で幅を詰め、最終行が1〜2文字だけになるのを防ぐ。"""
+    """行数を増やさない幅の中から、句読点の後で切れる・最終行が短すぎない折り返しを選ぶ。"""
     lines = _wrap(draw, text, font, max_w)
-    n, w = len(lines), max_w
-    best = lines
-    while w > max_w * 0.5:
-        w -= 20
+    n = len(lines)
+    best, best_key = lines, None
+    w = max_w
+    while w > max_w * 0.45:
         cand = _wrap(draw, text, font, w)
         if len(cand) > n:
             break
-        best = cand
+        widths = [draw.textlength(c, font=font) for c in cand]
+        key = (_break_score(cand), min(widths) / max(widths) if max(widths) else 0)
+        if best_key is None or key > best_key:
+            best, best_key = cand, key
+        w -= 12
     return best
 
 
