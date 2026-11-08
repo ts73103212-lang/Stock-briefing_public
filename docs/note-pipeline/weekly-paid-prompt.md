@@ -14,7 +14,7 @@
 
 - 日次プロンプトのフェーズ0のうち、コード取得・pip install・ディレクトリ作成・引けJSONのコピーを行う（休場日判定はしない）。
 - Artifact で `<DELIVERY_URL>` を read し、`$WORK/inputs/prev.html` に保存。今週の記事一覧を取り出す:
-  `python -c "import json,sys; from note_pipeline.history import parse_meta, DIGEST_META; json.dump(parse_meta(open(sys.argv[1]).read(), DIGEST_META), sys.stdout, ensure_ascii=False, indent=1)" $WORK/inputs/prev.html > $WORK/inputs/digest.json`
+  `.venv/bin/python -c "import json,sys; from note_pipeline.history import parse_meta, DIGEST_META; json.dump(parse_meta(open(sys.argv[1]).read(), DIGEST_META), sys.stdout, ensure_ascii=False, indent=1)" $WORK/inputs/prev.html > $WORK/inputs/digest.json`
 - 今週のメルマガ（話題の語句・銘柄名だけ）を `$WORK/inputs/mail.md` に。
 
 ## フェーズ1: ネタ決定
@@ -36,8 +36,8 @@
 ## フェーズ5: 納品
 
 ```bash
-python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
-python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --mode paid
+.venv/bin/python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
+.venv/bin/python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --mode paid
 ```
 
 - Artifact で `$WORK/out/index.html` と `img/*.jpg`（`files`）を**新規に** publish する（`url` は付けない）。`icon` は "article"。

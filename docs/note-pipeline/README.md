@@ -13,8 +13,8 @@
 ## セットアップ
 
 ```bash
-pip install -r requirements-note.txt
-python -m pytest tests/note_pipeline -q
+python3 -m venv .venv && .venv/bin/python -m pip install -r requirements-note.txt  # OS の Pillow との衝突を避けるため venv を使う
+.venv/bin/python -m pip install pytest && .venv/bin/python -m pytest tests/note_pipeline -q
 ```
 
 初回実行時に Noto Sans JP の可変フォントを GitHub（google/fonts）から取得し、Regular(400)/Bold(700) の静的フォントを `~/.cache/note_pipeline/fonts` に作ります（matplotlib が可変フォントを細字で描くため）。
@@ -22,7 +22,7 @@ python -m pytest tests/note_pipeline -q
 ## 使い方
 
 ```bash
-python -m note_pipeline.build --input day.json --out out/ [--mode daily|paid] [--prev-page prev.html]
+.venv/bin/python -m note_pipeline.build --input day.json --out out/ [--mode daily|paid] [--prev-page prev.html]
 ```
 
 - `out/index.html` と `out/img/*.jpg`（JPEG 品質90）ができる。日次は `a{記事id}_header.jpg` / `a{記事id}_fig{n}.jpg`、有料は `header.jpg` / `fig{n}.jpg`。
@@ -32,8 +32,8 @@ python -m note_pipeline.build --input day.json --out out/ [--mode daily|paid] [-
 ### サブエージェントの成果物をまとめる
 
 ```bash
-python -m note_pipeline.figs --spec WORK/figs/a1.json --out WORK/figs/a1/     # 視覚化担当の確認用
-python -m note_pipeline.assemble --work WORK --out WORK/day.json             # plan.json + drafts + figs + verdict → day.json
+.venv/bin/python -m note_pipeline.figs --spec WORK/figs/a1.json --out WORK/figs/a1/     # 視覚化担当の確認用
+.venv/bin/python -m note_pipeline.assemble --work WORK --out WORK/day.json             # plan.json + drafts + figs + verdict → day.json
 ```
 
 納品ページには銘柄履歴（14日）と今週の記事一覧（`note-pipeline:digest`、7日）が埋め込まれ、翌日・週末のタスクが読み戻します。

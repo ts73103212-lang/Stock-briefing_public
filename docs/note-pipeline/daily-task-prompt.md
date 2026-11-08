@@ -21,15 +21,15 @@
 ```bash
 # 定期タスクに付けたリポジトリ（Stock-briefing_public）の中で作業する。自分で clone はしない
 [ -d note_pipeline ] || { git fetch -q origin claude/sweet-brown-hyew3j && git checkout -q origin/claude/sweet-brown-hyew3j -- note_pipeline .claude docs/note-pipeline docs/superpowers assets requirements-note.txt; }
-python -m pip install -q -r requirements-note.txt
-python -c "from datetime import date; from note_pipeline.market import is_tse_closed; print(is_tse_closed(date.today()))"
+python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note.txt
+.venv/bin/python -c "from datetime import date; from note_pipeline.market import is_tse_closed; print(is_tse_closed(date.today()))"
 ```
 
 - `True` なら何もせず終了（通知もしない）。
 - `mkdir -p $WORK/{inputs,research,deep,drafts,figs,review,out}`、引けJSON3つを `$WORK/inputs/` にコピー。
-- 鮮度: `python -c "import json,sys; from datetime import date; from pathlib import Path; from note_pipeline.market import check_closing_freshness as c; json.dump(c(Path('.'), date.today()), sys.stdout)" > $WORK/inputs/status.json`
+- 鮮度: `.venv/bin/python -c "import json,sys; from datetime import date; from pathlib import Path; from note_pipeline.market import check_closing_freshness as c; json.dump(c(Path('.'), date.today()), sys.stdout)" > $WORK/inputs/status.json`
 - 前回ページ: Artifact ツールで `<DELIVERY_URL>` を `action: read`。保存された HTML を `$WORK/inputs/prev.html` にコピー。
-  - `python -c "import sys; from datetime import date; from note_pipeline.history import parse_history, recent_codes; print('\n'.join(sorted(recent_codes(parse_history(open(sys.argv[1]).read()), date.today()))))" $WORK/inputs/prev.html > $WORK/inputs/recent_codes.txt`
+  - `.venv/bin/python -c "import sys; from datetime import date; from note_pipeline.history import parse_history, recent_codes; print('\n'.join(sorted(recent_codes(parse_history(open(sys.argv[1]).read()), date.today()))))" $WORK/inputs/prev.html > $WORK/inputs/recent_codes.txt`
 - メール（Gmail）:
   - 新天地メルマガ（`from:mailmag@mag2premium.com`）直近3〜4通（当日の東京版は夜の配信なので、16:15 時点で届いているのは前日の東京版と前夜のNY版まで）。HTML の青字・赤字の強調箇所から**話題の語句・銘柄名だけ**を `$WORK/inputs/mail.md` に箇条書き（本文の文章は書き写さない）。未着なら「未着」と書く。
   - 当日の「【今日の相場振り返り】」メールの要点を `$WORK/inputs/review_mail.md` に。
@@ -61,8 +61,8 @@ python -c "from datetime import date; from note_pipeline.market import is_tse_cl
 - `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。続けて仮ビルド:
 
 ```bash
-python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
-python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --prev-page $WORK/inputs/prev.html 2> $WORK/build_warnings.txt
+.venv/bin/python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
+.venv/bin/python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --prev-page $WORK/inputs/prev.html 2> $WORK/build_warnings.txt
 ```
 
 ## フェーズ6: レビュー
@@ -77,8 +77,8 @@ python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --prev-page
 ## フェーズ8: 納品（〜17:28）
 
 ```bash
-python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
-python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --prev-page $WORK/inputs/prev.html
+.venv/bin/python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
+.venv/bin/python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --prev-page $WORK/inputs/prev.html
 ```
 
 - 終了コード 2 の警告が残っていても、PM が承認済みなら納品してよい（警告は通知に書かない）。

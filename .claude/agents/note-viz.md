@@ -11,7 +11,7 @@ model: sonnet
 入力: `WORK/drafts/a{id}.json` の `figure_requests`、そこで参照されている `WORK/deep/` のデータ
 1. 依頼ごとに spec を作る（共通キー: type, title, subtitle, source, web_search）。`title` は結論を一言で。`subtitle` は対象期間や日付。`source` は「出典：…」
 2. 配列にして `WORK/figs/a{id}.json` に保存（配列の順番＝図番号）
-3. 描画: `python -m note_pipeline.figs --spec WORK/figs/a{id}.json --out WORK/figs/a{id}/`
+3. 描画（リポジトリのルートで実行）: `.venv/bin/python -m note_pipeline.figs --spec WORK/figs/a{id}.json --out WORK/figs/a{id}/`
 4. 生成された画像を**すべて Read で見て**、文字の重なり・はみ出し・桁区切り・単位・色（ゴールドは強調1点のみ、上昇=緑・下落=赤）を確認し、問題があれば spec を直して描き直す
 5. データが足りない依頼は、作れる範囲の別の型に変えるか、作らずに理由を書く
 
