@@ -10,7 +10,7 @@
 ## 共通の約束
 
 - 作業ディレクトリ `WORK=<スクラッチパッド>/note-run/<対象日>`。エージェントには必ず `WORK` の絶対パスと担当（記事id・モード）を渡す。
-- サブエージェントの起動: `subagent_type` に `note-pm` などが使えればそれを使う（定期タスクではリポジトリを後から clone するため、通常は使えない）。使えなければ `general-purpose` を使い、`model` を役割ファイルの指定（PM・証券アナリストは opus、他は sonnet）にして、プロンプトの先頭に「あなたは `~/repo/.claude/agents/note-xx.md`（絶対パスで渡す）に書かれた役割です。最初にそのファイルを読み、その指示どおりに動いてください。」と書く。
+- サブエージェントの起動: `subagent_type` に `note-pm` などが使えればそれを使う。使えなければ `general-purpose` を使い、`model` を役割ファイルの指定（PM・証券アナリストは opus、他は sonnet）にして、プロンプトの先頭に「あなたは `<リポジトリの絶対パス>/.claude/agents/note-xx.md`に書かれた役割です。最初にそのファイルを読み、その指示どおりに動いてください。」と書く。
 - 並列のフェーズは**同じメッセージで**複数起動し、全員の完了を待つ。返答は10行以内の要約なので、詳細が必要ならファイルを読む。
 - フェーズの開始ごとに `date '+%H:%M フェーズN' >> $WORK/timeline.txt`。
 - エージェントが失敗・時間切れになった記事は見送り、残りで進める。
@@ -19,9 +19,7 @@
 ## フェーズ0: 準備（16:15〜）
 
 ```bash
-# 定期タスクのセッションにはリポジトリが付かないので、公開リポジトリを clone する（以降は ~/repo で作業）
-[ -d ~/repo ] || git clone -q https://github.com/ts73103212-lang/Stock-briefing_public.git ~/repo
-cd ~/repo
+# 定期タスクに付けたリポジトリ（Stock-briefing_public）の中で作業する。自分で clone はしない
 [ -d note_pipeline ] || { git fetch -q origin claude/sweet-brown-hyew3j && git checkout -q origin/claude/sweet-brown-hyew3j -- note_pipeline .claude docs/note-pipeline docs/superpowers assets requirements-note.txt; }
 python -m pip install -q -r requirements-note.txt
 python -c "from datetime import date; from note_pipeline.market import is_tse_closed; print(is_tse_closed(date.today()))"
