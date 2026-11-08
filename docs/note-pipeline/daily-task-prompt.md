@@ -23,7 +23,7 @@
 [ -d ~/repo ] || git clone -q https://github.com/ts73103212-lang/Stock-briefing_public.git ~/repo
 cd ~/repo
 [ -d note_pipeline ] || { git fetch -q origin claude/sweet-brown-hyew3j && git checkout -q origin/claude/sweet-brown-hyew3j -- note_pipeline .claude docs/note-pipeline docs/superpowers assets requirements-note.txt; }
-pip install -q -r requirements-note.txt
+python -m pip install -q -r requirements-note.txt
 python -c "from datetime import date; from note_pipeline.market import is_tse_closed; print(is_tse_closed(date.today()))"
 ```
 
