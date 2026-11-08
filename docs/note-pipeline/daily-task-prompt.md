@@ -30,9 +30,13 @@ python -c "from datetime import date; from note_pipeline.market import is_tse_cl
 - 前回ページ: Artifact ツールで `<DELIVERY_URL>` を `action: read`。保存された HTML を `$WORK/inputs/prev.html` にコピー。
   - `python -c "import sys; from datetime import date; from note_pipeline.history import parse_history, recent_codes; print('\n'.join(sorted(recent_codes(parse_history(open(sys.argv[1]).read()), date.today()))))" $WORK/inputs/prev.html > $WORK/inputs/recent_codes.txt`
 - メール（Gmail）:
-  - 新天地メルマガ（`from:mailmag@mag2premium.com`）直近3〜4通。HTML の青字・赤字の強調箇所から**話題の語句・銘柄名だけ**を `$WORK/inputs/mail.md` に箇条書き（本文の文章は書き写さない）。未着なら「未着」と書く。
+  - 新天地メルマガ（`from:mailmag@mag2premium.com`）直近3〜4通（当日の東京版は夜の配信なので、16:15 時点で届いているのは前日の東京版と前夜のNY版まで）。HTML の青字・赤字の強調箇所から**話題の語句・銘柄名だけ**を `$WORK/inputs/mail.md` に箇条書き（本文の文章は書き写さない）。未着なら「未着」と書く。
   - 当日の「【今日の相場振り返り】」メールの要点を `$WORK/inputs/review_mail.md` に。
 - ここで1回目の時刻を記録。
+
+## 所要時間の目安（2026-11-08 手動テストの実測）
+
+フェーズ0〜公開まで約26分（調査 2分、ネタ決定 1分、深掘り 2〜5分、執筆 2分、図 1分、レビュー 4分、差戻し対応 5分、最終精査 1分）。75分の枠には余裕があるが、差戻しは1回までを守る。
 
 ## フェーズ1: 調査（並列3）
 

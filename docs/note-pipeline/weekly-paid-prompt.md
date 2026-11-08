@@ -1,6 +1,6 @@
 # 週末タスク 進行役プロンプト（有料記事、土曜午前）
 
-> 定期タスク（毎回新しいセッション）に貼る本文。`<DELIVERY_URL>` は日次の納品ページ、`<PAID_URL>` は有料記事の納品ページの固定URL。
+> 定期タスク（毎回新しいセッション）に貼る本文。`<DELIVERY_URL>` は日次の納品ページの固定URL。有料記事は毎週**新しいアーティファクト**として公開する（記事ごとにURLを分けて残す）。
 > 体制: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
 > 基準: 初回（中間選挙）の納品ページ https://claude.ai/artifact/JB4vSK8bM71sDAjsM4K6he
 
@@ -40,5 +40,5 @@ python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
 python -m note_pipeline.build --input $WORK/day.json --out $WORK/out --mode paid
 ```
 
-- Artifact で `$WORK/out/index.html` と `img/*.jpg` を `url: <PAID_URL>` に publish（前回の画像で使わないものは `null`）。
-- PushNotification: `🐾 今週の有料記事ができました：<タイトル>`（失敗時は `🐾 有料記事は失敗：<理由>`）。
+- Artifact で `$WORK/out/index.html` と `img/*.jpg`（`files`）を**新規に** publish する（`url` は付けない）。`icon` は "article"。
+- PushNotification: `🐾 今週の有料記事ができました：<タイトル> <URL>`（失敗時は `🐾 有料記事は失敗：<理由>`）。
