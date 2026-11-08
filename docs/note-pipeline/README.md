@@ -3,6 +3,11 @@
 設計書: `docs/superpowers/specs/2026-11-04-note-content-pipeline-design.md`
 実装計画: `docs/superpowers/plans/2026-11-04-note-content-pipeline.md`
 
+体制（サブエージェント）: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
+- 進行役プロンプト: `daily-task-prompt.md`（平日16:15）、`weekly-paid-prompt.md`（土曜午前）
+- 役割定義: `.claude/agents/note-*.md`（PM・相場分析・日本株・米国株・個別株分析・証券アナリスト・視覚化）
+- 全員が読む編集ルール: `editorial-rules.md`
+
 このリポジトリは公開のため、**記事本文は置きません**。ここにあるのは図表・見出し画像・納品ページの生成コード（`note_pipeline/`）、ブランド素材（`assets/brand/`）、定期タスク用プロンプトだけです。
 
 ## セットアップ
@@ -23,6 +28,15 @@ python -m note_pipeline.build --input day.json --out out/ [--mode daily|paid] [-
 - `out/index.html` と `out/img/*.jpg`（JPEG 品質90）ができる。日次は `a{記事id}_header.jpg` / `a{記事id}_fig{n}.jpg`、有料は `header.jpg` / `fig{n}.jpg`。
 - 終了コード: 0＝OK、2＝警告あり（推奨表現・X投稿文の字数/タグ数・免責文の欠落。出力は作られる）、1＝入力エラー。
 - `--prev-page`: 前回の納品ページ HTML。埋め込まれた銘柄履歴（`<meta name="note-pipeline:history">`）を引き継ぎ、14日より古い分を消して今日の `codes` を足す。
+
+### サブエージェントの成果物をまとめる
+
+```bash
+python -m note_pipeline.figs --spec WORK/figs/a1.json --out WORK/figs/a1/     # 視覚化担当の確認用
+python -m note_pipeline.assemble --work WORK --out WORK/day.json             # plan.json + drafts + figs + verdict → day.json
+```
+
+納品ページには銘柄履歴（14日）と今週の記事一覧（`note-pipeline:digest`、7日）が埋め込まれ、翌日・週末のタスクが読み戻します。
 
 ## day.json の書式
 
