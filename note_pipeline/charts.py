@@ -81,7 +81,8 @@ def chart_b(spec: dict, out: Path, number: int) -> Path:
             fore = i >= fc
             a.bar(i, v, width=0.62, color=PALETTE["bg"] if fore else PALETTE["navy"],
                   edgecolor=PALETTE["navy"], linewidth=2, linestyle="--" if fore else "-")
-            a.text(i, v, _fmt_num(v), ha="center", va="bottom", fontsize=11, color=PALETTE["fg"])
+            a.annotate(_fmt_num(v), (i, v), xytext=(0, 6), textcoords="offset points",
+                       ha="center", va="bottom", fontsize=11, color=PALETTE["fg"])
         a.set_xticks(range(len(periods)), periods)
         a.set_title(f"{label}（{unit}）", loc="left", fontsize=13, fontweight="bold", color=PALETTE["navy"])
         a.margins(y=0.15)
