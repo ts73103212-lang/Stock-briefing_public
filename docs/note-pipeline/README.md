@@ -75,12 +75,20 @@ python3 -m venv .venv && .venv/bin/python -m pip install -r requirements-note.tx
 
 | 型 | 用途 | キー |
 |---|---|---|
-| A | 株価（終値線）＋出来高、重要日に注釈 | `dates`(ISO), `close`, `volume`, `annotations: [{date, text}]` |
-| B | 売上・営業利益（予想は点線） | `periods`, `sales`, `op_income`, `forecast_from`(予想が始まる添字), 任意 `unit` |
+| A | 株価（終値線）＋出来高、重要日に注釈 | `dates`(ISO), `close`, `volume`（欠損は null）, `annotations: [{date, text, pos?, y?, style?, highlight?}]`, `hlines: [{y, label?, color?, style?}]`, `ylim: [lo, hi]` |
+| B | 売上・営業利益（予想は斜線） | `periods`, `sales`, `op_income`, `forecast_from`(予想が始まる添字), 任意 `unit`, `series_labels`（例 ["売上収益","営業利益"]） |
 | C | 同業比較表（大小を色の濃さで） | `columns`, `rows: [{name, values}]`, `shade_cols`(濃淡を付ける列の添字) |
 | D | 指標カード（最大6枚） | `cards: [{label, value, sub, tone: up/down/navy}]` |
 | E | 横棒の順位（騰落率） | `labels`, `values`, `highlight`(ゴールドにする1本), 任意 `unit` |
 | F | 図解（フロー）または表 | `boxes: [{text, note?, emphasis?}]` + `arrows: [[i, j]]`、または `table: {header, rows, emphasis_col}` |
+
+### 型A の追加オプション
+
+- `hlines`: 水平線。`color` は gold（既定）/ up / down / navy / muted、`style` は dashed（既定）/ dotted / solid。例: `{"y": 1851.5, "label": "自社株買い価格 1,851.5円"}`
+- 注釈の `pos`: 吹き出しの位置。above / below / left / right / above-left / above-right / below-left / below-right。省略時は自動。
+- 注釈の `y`: 終値以外の点を指す（場中高値、ストップ高の値など）。
+- 注釈の `style: "note"`: 枠なしの小さな注記（点と出来高の色付けもしない）。`highlight: false` で金の点・出来高の色付けだけを止める。
+- `ylim`: 縦軸の範囲。
 
 ## 動作確認（設計書 §10）
 

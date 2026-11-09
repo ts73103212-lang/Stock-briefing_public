@@ -41,6 +41,21 @@ def fmt_volume(v: float) -> str:
     return f"{v:,.0f}"
 
 
+_OFFSETS = {
+    "above": (0, 40, "center", "bottom"), "below": (0, -40, "center", "top"),
+    "left": (-24, 0, "right", "center"), "right": (24, 0, "left", "center"),
+    "above-left": (-24, 36, "right", "bottom"), "above-right": (24, 36, "left", "bottom"),
+    "below-left": (-24, -36, "right", "top"), "below-right": (24, -36, "left", "top"),
+}
+
+
+def annotation_offset(pos: str) -> tuple[int, int, str, str]:
+    """注釈の吹き出し位置（点からのずらし量[pt]と文字揃え）。"""
+    if pos not in _OFFSETS:
+        raise ValueError(f"unknown annotation pos: {pos!r}（{', '.join(_OFFSETS)}）")
+    return _OFFSETS[pos]
+
+
 def _date_axis(dates: list[datetime]):
     """期間に応じて重複しない日付目盛りを返す（月が重複して並ぶのを防ぐ）。"""
     span = (max(dates) - min(dates)).days
@@ -77,20 +92,45 @@ def chart_a(spec: dict, out: Path, number: int) -> Path:
     # 出来高は前日比で色分け（上昇=緑、下落=赤）
     colors = [PALETTE["up"] if i == 0 or close[i] >= close[i - 1] else PALETTE["down"] for i in range(len(close))]
     width = (max(dates) - min(dates)).days / max(len(dates), 1) * 0.7 or 0.7
-    for ann in spec.get("annotations", []):
+    for line in spec.get("hlines", []):
+        color = TONE.get(line.get("color", "gold"), PALETTE["gold"])
+        ls = {"dashed": "--", "dotted": ":", "solid": "-"}.get(line.get("style", "dashed"), "--")
+        price.axhline(line["y"], color=color, linestyle=ls, linewidth=2.2, zorder=3.5)
+        if line.get("label"):
+            price.annotate(line["label"], (0.005, line["y"]), xycoords=("axes fraction", "data"),
+                           xytext=(4, 6), textcoords="offset points", ha="left", va="bottom",
+                           fontsize=SIZES["tick"], fontweight="bold", color=color, zorder=6,
+                           bbox={"boxstyle": "round,pad=0.15", "fc": PALETTE["bg"], "ec": "none", "alpha": 0.85})
+    anns = spec.get("annotations", [])
+    for ann in anns:
         d = datetime.fromisoformat(ann["date"])
-        if d in dates:
-            i = dates.index(d)
+        if d not in dates:
+            continue
+        i = dates.index(d)
+        y = ann.get("y", close[i])
+        note = ann.get("style") == "note"
+        if ann.get("highlight", not note):
             colors[i] = PALETTE["gold"]
-            pos = i / max(len(dates) - 1, 1)
-            ha, dx = ("right", 10) if pos > 0.8 else (("left", -10) if pos < 0.2 else ("center", 0))
-            k = sum(1 for a2 in spec.get("annotations", []) if a2 is not ann and a2["date"] > ann["date"])
-            price.annotate(ann["text"], (d, close[i]), xytext=(dx, 34 + 44 * (k % 2)), textcoords="offset points",
-                           ha=ha, fontsize=SIZES["annot"], fontweight="bold", color=PALETTE["gold_text"],
-                           bbox={"boxstyle": "round,pad=0.3", "fc": "#FFFFFF", "ec": PALETTE["gold"], "lw": 2},
-                           arrowprops={"arrowstyle": "-", "color": PALETTE["gold"], "lw": 2}, zorder=5)
-            price.plot([d], [close[i]], "o", color=PALETTE["gold"], markersize=13, zorder=4,
+            price.plot([d], [y], "o", color=PALETTE["gold"], markersize=13, zorder=4,
                        markeredgecolor="white", markeredgewidth=2)
+        if ann.get("pos"):
+            dx, dy, ha, va = annotation_offset(ann["pos"])
+        else:  # 自動配置（従来どおり）: 端では内側に寄せ、近い注釈は段違いにする
+            frac = i / max(len(dates) - 1, 1)
+            ha, dx = ("right", 10) if frac > 0.8 else (("left", -10) if frac < 0.2 else ("center", 0))
+            k = sum(1 for a2 in anns if a2 is not ann and a2["date"] > ann["date"] and not a2.get("pos"))
+            dy, va = 34 + 44 * (k % 2), "bottom"
+        style = {} if note else {"bbox": {"boxstyle": "round,pad=0.3", "fc": "#FFFFFF", "ec": PALETTE["gold"], "lw": 2}}
+        price.annotate(ann["text"], (d, y), xytext=(dx, dy), textcoords="offset points", ha=ha, va=va,
+                       fontsize=SIZES["tick"] if note else SIZES["annot"], fontweight="bold",
+                       color=PALETTE["muted"] if note else PALETTE["gold_text"],
+                       arrowprops=None if note else {"arrowstyle": "-", "color": PALETTE["gold"], "lw": 2},
+                       zorder=5, **style)
+    if spec.get("ylim"):
+        price.set_ylim(*spec["ylim"])
+    # 下向きの吹き出しが出来高の領域に隠れないよう、株価の領域を前面に出す
+    price.set_zorder(vol.get_zorder() + 1)
+    price.patch.set_visible(False)
     vd = [(d, v, c) for d, v, c in zip(dates, volume, colors) if v is not None]
     if vd:
         vol.bar([d for d, _, _ in vd], [v for _, v, _ in vd], color=[c for _, _, c in vd], width=width)
@@ -113,7 +153,8 @@ def chart_b(spec: dict, out: Path, number: int) -> Path:
     periods = spec["periods"]
     fc = spec.get("forecast_from", len(periods))
     unit = spec.get("unit", "億円")
-    series = (("sales", "売上高", PALETTE["navy"]), ("op_income", "営業利益", "#E07B00"))
+    names = spec.get("series_labels") or ["売上高", "営業利益"]
+    series = (("sales", names[0], PALETTE["navy"]), ("op_income", names[1], "#E07B00"))
     for k, (key, label, color) in enumerate(series):
         a = fig.add_axes((x0 + k * w * 0.53, y0, w * 0.47, h * 0.9))
         style_axes(a)
