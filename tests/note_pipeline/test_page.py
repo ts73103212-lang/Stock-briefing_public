@@ -82,3 +82,15 @@ def test_header_proposal_panel_escaped():
     assert "見出し画像の提案" in html
     assert "構図&lt;案&gt;" in html and "prompt &quot;x&quot; &amp; y" in html
     assert html.count("見出し画像の提案") == 1
+
+
+def test_section_dividers_before_each_h2():
+    a = {"id": "1", "body_html": "<p>はじめに</p><h2>1. A</h2><p>a</p><h2>2. B</h2><p>b</p>", "figures": []}
+    html = page.body_with_figures(a, {"figs": []})
+    assert html.count("<hr>") == 2
+    assert html.index("<hr>") < html.index("<h2>1. A</h2>")
+
+
+def test_no_leading_divider_when_body_starts_with_h2():
+    a = {"id": "1", "body_html": "<h2>1. A</h2><p>a</p>", "figures": []}
+    assert "<hr>" not in page.body_with_figures(a, {"figs": []})
