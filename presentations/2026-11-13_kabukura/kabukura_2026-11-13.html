@@ -1,0 +1,624 @@
+<title>株クラ秋季研究会 抄録集</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+<style>
+:root{
+  /* レイアウト：A4縦シート（210×297mm）を縦に並べ、各シートは学会抄録の2段組 */
+  --paper:#FFFFFF; --desk:#E9EBEF; --ink:#1B1F27; --muted:#5A6170; --rule:#D5D9E1; --soft:#F4F5F8;
+  --up:#13803B; --down:#C1121F; --warn:#B45309;
+  --f-body:"Meiryo UI","メイリオ",Meiryo,"Noto Sans JP","Hiragino Sans",sans-serif;
+  --f-num:"Meiryo UI","Noto Sans JP",sans-serif;
+  color-scheme: light;
+}
+html{background:var(--desk)}
+body{background:var(--desk);color:var(--ink);font-family:var(--f-body);margin:0;
+  padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+.deck{display:flex;flex-direction:column;align-items:center;gap:28px}
+.toc{width:210mm;max-width:100%;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.toc b{color:var(--ink)}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+.sheet-wrap{width:210mm;max-width:100%}
+.sheet{width:210mm;height:297mm;box-sizing:border-box;background:var(--paper);box-shadow:0 2px 14px rgba(20,30,50,.16);
+  padding:11mm 12mm 9mm;display:flex;flex-direction:column;overflow:hidden;position:relative;font-size:11.4px;line-height:1.62;
+  transform-origin:top left}
+.sheet *{box-sizing:border-box}
+/* ページ上部：会議名・セッション番号 */
+.runhead{display:flex;justify-content:space-between;align-items:baseline;font-size:9.5px;color:var(--muted);letter-spacing:.04em;
+  border-bottom:1.5px solid var(--c);padding-bottom:4px}
+.runhead b{color:var(--c)}
+.titleblock{margin-top:9px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+.sesno{grid-row:span 2;background:var(--c);color:#fff;font-weight:700;font-size:13px;line-height:1;padding:9px 9px 8px;border-radius:3px;text-align:center;min-width:46px}
+.sesno small{display:block;font-size:8.5px;font-weight:400;opacity:.85;margin-top:4px;letter-spacing:.06em}
+h1{font-size:20.5px;line-height:1.32;margin:0;color:var(--c);text-wrap:balance;font-weight:700}
+.sub{font-size:11.5px;color:var(--muted);margin:0}
+.abstract{margin-top:9px;background:var(--t);border-radius:3px;padding:8px 11px;display:grid;grid-template-columns:auto 1fr;gap:4px 10px}
+.abstract .lab{font-weight:700;color:var(--c);font-size:10.5px;letter-spacing:.08em;padding-top:1px}
+.abstract p{margin:0}
+.kw{font-size:10px;color:var(--muted)}
+.body{flex:1;min-height:0;margin-top:10px;overflow:hidden}
+.fit{display:flex;flex-direction:column;gap:9px;justify-content:space-between}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;min-height:0}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px 12px}
+.span2{grid-column:span 2}
+h2{font-size:13px;margin:0 0 3px;color:var(--c);display:flex;gap:7px;align-items:baseline;line-height:1.35}
+h2 .n{font-size:11px;color:#fff;background:var(--c);border-radius:2px;padding:1px 5px;font-weight:700}
+h3{font-size:11.5px;margin:0 0 2px;color:var(--ink)}
+p{margin:0 0 4px}
+ul.b{margin:0;padding-left:1.15em}
+ul.b li{margin:0 0 2.5px}
+ul.b li::marker{color:var(--a)}
+.em{color:var(--a);font-weight:700}
+.dn{color:var(--down);font-weight:700}
+.upc{color:var(--up);font-weight:700}
+.fig{border:1px solid var(--rule);border-radius:3px;padding:7px 8px 5px;background:#fff}
+.fig svg{display:block;width:100%;height:auto}
+.cap{font-size:9.6px;color:var(--muted);margin-top:3px;line-height:1.45}
+.cap b{color:var(--ink)}
+table.t{width:100%;border-collapse:collapse;font-size:10.2px;line-height:1.4;font-variant-numeric:tabular-nums}
+table.t th{background:var(--c);color:#fff;font-weight:700;padding:4px 5px;text-align:left;white-space:nowrap}
+table.t td{padding:3.6px 5px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.t tr:nth-child(even) td{background:var(--soft)}
+table.t td.r,table.t th.r{text-align:right}
+table.t td.c,table.t th.c{text-align:center}
+.box{border-radius:3px;padding:8px 10px;background:var(--soft)}
+.box.tint{background:var(--t)}
+.box.tint2{background:var(--t2)}
+.alert{border:2px solid var(--down);border-radius:4px;padding:8px 11px;background:#FFF5F5}
+.alert .hd{color:var(--down);font-weight:700;font-size:12.5px;margin-bottom:3px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpi{border-top:3px solid var(--c);background:var(--soft);padding:6px 8px 6px}
+.kpi .v{font-family:var(--f-num);font-size:19px;font-weight:700;line-height:1.15;color:var(--c);font-variant-numeric:tabular-nums}
+.kpi .v small{font-size:11px;margin-left:1px}
+.kpi .l{font-size:9.5px;color:var(--muted);line-height:1.35;margin-top:2px}
+.tag{display:inline-block;font-size:9px;font-weight:700;border-radius:2px;padding:0 5px;line-height:1.6;color:#fff;background:var(--a);vertical-align:1px}
+.tag.c{background:var(--c)} .tag.g{background:#6B7280} .tag.r{background:var(--down)} .tag.u{background:var(--up)}
+.stars{color:var(--a);letter-spacing:-1px;white-space:nowrap}
+.refs{margin-top:auto;border-top:1px solid var(--rule);padding-top:4px;font-size:8.4px;color:var(--muted);line-height:1.45}
+.refs ol{margin:0;padding-left:1.6em;columns:2;column-gap:14px}
+.foot{display:flex;justify-content:space-between;font-size:8.4px;color:var(--muted);margin-top:4px}
+.small{font-size:9.8px}
+.muted{color:var(--muted)}
+.vote{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule)}
+.vote div{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);height:24px;padding:3px 5px;font-size:9.5px;color:var(--muted)}
+@media screen and (max-width:830px){ .sheet-wrap{overflow:hidden} }
+@media print{
+  @page{size:A4 portrait;margin:0}
+  html,body{background:#fff;padding:0}
+  .deck{gap:0;display:block}
+  .toc{display:none}
+  .sheet-wrap{width:210mm;max-width:none;height:auto!important}
+  .sheet{box-shadow:none;page-break-after:always;break-after:page;transform:none!important}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+<main class="deck"><nav class="toc"><b>株クラ秋季研究会 2026　抄録集</b><a href="#t1p1">Session 1：世界経済の行方</a><a href="#t2p1">Session 2：半導体の巻き返しとAI投資</a><a href="#t3p1">Session 3：お年玉銘柄と暴騰候補20</a></nav>
+<section class="sheet-wrap" id="t1p1"><article class="sheet" style="--c:#1D3557;--a:#C1121F;--t:#EEF2F8;--t2:#FBEDEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 1　Global Macro after the Midterms</span></div>
+  <div class="titleblock"><div class="sesno">1-1<small>1/4</small></div><h1>民主党が上下両院を奪還：選挙後5日間で何が起きたか</h1><p class="sub">安心ラリーから一転、AIデータセンター規制への懸念で世界的な株安へ</p></div>
+  <div class="abstract"><div class="lab">要旨</div><div><p>11/3の米中間選挙で民主党が上下両院を制した。翌日は「ねじれ議会」を好感して上げたが、11/5にAIデータセンター規制への懸念から半導体株が急落し、11/6には日経平均が3,643円下げた。歴史的には選挙後は株高になりやすいが、今回は途中の大きな下げに耐えられるかが問われる。</p><div class="kw">キーワード：中間選挙、ねじれ議会、関税、データセンター規制、SOX</div></div></div>
+  <div class="body"><div class="fit">
+<div class="kpis">
+  <div class="kpi"><div class="v">54<small>対</small>44</div><div class="l">上院（民主対共和）<br>選挙前は共和53対民主47</div></div>
+  <div class="kpi"><div class="v">228<small>対</small>139</div><div class="l">下院（民主対共和）<br>民主が19議席増・一部未確定</div></div>
+  <div class="kpi"><div class="v" style="color:#C1121F">-4.36<small>%</small></div><div class="l">11/5 S&amp;P500<br>NASDAQ -5.52%、VIX 28.8</div></div>
+  <div class="kpi"><div class="v" style="color:#C1121F">-3,643<small>円</small></div><div class="l">11/6 日経平均（57,434円）<br>下げ幅は歴代3位級</div></div>
+</div>
+<div class="cols">
+  <div>
+    <h2><span class="n">1</span>選挙後5日間に起きたこと</h2>
+    <table class="t">
+      <tr><th>日付</th><th>出来事と値動き</th></tr>
+      <tr><td><b>11/3</b></td><td>中間選挙。投票数1.24億票超で中間選挙として過去最多。民主党が上下両院を制する</td></tr>
+      <tr><td><b>11/4</b></td><td><span class="upc">安心ラリー</span>。「ねじれ議会なら政策のサプライズが減る」とダウ+1,569ドル（+3.03%）。ただしSOXは-3.1%</td></tr>
+      <tr><td><b>11/5</b></td><td><span class="dn">急落</span>。テキサス州知事選で「データセンター建設の即時停止」を掲げた民主党候補が勝利。SOX -12.3%、NVIDIAは1日で時価総額4,000億ドル超を失う</td></tr>
+      <tr><td><b>11/6</b></td><td><span class="dn">東京に波及</span>。日経は一時4,300円超安の56,745円。プライム市場の98%が値下がり、売買代金12.5兆円</td></tr>
+      <tr><td><b>11/9</b></td><td>6営業日ぶりに反発（58,776円、+2.33%）。後場は追証売りへの警戒で上げ幅を縮める</td></tr>
+    </table>
+    <h2 style="margin-top:7px"><span class="n">2</span>政策はどう変わるか</h2>
+    <ul class="b">
+      <li><b>関税は続く</b>：民主党は大統領の拒否権を覆せる3分の2に届かない。関税は大統領令で続く可能性が高い。</li>
+      <li><b>減税の延長は難しくなる</b>：財政は「ねじれ」で動きにくい。</li>
+      <li><b>AI・データセンターに逆風</b>：住民投票は41件中40件が否決。電力料金の高騰が争点になった。</li>
+    </ul>
+    <h2 style="margin-top:7px"><span class="n">3</span>主要指数の現在地</h2>
+    <table class="t">
+      <tr><th>指数</th><th class="r">現在値</th><th class="r">200日線比</th><th class="r">高値比</th></tr>
+      <tr><td>日経平均（11/9）</td><td class="r">58,776</td><td class="r dn">-5.1%</td><td class="r dn">-18.8%</td></tr>
+      <tr><td>S&amp;P500（11/6）</td><td class="r">7,377</td><td class="r upc">+0.7%</td><td class="r dn">-5.6%</td></tr>
+      <tr><td>NASDAQ100（11/6）</td><td class="r">26,990</td><td class="r dn">-3.6%</td><td class="r dn">-13.6%</td></tr>
+      <tr><td>SOX（11/6）</td><td class="r">9,390</td><td class="r dn">-13.4%</td><td class="r dn">-35.8%</td></tr>
+    </table>
+    <p class="cap">終値。200日線・高値はyfinance（11/9取得）。S&amp;P500だけがまだ200日線の上にいる。</p>
+  </div>
+  <div>
+    <div class="fig"><svg viewBox="0 0 330 150" xmlns="http://www.w3.org/2000/svg" role="img"><line x1="30" x2="324" y1="100.7" y2="100.7" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="103.7" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-10</text><line x1="30" x2="324" y1="76.6" y2="76.6" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="79.6" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-5</text><line x1="30" x2="324" y1="52.5" y2="52.5" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="55.5" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >0</text><line x1="30" x2="324" y1="28.5" y2="28.5" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="31.5" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >5</text><line x1="30" x2="324" y1="52.5" y2="52.5" stroke="#5A6170" stroke-width="1"/><rect x="41.8" y="52.5" width="50.0" height="15.1" fill="#C1121F" rx="1"/><text x="66.8" y="76.6" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-3.1%</text><text x="66.8" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >11/4</text><rect x="115.3" y="52.5" width="50.0" height="59.0" fill="#C1121F" rx="1"/><text x="140.2" y="120.6" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-12.2%</text><text x="140.2" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >11/5</text><rect x="188.8" y="32.3" width="50.0" height="20.3" fill="#13803B" rx="1"/><text x="213.8" y="29.3" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >+4.2%</text><text x="213.8" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >11/6</text><rect x="262.3" y="21.2" width="50.0" height="31.3" fill="#13803B" rx="1"/><text x="287.2" y="18.2" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >+6.5%</text><text x="287.2" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >11/9</text></svg><div class="cap"><b>Fig.1</b> 選挙後のSOX指数（米半導体株）の日次騰落率。11/5の-12.3%は2020年3月以来の最悪級。11/9は米国の取引時間中の値。</div></div>
+    <div class="box tint" style="margin-top:8px">
+      <h3>本セッションの結論</h3>
+      <p class="small">歴史的には「中間選挙の後の1年は株高」（1950年以降19戦19勝）です。演者もメインシナリオは<b>春に向けた回復</b>と考えます。<br>ただしそれは<b>途中の下げを生き残った人だけ</b>が受け取れるリターンです。新天地さんの見立てどおり、ここから一旦は<b class="dn">日経48,000円</b>まで下げる展開を想定し、資金とレバレッジを管理することが本日の主題です。</p>
+    </div>
+    <div class="box" style="margin-top:8px">
+      <h3>マクロの現在地（11/9）</h3>
+      <p class="small">米10年債4.89%／FF金利3.75〜4.00%（12月利上げ確率 約88%）／ドル円158円台（介入警戒）／WTI 90ドル台（イラン情勢・ホルムズ海峡）／米Q3 GDP +3.4%</p>
+    </div>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>OPB/NPR: 2026 midterms, Democrats win the Senate (11/4)</li><li>LiveNOW from FOX: Democrats win control of Congress</li><li>GV Wire: Markets cheer Democratic win (11/4)</li><li>Al Jazeera: Tariffs to Iran war (11/4)</li><li>みんかぶ: 日経平均 11/6 大引け</li><li>Investinglive: Fed holds at 3.75-4%</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.1 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t1p2"><article class="sheet" style="--c:#1D3557;--a:#C1121F;--t:#EEF2F8;--t2:#FBEDEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 1　Global Macro after the Midterms</span></div>
+  <div class="titleblock"><div class="sesno">1-2<small>2/4</small></div><h1>歴史は「選挙後は株高」と言う。ただし2018年の-20%を忘れない</h1><p class="sub">中間選挙アノマリー・大統領サイクル・年末ラリーと、その反例</p></div>
+  
+  <div class="body"><div class="fit">
+<div class="fig"><svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg" role="img"><line x1="30" x2="694" y1="140.0" y2="140.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="143.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >0</text><line x1="30" x2="694" y1="105.0" y2="105.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="108.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >10</text><line x1="30" x2="694" y1="70.0" y2="70.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="73.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >20</text><line x1="30" x2="694" y1="35.0" y2="35.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="38.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >30</text><line x1="30" x2="694" y1="140.0" y2="140.0" stroke="#5A6170" stroke-width="1"/><rect x="35.6" y="91.0" width="23.8" height="49.0" fill="#8DA2BF" rx="1"/><text x="47.5" y="88.0" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >14</text><text x="47.5" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'50</text><rect x="70.5" y="23.8" width="23.8" height="116.2" fill="#1D3557" rx="1"/><text x="82.4" y="20.8" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >33</text><text x="82.4" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'54</text><rect x="105.5" y="108.5" width="23.8" height="31.5" fill="#8DA2BF" rx="1"/><text x="117.4" y="105.5" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >9</text><text x="117.4" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'58</text><rect x="140.4" y="49.0" width="23.8" height="91.0" fill="#8DA2BF" rx="1"/><text x="152.3" y="46.0" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26</text><text x="152.3" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'62</text><rect x="175.4" y="87.5" width="23.8" height="52.5" fill="#8DA2BF" rx="1"/><text x="187.3" y="84.5" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >15</text><text x="187.3" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'66</text><rect x="210.3" y="101.5" width="23.8" height="38.5" fill="#8DA2BF" rx="1"/><text x="222.2" y="98.5" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >11</text><text x="222.2" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'70</text><rect x="245.3" y="70.0" width="23.8" height="70.0" fill="#8DA2BF" rx="1"/><text x="257.2" y="67.0" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >20</text><text x="257.2" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'74</text><rect x="280.2" y="112.0" width="23.8" height="28.0" fill="#8DA2BF" rx="1"/><text x="292.1" y="109.0" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >8</text><text x="292.1" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'78</text><rect x="315.2" y="59.5" width="23.8" height="80.5" fill="#8DA2BF" rx="1"/><text x="327.1" y="56.5" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >23</text><text x="327.1" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'82</text><rect x="350.1" y="136.2" width="23.8" height="3.8" fill="#1D3557" rx="1"/><text x="362.0" y="133.2" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1</text><text x="362.0" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'86</text><rect x="385.1" y="52.1" width="23.8" height="87.8" fill="#1D3557" rx="1"/><text x="396.9" y="49.1" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >25</text><text x="396.9" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'90</text><rect x="420.0" y="45.1" width="23.8" height="94.9" fill="#1D3557" rx="1"/><text x="431.9" y="42.1" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >27</text><text x="431.9" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'94</text><rect x="455.0" y="63.0" width="23.8" height="77.0" fill="#8DA2BF" rx="1"/><text x="466.8" y="60.0" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >22</text><text x="466.8" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'98</text><rect x="489.9" y="84.0" width="23.8" height="56.0" fill="#8DA2BF" rx="1"/><text x="501.8" y="81.0" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >16</text><text x="501.8" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'02</text><rect x="524.9" y="115.5" width="23.8" height="24.5" fill="#8DA2BF" rx="1"/><text x="536.7" y="112.5" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >7</text><text x="536.7" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'06</text><rect x="559.8" y="126.0" width="23.8" height="14.0" fill="#8DA2BF" rx="1"/><text x="571.7" y="123.0" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >4</text><text x="571.7" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'10</text><rect x="594.7" y="122.5" width="23.8" height="17.5" fill="#8DA2BF" rx="1"/><text x="606.6" y="119.5" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >5</text><text x="606.6" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'14</text><rect x="629.7" y="99.1" width="23.8" height="40.9" fill="#1D3557" rx="1"/><text x="641.6" y="96.1" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12</text><text x="641.6" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'18</text><rect x="664.6" y="89.2" width="23.8" height="50.8" fill="#8DA2BF" rx="1"/><text x="676.5" y="86.2" font-size="7.6" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >14</text><text x="676.5" y="151.0" font-size="8.4" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >'22</text><text x="694.0" y="9.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >単位：%</text></svg><div class="cap"><b>Fig.2</b> 中間選挙の投票日から1年後のS&amp;P500騰落率（1950〜2022年）。濃い棒は出典で確認済み、薄い棒は終値からの概算［要確認］。平均・中央値はPepperstoneの集計値。</div></div>
+<div class="kpis">
+  <div class="kpi"><div class="v">19<small>戦</small>19<small>勝</small></div><div class="l">1950年以降、選挙後1年の<br>S&amp;P500は全てプラス</div></div>
+  <div class="kpi"><div class="v">+15.1<small>%</small></div><div class="l">選挙後1年の平均<br>（中央値+14.5%）</div></div>
+  <div class="kpi"><div class="v">+14<small>%</small></div><div class="l">選挙後6か月（11〜4月）の平均<br>4年サイクルで最強の期間</div></div>
+  <div class="kpi"><div class="v">0<small>敗</small></div><div class="l">大統領サイクル3年目の<br>年間マイナス（1939年以降）</div></div>
+</div>
+<div class="cols">
+  <div>
+    <h2><span class="n">1</span>知っておきたいアノマリー</h2>
+    <ul class="b">
+      <li><b>大統領サイクル</b>：2年目（中間選挙の年）は平均+3.8%と弱く、他の3年は平均+10.9%。3年目は平均+13.5%、上昇確率78%。</li>
+      <li><b>中間選挙の年の安値から1年後は平均+31.7%</b>。2022年は10月、2018年は12/24が安値でした。</li>
+      <li><b>日本の年末ラリー</b>：日経など3指数の12月の勝率は過去10年で70〜80%（2015年時点の集計）。</li>
+      <li><b>節分天井・彼岸底</b>：よく聞く格言ですが、大和総研は統計的な裏付けはないとしています。話のネタ程度に。</li>
+    </ul>
+  </div>
+  <div>
+    <h2><span class="n">2</span>反例：2018年は「勝ったが途中で-20%」</h2>
+    <p>2018年は9/20の高値から12/24までS&amp;P500が<b class="dn">-19.8%</b>下げました。原因はFRBのタカ派姿勢、米中摩擦、原油安です。それでも投票日から1年後は<b class="upc">+11.7%</b>でした。</p>
+    <p>新天地さんのメルマガ（11/9）も、ヘッジファンドの12月末解約の通知期限（11/15前後、いわゆる45日ルール）を挙げ、<b>「2018年だけはクリスマスに向けて大きく下げた」</b>と注意を促しています。</p>
+  </div>
+  <div class="span2">
+    <h2><span class="n">3</span>2018年と2026年を並べる</h2>
+    <table class="t">
+      <tr><th>項目</th><th>2018年</th><th>2026年（現在）</th></tr>
+      <tr><td>選挙結果</td><td>民主党が下院を奪還（ねじれ）</td><td>民主党が上下両院を奪還（ねじれ）</td></tr>
+      <tr><td>FRB</td><td>利上げ継続（12月も利上げ）</td><td>12月利上げ確率 約88%</td></tr>
+      <tr><td>主な売り材料</td><td>米中貿易摩擦、原油安</td><td>AIデータセンター規制、イラン情勢、原油高</td></tr>
+      <tr><td>選挙前の上昇</td><td>年初来でほぼ横ばい</td><td>Q3までに約+13%（先に上げた）</td></tr>
+      <tr><td>その後</td><td>12/24まで-19.8% → 1年後は+11.7%</td><td><b>？</b>（Session 1-4のシナリオへ）</td></tr>
+    </table>
+  </div>
+  <div class="span2 box tint2">
+    <h3>今年は違うかもしれない3つの理由</h3>
+    <div class="cols3 small">
+      <p><b class="dn">① 先に上げすぎた</b><br>S&amp;P500は第3四半期までに約+13%上昇済み。「選挙後の上げ」を先に織り込んだ可能性があります。</p>
+      <p><b class="dn">② 利下げではなく利上げ</b><br>12/9のFOMCは利上げ確率が約88%。2018年と同じく、FRBが株価の重しになりえます。</p>
+      <p><b class="dn">③ 新しい政治リスク</b><br>AIデータセンター規制は、今年の相場をけん引したAI投資そのものを直撃します。</p>
+    </div>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>Pepperstone: Do stocks rally after midterms?（1950年以降の集計）</li><li>Motley Fool: Midterm election year stock market history</li><li>CFA Institute: Election cycle theory, year three</li><li>Carson Group / Ryan Detrick（選挙後6か月・安値から1年）</li><li>Chase: Presidential cycle（1945〜2025年）</li><li>新天地メルマガ「45日ルール」（2026/11/9配信）</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.2 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t1p3"><article class="sheet" style="--c:#1D3557;--a:#C1121F;--t:#EEF2F8;--t2:#FBEDEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 1　Global Macro after the Midterms</span></div>
+  <div class="titleblock"><div class="sesno">1-3<small>3/4</small></div><h1>最大下げ「日経48,000円」を想定しない人は退場する</h1><p class="sub">新天地さんの見立てを数字で検証：どこまで下げうるか、そのとき何が起きるか</p></div>
+  
+  <div class="body"><div class="fit">
+<div class="fig"><svg viewBox="0 0 700 215" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="44" y="140.7" width="536" height="23.4" fill="#C1121F" opacity="0.13"/><line x1="44" x2="580" y1="195.0" y2="195.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="198.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >40,000</text><line x1="44" x2="580" y1="164.2" y2="164.2" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="167.2" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >46,000</text><line x1="44" x2="580" y1="133.3" y2="133.3" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="136.3" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >52,000</text><line x1="44" x2="580" y1="102.5" y2="102.5" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="105.5" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >58,000</text><line x1="44" x2="580" y1="71.7" y2="71.7" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="74.7" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >64,000</text><line x1="44" x2="580" y1="40.8" y2="40.8" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="43.8" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >70,000</text><line x1="44" x2="580" y1="10.0" y2="10.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="13.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >76,000</text><text x="44.0" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >25/11</text><text x="85.2" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >25/12</text><text x="126.5" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/01</text><text x="178.0" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/02</text><text x="219.2" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/03</text><text x="260.5" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/04</text><text x="301.7" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/05</text><text x="353.2" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/06</text><text x="394.5" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/07</text><text x="446.0" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/08</text><text x="487.2" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/09</text><text x="528.5" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/10</text><text x="580.0" y="209.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >26/11</text><line x1="44" x2="580" y1="140.7" y2="140.7" stroke="#B45309" stroke-width="1.4" stroke-dasharray="5 3"/><text x="586.0" y="144.2" font-size="8.6" fill="#B45309" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3月安値 50,558</text><line x1="44" x2="580" y1="153.9" y2="153.9" stroke="#C1121F" stroke-width="1.4" stroke-dasharray="5 3"/><text x="586.0" y="157.4" font-size="8.6" fill="#C1121F" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >下値目安 48,000</text><polyline points="44.0,193.0 54.3,191.5 64.6,190.2 74.9,189.1 85.2,187.7 95.5,186.2 105.8,184.8 116.2,183.2 126.5,182.5 136.8,180.5 147.1,178.9 157.4,176.8 167.7,174.4 178.0,171.7 188.3,169.4 198.6,166.5 208.9,164.3 219.2,161.9 229.5,159.8 239.8,158.1 250.2,156.1 260.5,154.2 270.8,152.0 281.1,149.5 291.4,147.0 301.7,144.9 312.0,143.8 322.3,140.8 332.6,138.1 342.9,135.0 353.2,131.6 363.5,128.7 373.8,125.2 384.2,121.7 394.5,118.1 404.8,115.0 415.1,112.2 425.4,110.1 435.7,107.8 446.0,105.6 456.3,103.5 466.6,101.2 476.9,99.3 487.2,97.5 497.5,95.6 507.8,93.7 518.2,92.8 528.5,90.6 538.8,88.2 549.1,86.5 559.4,84.7 569.7,83.1 580.0,82.1" fill="none" stroke="#8DA2BF" stroke-width="1.6" stroke-dasharray="4 2" stroke-linejoin="round"/><circle cx="580.0" cy="82.1" r="3" fill="#8DA2BF"/><text x="586.0" y="85.6" font-size="8.6" fill="#8DA2BF" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >200日線 61,964</text><polyline points="44.0,142.2 54.3,141.7 64.6,150.7 74.9,142.3 85.2,141.1 95.5,139.3 105.8,146.1 116.2,139.8 126.5,141.9 136.8,133.6 147.1,123.4 157.4,123.8 167.7,126.5 178.0,121.8 188.3,107.9 198.6,108.5 208.9,98.1 219.2,114.7 229.5,124.0 239.8,126.3 250.2,126.3 260.5,127.6 270.8,108.0 281.1,100.1 291.4,93.7 301.7,94.7 312.0,78.3 322.3,85.0 332.6,75.1 342.9,59.7 353.2,58.4 363.5,61.3 373.8,34.4 384.2,44.1 394.5,42.1 404.8,48.2 415.1,70.9 425.4,68.5 435.7,69.8 446.0,63.4 456.3,47.4 466.6,61.3 476.9,59.3 487.2,66.4 497.5,71.6 507.8,66.4 518.2,59.5 528.5,49.5 538.8,45.8 549.1,64.9 559.4,78.4 569.7,75.3 580.0,105.4" fill="none" stroke="#1D3557" stroke-width="2.2" stroke-dasharray="" stroke-linejoin="round"/><circle cx="580.0" cy="105.4" r="3" fill="#1D3557"/><text x="586.0" y="108.9" font-size="8.6" fill="#1D3557" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >現在 57,435</text></svg><div class="cap"><b>Fig.3</b> 日経平均の週足（2025年11月〜2026年11月6日）と200日移動平均。赤い帯は「3月安値割れ〜48,000円」の想定下値ゾーン。データ：yfinance。</div></div>
+<div class="cols" style="grid-template-columns:1fr 1.1fr">
+  <div>
+    <h2><span class="n">1</span>48,000円はどんな水準か</h2>
+    <table class="t">
+      <tr><th>比べる相手</th><th class="r">水準</th><th class="r">48,000円まで</th></tr>
+      <tr><td>6/25 年初来高値</td><td class="r">72,366</td><td class="r dn">-33.7%</td></tr>
+      <tr><td>200日線（上値の壁に転換）</td><td class="r">61,964</td><td class="r dn">-22.5%</td></tr>
+      <tr><td><b>現在値（11/6終値）</b></td><td class="r"><b>57,435</b></td><td class="r dn"><b>-16.4%</b></td></tr>
+      <tr><td>フィボナッチ78.6%戻し</td><td class="r">55,225</td><td class="r dn">-13.1%</td></tr>
+      <tr><td>3/31 年初来安値（ザラ場）</td><td class="r">50,558</td><td class="r dn">-5.1%</td></tr>
+      <tr><td>100週線（参考）</td><td class="r">50,576</td><td class="r dn">-5.1%</td></tr>
+    </table>
+    <p class="small" style="margin-top:4px">48,000円は<b>今年の上昇分をすべて失う水準</b>です。予想PERは約13.7倍（5月時点の予想EPS 3,495円で試算［要確認］）。東証の要請以降のPERレンジ16〜18倍を大きく下回ります。米国はS&amp;P500の200日線7,328（現在値から-2.7%）、NASDAQ100はすでに200日線割れです。</p>
+  </div>
+  <div>
+    <div class="alert">
+      <div class="hd">⚠ 新天地さんの警告：この下げを想定していないと退場する</div>
+      <p class="small">新天地さんの見立ては「ここから一旦は大きく下げる。最大下げとして<b>200日線割れの定着と日経48,000円</b>くらいは想定しておくべき」というものです。現在値からは<b>約-16〜18%</b>。日経に連動する個別株は、その1.5〜2倍下げることも珍しくありません。</p>
+      <table class="t" style="margin-top:4px">
+        <tr><th>持ち方</th><th class="r">日経-18%時の損失目安</th><th>結果</th></tr>
+        <tr><td>現物・指数並み</td><td class="r">-18%</td><td>耐えられる</td></tr>
+        <tr><td>現物・高ベータ株</td><td class="r">-30〜40%</td><td>心が折れやすい</td></tr>
+        <tr><td>信用2倍</td><td class="r dn">-36%（資産比）</td><td class="dn">追証→強制決済</td></tr>
+        <tr><td>信用3倍・フルレバ</td><td class="r dn">-54%以上</td><td class="dn">退場</td></tr>
+      </table>
+    </div>
+    <h2 style="margin-top:7px"><span class="n">2</span>下げを大きくする需給要因</h2>
+    <ul class="b small">
+      <li><b>45日ルール</b>：ヘッジファンドの年末解約の通知期限は11/15前後。2018年はQ4に約225億ドルが流出（HFR）。</li>
+      <li><b>高値-10%ルール</b>：機関投資家の機械的な損切りが11/5の下げを拡大（新天地メルマガ11/6）。</li>
+      <li><b>追証売り</b>：11/9の後場も追証への警戒で上げ幅を縮めた。信用買い残の整理は終わっていない。</li>
+    </ul>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>新天地メルマガ（2026/11/6〜11/9配信）：45日ルール・高値-10%ルール・追証警戒</li><li>yfinance：日経平均・S&P500 日足/週足、移動平均（11/9取得）</li><li>SBI証券：日経平均の予想EPS（2026/5/19）</li><li>野村證券：日本株PERレンジ</li><li>HFR：2018年Q4ヘッジファンド資金流出</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.3 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t1p4"><article class="sheet" style="--c:#1D3557;--a:#C1121F;--t:#EEF2F8;--t2:#FBEDEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 1　Global Macro after the Midterms</span></div>
+  <div class="titleblock"><div class="sesno">1-4<small>4/4</small></div><h1>3つのシナリオと、退場しないための5つのルール</h1><p class="sub">確率・水準・きっかけを整理し、12月〜3月の行動を先に決める</p></div>
+  
+  <div class="body"><div class="fit">
+<div class="fig"><svg viewBox="0 0 700 46" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="0.0" y="4" width="173.0" height="24" fill="#13803B" rx="2"/><text x="87.5" y="20.5" font-size="11" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >25%</text><text x="87.5" y="41.0" font-size="9" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >強気：年末ラリーで高値奪回へ</text><rect x="175.0" y="4" width="348.0" height="24" fill="#1D3557" rx="2"/><text x="350.0" y="20.5" font-size="11" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >50%</text><text x="350.0" y="41.0" font-size="9" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >メイン：2番底→春に回復</text><rect x="525.0" y="4" width="173.0" height="24" fill="#C1121F" rx="2"/><text x="612.5" y="20.5" font-size="11" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >25%</text><text x="612.5" y="41.0" font-size="9" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >弱気：48,000円まで</text></svg><div class="cap"><b>Fig.4</b> 12月〜3月のシナリオ確率（演者の主観）。</div></div>
+<table class="t">
+  <tr><th>シナリオ</th><th>日経平均</th><th>S&amp;P500</th><th>こうなるきっかけ</th></tr>
+  <tr><td><span class="tag u">強気 25%</span></td><td>65,000円台を回復<br>（25日・75日線）</td><td>7,818の高値更新</td><td>11/17 NVIDIA決算が好調、データセンター規制のトーンダウン、12月FOMCで利上げ見送り、イラン停戦</td></tr>
+  <tr><td><span class="tag c">メイン 50%</span></td><td>54,000〜56,000円で2番底<br>→ 200日線（約62,000円）まで戻す</td><td>7,100〜7,800</td><td>2018年型の短縮版。12月の需給悪化（解約・損出し）を経て、1月以降に回復</td></tr>
+  <tr><td><span class="tag r">弱気 25%</span></td><td><b class="dn">48,000円</b>（-18%）</td><td>200日線割れが定着<br>2018年並みなら約6,250</td><td>FOMC利上げで米10年債5%超、データセンター停止の法制化、大手の投資削減、原油100ドル超、急な円高</td></tr>
+</table>
+<div class="fig"><svg viewBox="0 0 700 104" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="10.0" y="44" width="173.2" height="12" fill="#1D3557" opacity="0.85"/><text x="97.1" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12月</text><rect x="184.2" y="44" width="173.2" height="12" fill="#1D3557" opacity="0.70"/><text x="271.3" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1月</text><rect x="358.4" y="44" width="156.4" height="12" fill="#1D3557" opacity="0.55"/><text x="437.1" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2月</text><rect x="515.8" y="44" width="173.2" height="12" fill="#1D3557" opacity="0.40"/><text x="602.9" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3月</text><line x1="26.9" x2="26.9" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="26.9" cy="16" r="2.4" fill="#5A6170"/><text x="26.9" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/4</text><text x="26.9" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >米雇用統計</text><line x1="55.0" x2="55.0" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="55.0" cy="82" r="2.4" fill="#C1121F"/><text x="55.0" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/9 FOMC</text><text x="55.0" y="103.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >利上げ?</text><line x1="60.6" x2="60.6" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="60.6" cy="16" r="2.4" fill="#5A6170"/><text x="60.6" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/10頃</text><text x="60.6" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >米CPI</text><line x1="66.2" x2="66.2" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="66.2" cy="82" r="2.4" fill="#C1121F"/><text x="66.2" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/11</text><text x="66.2" y="103.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >メジャーSQ</text><line x1="105.5" x2="105.5" y1="43" y2="16" stroke="#C1121F" stroke-width="1"/><circle cx="105.5" cy="16" r="2.4" fill="#C1121F"/><text x="105.5" y="1.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/18</text><text x="105.5" y="11.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >日銀会合</text><line x1="156.1" x2="156.1" y1="57" y2="82" stroke="#5A6170" stroke-width="1"/><circle cx="156.1" cy="82" r="2.4" fill="#5A6170"/><text x="156.1" y="93.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/26頃</text><text x="156.1" y="103.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >損出し売り一巡</text><line x1="195.5" x2="195.5" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="195.5" cy="16" r="2.4" fill="#5A6170"/><text x="195.5" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1/3</text><text x="195.5" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >新議会招集</text><line x1="223.6" x2="223.6" y1="57" y2="82" stroke="#5A6170" stroke-width="1"/><circle cx="223.6" cy="82" r="2.4" fill="#5A6170"/><text x="223.6" y="93.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1/8 SQ</text><line x1="330.3" x2="330.3" y1="43" y2="16" stroke="#C1121F" stroke-width="1"/><circle cx="330.3" cy="16" r="2.4" fill="#C1121F"/><text x="330.3" y="1.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1月下旬</text><text x="330.3" y="11.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >FOMC・日銀</text><line x1="369.7" x2="369.7" y1="57" y2="82" stroke="#5A6170" stroke-width="1"/><circle cx="369.7" cy="82" r="2.4" fill="#5A6170"/><text x="369.7" y="93.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2/3 節分</text><text x="369.7" y="103.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >国内決算</text><line x1="482.1" x2="482.1" y1="43" y2="16" stroke="#C1121F" stroke-width="1"/><circle cx="482.1" cy="16" r="2.4" fill="#C1121F"/><text x="482.1" y="1.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2/23頃</text><text x="482.1" y="11.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >NVIDIA決算</text><line x1="577.6" x2="577.6" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="577.6" cy="82" r="2.4" fill="#C1121F"/><text x="577.6" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3/12</text><text x="577.6" y="103.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >メジャーSQ</text></svg><div class="cap"><b>Fig.5</b> 12月〜3月の主なイベント（日付は予定、一部要確認）。赤は相場を動かしやすいもの。期間前の11/15前後（45日ルール）と11/17（NVIDIA決算）も要注意。</div></div>
+<div class="cols">
+  <div>
+    <h2><span class="n">1</span>退場しないための5つのルール</h2>
+    <ul class="b">
+      <li><b>信用・レバレッジは12月まで最小限</b>。日経-18%で追証が出ない建玉に落とす。</li>
+      <li><b>現金を30%残す</b>。下げは「買い場」に変わるが、現金がなければ買えない。</li>
+      <li><b>買いは3回に分ける</b>：56,000円／52,000円／48,000円（Session 2・3の銘柄もここで仕込む）。</li>
+      <li><b>逆指値を先に置く</b>。売る理由は買う前に決める。</li>
+      <li><b>反発は戻り売りを疑う</b>。200日線（約62,000円）回復までは強気にならない。</li>
+    </ul>
+  </div>
+  <div>
+    <h2><span class="n">2</span>他のセッションとのつながり</h2>
+    <div class="box tint small">
+      <p><b>Session 2（半導体）</b>：AI投資の行方が今回の下げの震源です。半導体が底を打つかどうかが、日経の底を決めます。</p>
+      <p><b>Session 3（お年玉銘柄）</b>：12月の損出し売りと下値シナリオが重なれば、暴騰候補を安く仕込める好機になります。下げを怖がるのではなく、<b>下げを待てる資金配分</b>にしておくことが結論です。</p>
+    </div>
+    <h2 style="margin-top:7px"><span class="n">3</span>飲み会での論点</h2>
+    <p class="small">① 2番底はどこか（56,000円？52,000円？48,000円？）　② 12/9 FOMCで本当に利上げはあるか　③ 今の自分の持ち高で、日経-18%に耐えられるか</p>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>Federal Reserve: FOMC 2026-27 日程</li><li>日本銀行: 金融政策決定会合 日程</li><li>日本取引所グループ: SQ日程</li><li>大和総研: 日銀の利上げ見通し（2026/9）</li><li>本資料 Session 2・3</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.4 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t2p1"><article class="sheet" style="--c:#0B4F5C;--a:#0E9C9C;--t:#E8F4F4;--t2:#FFF6E0">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 2　Semiconductors &amp; AI</span></div>
+  <div class="titleblock"><div class="sesno">2-1<small>1/4</small></div><h1>半導体は「弱気相場」入り、それでも業績は過去最高</h1><p class="sub">高値から-38%の調整は2000年型か2022年型か。巻き返しの3条件を考える</p></div>
+  <div class="abstract"><div class="lab">要旨</div><div><p>SOX指数は6月の高値14,634から11/5の9,011まで約38%下落し、弱気相場に入った。理由はAI投資の回収への疑問、インテル決算、中間選挙後のデータセンター規制懸念である。一方で主要企業の業績とAI投資計画は上方修正が続く。株価と業績の差が、巻き返しの余地になる。</p><div class="kw">キーワード：SOX、弱気相場、AI capex、NVIDIA決算、200日線</div></div></div>
+  <div class="body"><div class="fit">
+<div class="kpis">
+  <div class="kpi"><div class="v">10,003</div><div class="l">SOX指数（11/9取引中）<br>11/5に1日で-12.3%</div></div>
+  <div class="kpi"><div class="v" style="color:#C1121F">-38<small>%</small></div><div class="l">6/22高値14,634→11/5安値<br>9,011。弱気相場入り</div></div>
+  <div class="kpi"><div class="v">+8<small>%</small></div><div class="l">200日線10,841までの距離<br>回復＝トレンド転換の目安</div></div>
+  <div class="kpi"><div class="v">725<small>B$</small></div><div class="l">米大手4社の2026年AI投資<br>（中央値・据え置き〜増額）</div></div>
+</div>
+<div class="cols">
+  <div>
+    <h2><span class="n">1</span>なぜ売られたか</h2>
+    <ul class="b">
+      <li><b>AI投資の回収への疑問</b>：7月だけでSOXは約-21%、2008年以来最悪の月でした。</li>
+      <li><b>10/30 インテル決算ショック</b>：1日で-28.6%（1974年以来最大）。PC市場は2026年-12%の見通しです。</li>
+      <li><b>11/3 中間選挙で民主党が大勝</b>：データセンター関連の住民投票は41件中40件が否決。電力料金の高騰が争点になりました。</li>
+      <li><b>メモリ株の利益確定</b>：10/29〜11/6にMU・SKハイニックスがともに約-26%。</li>
+    </ul>
+    <h2 style="margin-top:6px"><span class="n">2</span>それでも業績は過去最高</h2>
+    <ul class="b">
+      <li>NVIDIAの今期売上ガイダンスは<b>108B$</b>（市場予想は約104B$）。前四半期のデータセンター売上は前年比+117%。</li>
+      <li>AMDのQ3売上は+45%。アドバンテストは通期営業利益見通しを<b>9,670億円</b>に上方修正し、2,800億円の自社株買いも決めました。</li>
+      <li>Metaは2026年のAI投資を125〜145B$に引き上げ。アマゾン・アルファベットは「2027年はさらに大幅増」と発言しています。</li>
+    </ul>
+  </div>
+  <div>
+    <div class="fig"><svg viewBox="0 0 330 150" xmlns="http://www.w3.org/2000/svg" role="img"><line x1="30" x2="324" y1="108.2" y2="108.2" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="111.2" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-80</text><line x1="30" x2="324" y1="84.7" y2="84.7" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="87.7" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-60</text><line x1="30" x2="324" y1="61.1" y2="61.1" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="64.1" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-40</text><line x1="30" x2="324" y1="37.6" y2="37.6" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="40.6" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-20</text><line x1="30" x2="324" y1="14.0" y2="14.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="17.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >0</text><line x1="30" x2="324" y1="14.0" y2="14.0" stroke="#5A6170" stroke-width="1"/><rect x="41.8" y="14.0" width="50.0" height="94.2" fill="#9AA5B1" rx="1"/><text x="66.8" y="117.2" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-80%</text><text x="66.8" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2000-02</text><rect x="115.3" y="14.0" width="50.0" height="70.7" fill="#9AA5B1" rx="1"/><text x="140.2" y="93.7" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-60%</text><text x="140.2" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2008</text><rect x="188.8" y="14.0" width="50.0" height="53.0" fill="#9AA5B1" rx="1"/><text x="213.8" y="76.0" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-45%</text><text x="213.8" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2022</text><rect x="262.3" y="14.0" width="50.0" height="44.8" fill="#C1121F" rx="1"/><text x="287.2" y="67.8" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-38%</text><text x="287.2" y="131.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2026|今回</text></svg><div class="cap"><b>Fig.1</b> SOX指数の高値からの最大下落率（過去の大相場との比較）。2008年は概算［要確認］。今回は11/5安値まで。</div></div>
+    <div class="box tint" style="margin-top:8px">
+      <h3>本セッションの問い</h3>
+      <p class="small">今回の下げは2000年型（需要そのものが消える）か、2022年型（金利とバリュエーションの調整）か。演者は<b>「株価は売られたが、事業は売られていない」2022年型に近い</b>と考えます。ただし政治（データセンター規制）という新しいリスクが加わった点は2022年と違います。</p>
+    </div>
+    <div class="box" style="margin-top:8px">
+      <h3>巻き返しの3条件</h3>
+      <ul class="b small">
+        <li><span class="em">①</span> 11/17 NVIDIA決算で「108B$超え＋強気の次期ガイダンス」</li>
+        <li><span class="em">②</span> SOXが200日線（10,841）を終値で回復</li>
+        <li><span class="em">③</span> 1〜2月の大手決算で2027年AI投資の増額が見える</li>
+      </ul>
+    </div>
+  </div>
+  <div class="span2">
+    <h2><span class="n">3</span>SOX指数の節目</h2>
+    <table class="t">
+      <tr><th>節目</th><th class="r">水準</th><th class="r">現在値10,003から</th><th>意味</th></tr>
+      <tr><td>6/22 年初来高値</td><td class="r">14,634</td><td class="r upc">+46.3%</td><td>ここまで戻れば「完全回復」。2027年のAI投資増額が前提</td></tr>
+      <tr><td>75日線</td><td class="r">11,709</td><td class="r upc">+17.1%</td><td>中期の上値メド。戻り売りが出やすい</td></tr>
+      <tr><td><b>200日線</b></td><td class="r"><b>10,841</b></td><td class="r upc"><b>+8.4%</b></td><td><b>回復＝トレンド転換の合図（巻き返しの条件②）</b></td></tr>
+      <tr><td>11/5 安値</td><td class="r">9,011</td><td class="r dn">-9.9%</td><td>割れたら2番底を探る展開。撤退ライン</td></tr>
+    </table>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>newsbytesapp: SOX in bear territory (2026/11)</li><li>Fortune: chip stocks volatility (2026/8/2)</li><li>Al Jazeera: midterms and data centres (2026/11/7)</li><li>NVIDIA IR: Q3 FY27 conference call (11/17)</li><li>インテル決算報道（2026/10/30）</li><li>yfinance 株価・移動平均（11/9取得）</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.5 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t2p2"><article class="sheet" style="--c:#0B4F5C;--a:#0E9C9C;--t:#E8F4F4;--t2:#FFF6E0">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 2　Semiconductors &amp; AI</span></div>
+  <div class="titleblock"><div class="sesno">2-2<small>2/4</small></div><h1>AIのお金の流れ：払う側は減らさず、受け取る側の株価だけが下げた</h1><p class="sub">バリューチェーン8層と、需要を決める米大手4社のAI投資</p></div>
+  
+  <div class="body"><div class="fit">
+<div class="cols">
+  <div class="span2">
+    <h2><span class="n">1</span>AIバリューチェーンと日米の代表銘柄</h2>
+    <table class="t">
+      <tr><th>層</th><th>役割</th><th>米国・海外</th><th>日本</th><th>今の位置づけ</th></tr>
+      <tr><td><b>GPU / ASIC</b></td><td>AIの計算</td><td>NVIDIA, Broadcom, AMD</td><td>ソシオネクスト</td><td>11/17決算が最大の材料。ASICは2027年に60〜90B$の市場</td></tr>
+      <tr><td><b>ファウンドリ</b></td><td>先端品の製造</td><td>TSMC</td><td>ラピダス（非上場）</td><td>先端品はほぼ独占。台湾リスクは常に意識</td></tr>
+      <tr><td><b>メモリ / HBM</b></td><td>AI向け高速メモリ</td><td>Micron, SKハイニックス</td><td>キオクシア</td><td>業績の伸びは最大、値動きも最大のサイクル株</td></tr>
+      <tr><td><b>製造装置</b></td><td>工場の設備</td><td>ASML, AMAT, Lam</td><td>東京エレクトロン, ディスコ, レーザーテック, SCREEN</td><td>投資計画の影響が半年〜1年遅れて出る</td></tr>
+      <tr><td><b>検査・テスト</b></td><td>完成品の検査</td><td>Teradyne</td><td>アドバンテスト</td><td>AI向けテスターがけん引。上方修正済み</td></tr>
+      <tr><td><b>電力・DC</b></td><td>電源・冷却・配線</td><td>Vertiv, Constellation</td><td>フジクラ</td><td><span class="dn">選挙後の規制リスクが最も大きい層</span></td></tr>
+      <tr><td><b>クラウド / ソフト</b></td><td>AIで稼ぐ側</td><td>MSFT, GOOGL, META, AMZN, PLTR</td><td>さくらインターネット</td><td>投資額を決める側。相対的に底堅い</td></tr>
+      <tr><td><b>AI投資会社</b></td><td>出資・保有</td><td>—</td><td>ソフトバンクG</td><td>OpenAI関連のレバレッジ。上下に振れやすい</td></tr>
+    </table>
+  </div>
+  <div>
+    <h2><span class="n">2</span>お金の流れ：誰が払い、誰が受け取るか</h2>
+    <p>AI半導体の需要は、ほぼ<b>米大手4社のAI投資（capex）</b>で決まります。4社の2026年計画は合計<b>約710〜740B$</b>で、Moody'sは2027年に「1兆$に迫る」と見ています。</p>
+    <div class="fig"><svg viewBox="0 0 330 96" xmlns="http://www.w3.org/2000/svg" role="img"><text x="86.0" y="19.0" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >アマゾン</text><rect x="92" y="7.0" width="167.5" height="16.0" fill="#0B4F5C" rx="1.5"/><text x="263.5" y="19.0" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >220B$</text><text x="86.0" y="41.0" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >アルファベット</text><rect x="92" y="29.0" width="152.3" height="16.0" fill="#0B4F5C" rx="1.5"/><text x="248.3" y="41.0" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >200B$</text><text x="86.0" y="63.0" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >マイクロソフト※</text><rect x="92" y="51.0" width="129.5" height="16.0" fill="#7FA9B0" rx="1.5"/><text x="225.5" y="63.0" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >170B$</text><text x="86.0" y="85.0" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >Meta</text><rect x="92" y="73.0" width="102.8" height="16.0" fill="#0B4F5C" rx="1.5"/><text x="198.8" y="85.0" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >135B$</text></svg><div class="cap"><b>Fig.2</b> 米大手4社の2026年AI投資計画（B$=10億ドル、レンジは中央値）。※マイクロソフトは暦年換算の二次情報［要確認］。</div></div>
+  </div>
+  <div>
+    <h2><span class="n">3</span>市場規模は2年で倍以上</h2>
+    <p>WSTS（世界半導体市場統計）の2026年春季予測では、2026年は<b>1.51兆$（+89.9%）</b>、2027年は約1.9兆$（+26.6%）。メモリだけで2027年に1.06兆$です。</p>
+    <div class="fig"><svg viewBox="0 0 330 140" xmlns="http://www.w3.org/2000/svg" role="img"><line x1="30" x2="324" y1="110.0" y2="110.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="113.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >0</text><line x1="30" x2="324" y1="66.4" y2="66.4" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="69.4" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1</text><line x1="30" x2="324" y1="22.7" y2="22.7" stroke="#E3E6EC" stroke-width="0.8"/><text x="26.0" y="25.7" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2</text><line x1="30" x2="324" y1="110.0" y2="110.0" stroke="#5A6170" stroke-width="1"/><rect x="45.7" y="75.1" width="66.6" height="34.9" fill="#9AA5B1" rx="1"/><text x="79.0" y="72.1" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >0.80兆$</text><text x="79.0" y="121.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2025</text><rect x="143.7" y="44.1" width="66.6" height="65.9" fill="#0B4F5C" rx="1"/><text x="177.0" y="41.1" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1.51兆$</text><text x="177.0" y="121.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2026</text><rect x="241.7" y="27.1" width="66.6" height="82.9" fill="#0E9C9C" rx="1"/><text x="275.0" y="24.1" font-size="8.4" fill="#1B1F27" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1.90兆$</text><text x="275.0" y="121.0" font-size="8.5" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2027</text></svg><div class="cap"><b>Fig.3</b> 世界半導体市場の予測（WSTS 2026年6月）。2025年は2026年の伸び率から逆算。秋季予測は12月公表予定。</div></div>
+  </div>
+  <div class="span2 box tint2">
+    <h3>演者の見方：今は「受け取る側」の株価だけが先に崩れた</h3>
+    <p class="small">払う側（大手4社）は投資計画を下げていません。にもかかわらず、受け取る側の半導体株は高値から2〜6割下げています。<b>1〜2月の大手決算で2027年の投資額が示された時</b>が、この差が埋まるかどうかの分かれ目です。逆に投資額の伸びが鈍れば、装置・メモリ・電力の順に下げが深くなる点に注意します。</p>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>WSTS 2026年春季予測（JEITA, 2026/6/2）</li><li>DatacenterDynamics: Moody's hyperscaler capex forecasts</li><li>各社決算資料（Meta, Amazon, Alphabet 2026年Q3）</li><li>Broadcom 決算説明（ASIC市場機会）</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.6 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t2p3"><article class="sheet" style="--c:#0B4F5C;--a:#0E9C9C;--t:#E8F4F4;--t2:#FFF6E0">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 2　Semiconductors &amp; AI</span></div>
+  <div class="titleblock"><div class="sesno">2-3<small>3/4</small></div><h1>売られすぎマップ：12銘柄の「下げ幅」と「戻る理由」</h1><p class="sub">高値からの下落率と材料・リスクを並べ、本命・対抗・大穴に分ける</p></div>
+  
+  <div class="body"><div class="fit">
+<div class="cols" style="grid-template-columns:1.25fr 1fr">
+  <div>
+    <h2><span class="n">1</span>注目12銘柄の比較</h2>
+    <table class="t">
+      <tr><th>銘柄</th><th>コード</th><th class="r">株価</th><th class="r">年初来</th><th class="r">高値比</th><th>買い材料</th><th>リスク</th></tr>
+      <tr><td><b>NVIDIA</b></td><td>NVDA</td><td class='r'>$176.5</td><td class='r dn'>-5.1%</td><td class='r dn'>-26.2%</td><td>11/17決算・Rubin量産</td><td>大手の自社チップ化</td></tr><tr><td><b>Broadcom</b></td><td>AVGO</td><td class='r'>$319.2</td><td class='r dn'>-7.3%</td><td class='r dn'>-33.5%</td><td>カスタムASIC</td><td>AI見通しへの失望</td></tr><tr><td><b>AMD</b></td><td>AMD</td><td class='r'>$501.2</td><td class='r upc'>+134.0%</td><td class='r dn'>-22.8%</td><td>Q3売上+45%</td><td>上昇後の利益確定</td></tr><tr><td><b>TSMC</b></td><td>TSM</td><td class='r'>$392.2</td><td class='r upc'>+30.1%</td><td class='r dn'>-19.3%</td><td>先端品を独占</td><td>台湾・関税</td></tr><tr><td><b>Micron</b></td><td>MU</td><td class='r'>$738.8</td><td class='r upc'>+159.0%</td><td class='r dn'>-39.1%</td><td>HBMの品薄</td><td>メモリ価格の天井論</td></tr><tr><td><b>ASML</b></td><td>ASML</td><td class='r'>$1,511.6</td><td class='r upc'>+42.2%</td><td class='r dn'>-23.8%</td><td>EUV装置を独占</td><td>中国の内製化</td></tr><tr><td><b>Vertiv</b></td><td>VRT</td><td class='r'>$201.8</td><td class='r upc'>+24.7%</td><td class='r dn'>-46.3%</td><td>DCの冷却・電源</td><td>選挙後のDC規制</td></tr><tr><td><b>Microsoft</b></td><td>MSFT</td><td class='r'>$540.8</td><td class='r upc'>+12.5%</td><td class='r dn'>-2.7%</td><td>AIの収益化</td><td>投資削減の報道</td></tr><tr><td><b>東京エレクトロン</b></td><td>8035</td><td class='r'>¥8,263</td><td class='r upc'>+22.4%</td><td class='r dn'>-47.2%</td><td>DRAM投資の回復</td><td>中国向け比率</td></tr><tr><td><b>アドバンテスト</b></td><td>6857</td><td class='r'>¥28,015</td><td class='r upc'>+43.1%</td><td class='r dn'>-33.1%</td><td>上方修正・自社株買い</td><td>業績の集中</td></tr><tr><td><b>キオクシア</b></td><td>285A</td><td class='r'>¥8,511</td><td class='r upc'>+145.0%</td><td class='r dn'>要確認</td><td>NAND値上がり</td><td>慎重な見通し</td></tr><tr><td><b>フジクラ</b></td><td>5803</td><td class='r'>¥2,962</td><td class='r upc'>+2.8%</td><td class='r dn'>-62.1%</td><td>DC向け光ファイバー</td><td>DC投資の減速</td></tr>
+    </table>
+    <p class="cap">米国株は11/9取引時間中、日本株は11/6終値（yfinance）。キオクシアの高値比は株式分割の調整漏れの可能性があり要確認。</p>
+  </div>
+  <div>
+    <h2><span class="n">2</span>どこまで売られたか</h2>
+    <div class="fig"><svg viewBox="0 0 300 308.4" xmlns="http://www.w3.org/2000/svg" role="img"><text x="300.0" y="9.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >■日本 ■米国ほか</text><text x="90.0" y="23.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >キオクシア※</text><rect x="96" y="15.0" width="142.6" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="242.6" y="23.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-76%</text><text x="90.0" y="40.9" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >フジクラ</text><rect x="96" y="32.2" width="115.7" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="215.7" y="40.9" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-62%</text><text x="90.0" y="58.1" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >SKハイニックス※</text><rect x="96" y="49.4" width="114.1" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="214.1" y="58.1" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-61%</text><text x="90.0" y="75.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >SCREEN</text><rect x="96" y="66.6" width="111.6" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="211.6" y="75.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-60%</text><text x="90.0" y="92.5" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >ソフトバンクG</text><rect x="96" y="83.8" width="109.6" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="209.6" y="92.5" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-59%</text><text x="90.0" y="109.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >ディスコ</text><rect x="96" y="101.0" width="100.1" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="200.1" y="109.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-54%</text><text x="90.0" y="126.9" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >LRCX</text><rect x="96" y="118.2" width="92.6" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="192.6" y="126.9" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-50%</text><text x="90.0" y="144.1" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >AMAT</text><rect x="96" y="135.4" width="91.9" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="191.9" y="144.1" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-49%</text><text x="90.0" y="161.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >東京エレクトロン</text><rect x="96" y="152.6" width="88.0" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="188.0" y="161.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-47%</text><text x="90.0" y="178.5" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >Vertiv</text><rect x="96" y="169.8" width="86.3" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="186.3" y="178.5" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-46%</text><text x="90.0" y="195.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >レーザーテック</text><rect x="96" y="187.0" width="82.0" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="182.0" y="195.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-44%</text><text x="90.0" y="212.9" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >Micron</text><rect x="96" y="204.2" width="72.9" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="172.9" y="212.9" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-39%</text><text x="90.0" y="230.1" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >Broadcom</text><rect x="96" y="221.4" width="62.4" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="162.4" y="230.1" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-34%</text><text x="90.0" y="247.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >アドバンテスト</text><rect x="96" y="238.6" width="61.7" height="11.2" fill="#0E9C9C" rx="1.5"/><text x="161.7" y="247.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-33%</text><text x="90.0" y="264.5" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >NVIDIA</text><rect x="96" y="255.8" width="48.8" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="148.8" y="264.5" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-26%</text><text x="90.0" y="281.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >TSMC</text><rect x="96" y="273.0" width="36.0" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="136.0" y="281.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-19%</text><text x="90.0" y="298.9" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >MSFT</text><rect x="96" y="290.2" width="5.0" height="11.2" fill="#0B4F5C" rx="1.5"/><text x="105.0" y="298.9" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >-3%</text></svg><div class="cap"><b>Fig.4</b> 年初来高値からの下落率。※キオクシア・SKハイニックスは分割調整漏れの可能性［要確認］。</div></div>
+  </div>
+  <div class="span2">
+    <div class="cols3">
+      <div class="box tint"><h3>本命：装置・検査</h3><p class="small">東京エレクトロン（-47%）、アドバンテスト。AI投資の増額が見えれば遅れて業績に効きます。アドバンテストは上方修正と自社株買いで下値の支えがあります。</p></div>
+      <div class="box tint"><h3>対抗：GPU・ファウンドリ</h3><p class="small">NVIDIA、TSMC。下げは比較的浅く、11/17決算という分かりやすい材料があります。決算で反発しなければ、全体の底入れはまだ先と判断します。</p></div>
+      <div class="box tint2"><h3>大穴：メモリ・電力</h3><p class="small">Micron、フジクラ、Vertiv。戻る時の上昇率は最大ですが、選挙後の規制リスクと値動きの大きさから<b>小さく・分けて</b>持つ前提です。</p></div>
+    </div>
+  </div>
+  <div class="span2 small muted">
+    参考（高値比）：AMAT -49%、Lam -50%、ディスコ -54%、レーザーテック -44%、SCREEN -60%、ソフトバンクG -59%、さくらインターネット -37%、Alphabet -27%、Meta -18%、Palantir -19%、Constellation -26%。
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>yfinance 株価・52週高値（2026/11/6・11/9取得）</li><li>アドバンテスト 2026年10/28 適時開示（業績予想修正・自己株式取得）</li><li>AMD 2026年Q3決算</li><li>FourWeekMBA: AI memory stocks fell up to 26%</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.7 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t2p4"><article class="sheet" style="--c:#0B4F5C;--a:#0E9C9C;--t:#E8F4F4;--t2:#FFF6E0">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 2　Semiconductors &amp; AI</span></div>
+  <div class="titleblock"><div class="sesno">2-4<small>4/4</small></div><h1>12月〜3月の戦い方：3段階で分けて買い、撤退ラインを先に決める</h1><p class="sub">イベント日程・押し目買いの条件・配分のたたき台</p></div>
+  
+  <div class="body"><div class="fit">
+<div class="fig"><svg viewBox="0 0 700 104" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="10.0" y="44" width="173.2" height="12" fill="#0B4F5C" opacity="0.85"/><text x="97.1" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12月</text><rect x="184.2" y="44" width="173.2" height="12" fill="#0B4F5C" opacity="0.70"/><text x="271.3" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1月</text><rect x="358.4" y="44" width="156.4" height="12" fill="#0B4F5C" opacity="0.55"/><text x="437.1" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2月</text><rect x="515.8" y="44" width="173.2" height="12" fill="#0B4F5C" opacity="0.40"/><text x="602.9" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3月</text><line x1="10.0" x2="10.0" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="10.0" cy="16" r="2.4" fill="#5A6170"/><text x="10.0" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/1</text><text x="10.0" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >師走入り</text><line x1="55.0" x2="55.0" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="55.0" cy="82" r="2.4" fill="#C1121F"/><text x="55.0" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/9 FOMC</text><line x1="60.6" x2="60.6" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="60.6" cy="16" r="2.4" fill="#5A6170"/><text x="60.6" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/9-11</text><text x="60.6" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >SEMICON Japan</text><line x1="66.2" x2="66.2" y1="57" y2="82" stroke="#5A6170" stroke-width="1"/><circle cx="66.2" cy="82" r="2.4" fill="#5A6170"/><text x="66.2" y="93.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/10頃</text><text x="66.2" y="103.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >Broadcom決算</text><line x1="99.9" x2="99.9" y1="43" y2="16" stroke="#C1121F" stroke-width="1"/><circle cx="99.9" cy="16" r="2.4" fill="#C1121F"/><text x="99.9" y="1.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/16頃</text><text x="99.9" y="11.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >Micron決算</text><line x1="262.9" x2="262.9" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="262.9" cy="82" r="2.4" fill="#C1121F"/><text x="262.9" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1月中旬</text><text x="262.9" y="103.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >TSMC決算</text><line x1="330.3" x2="330.3" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="330.3" cy="16" r="2.4" fill="#5A6170"/><text x="330.3" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1/27 FOMC</text><line x1="364.0" x2="364.0" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="364.0" cy="82" r="2.4" fill="#C1121F"/><text x="364.0" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1月末〜2月</text><text x="364.0" y="103.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >大手4社決算</text><line x1="414.6" x2="414.6" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="414.6" cy="16" r="2.4" fill="#5A6170"/><text x="414.6" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2月上旬</text><text x="414.6" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >東エレク・アドテスト</text><line x1="498.9" x2="498.9" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="498.9" cy="82" r="2.4" fill="#C1121F"/><text x="498.9" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2月下旬</text><text x="498.9" y="103.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >NVIDIA決算</text><line x1="605.7" x2="605.7" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="605.7" cy="16" r="2.4" fill="#5A6170"/><text x="605.7" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3/17 FOMC</text><line x1="611.3" x2="611.3" y1="57" y2="82" stroke="#C1121F" stroke-width="1"/><circle cx="611.3" cy="82" r="2.4" fill="#C1121F"/><text x="611.3" y="93.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3月中旬</text><text x="611.3" y="103.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >NVIDIA GTC</text></svg><div class="cap"><b>Fig.5</b> 12月〜3月の半導体関連イベント（日付は予定・例年ベースを含む［要確認］）。赤は相場を動かしやすいもの。11/17のNVIDIA決算は期間前の最重要イベント。</div></div>
+<div class="cols">
+  <div>
+    <h2><span class="n">1</span>3段階の押し目買いプラン</h2>
+    <table class="t">
+      <tr><th>段階</th><th>条件（SOX）</th><th>行動</th></tr>
+      <tr><td><b>Step 1</b></td><td>11/17決算後も<br>9,011を割らない</td><td>予定額の1/3で打診買い（GPU・装置）</td></tr>
+      <tr><td><b>Step 2</b></td><td>200日線10,841を<br>終値で回復</td><td>次の1/3。トレンド転換を確認</td></tr>
+      <tr><td><b>Step 3</b></td><td>1〜2月決算で<br>2027年投資が増額</td><td>残り1/3。メモリ・電力も追加</td></tr>
+      <tr><td><b class="dn">撤退</b></td><td>9,011を終値で割る</td><td>買い増し停止。Session 1の下値シナリオへ</td></tr>
+    </table>
+    <p class="small" style="margin-top:5px">Session 1で見た「日経48,000円まで下げる」シナリオでは、半導体株はさらに下げる可能性が高いと考えます。<b>一度に全額を入れず、時間と価格を分けること</b>が退場しないための最低条件です。</p>
+  </div>
+  <div>
+    <h2><span class="n">2</span>配分のたたき台（半導体・AI枠を100とした場合）</h2>
+    <div class="fig"><svg viewBox="0 0 330 113" xmlns="http://www.w3.org/2000/svg" role="img"><text x="98.0" y="18.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >GPU・ファウンドリ</text><rect x="104" y="7.0" width="139.5" height="15.0" fill="#0B4F5C" rx="1.5"/><text x="247.5" y="18.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >30%</text><text x="98.0" y="39.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >製造装置・検査</text><rect x="104" y="28.0" width="139.5" height="15.0" fill="#0B4F5C" rx="1.5"/><text x="247.5" y="39.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >30%</text><text x="98.0" y="60.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >メモリ</text><rect x="104" y="49.0" width="46.5" height="15.0" fill="#0E9C9C" rx="1.5"/><text x="154.5" y="60.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >10%</text><text x="98.0" y="81.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >電力・DC</text><rect x="104" y="70.0" width="46.5" height="15.0" fill="#0E9C9C" rx="1.5"/><text x="154.5" y="81.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >10%</text><text x="98.0" y="102.3" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >現金（押し目用）</text><rect x="104" y="91.0" width="93.0" height="15.0" fill="#9AA5B1" rx="1.5"/><text x="201.0" y="102.3" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >20%</text></svg><div class="cap"><b>Fig.6</b> 演者のたたき台。現金20%は下値シナリオ時の買い増し用に残す。</div></div>
+    <h2 style="margin-top:7px"><span class="n">3</span>主なリスク</h2>
+    <ul class="b small">
+      <li>2027年に大手4社がAI投資を鈍化させる（最大のリスク）</li>
+      <li>民主党主導の議会でデータセンター優遇が縮小</li>
+      <li>メモリ価格の天井、中国の追い上げと輸出規制</li>
+      <li>金利上昇。日本株は円高と信用買い残の重さ</li>
+    </ul>
+  </div>
+  <div class="span2">
+    <h2><span class="n">4</span>段階ごとの買い候補</h2>
+    <table class="t">
+      <tr><th>段階</th><th>米国</th><th>日本</th><th>選ぶ理由</th></tr>
+      <tr><td><b>Step 1</b></td><td>NVIDIA、TSMC</td><td>東京エレクトロン</td><td>下げが比較的浅く、業績の見通しが最も確か。決算で方向が早く出る</td></tr>
+      <tr><td><b>Step 2</b></td><td>ASML、Broadcom</td><td>アドバンテスト、ディスコ</td><td>装置・検査は投資増額が見えた後に効く。自社株買いで下値も堅い</td></tr>
+      <tr><td><b>Step 3</b></td><td>Micron、Vertiv</td><td>キオクシア、フジクラ</td><td>戻る時の上昇率は最大。規制と値動きのリスクから最後に小さく</td></tr>
+    </table>
+  </div>
+  <div class="span2 box tint">
+    <h3>飲み会での論点</h3>
+    <p class="small">① 今回の下げは2000年型か2022年型か　② NVIDIA決算の「合格ライン」はいくらか（売上108B$超え？　次期ガイダンス120B$？）　③ 日本株で一番戻りが大きいのは装置・検査・メモリ・電線のどれか</p>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>Federal Reserve: 2026-27 FOMC 日程</li><li>SEMI: SEMICON Japan 2026（12/9-11）</li><li>各社IR（決算発表予定日。例年ベースは要確認）</li><li>Session 1 本資料（下値シナリオ）</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.8 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t3p1"><article class="sheet" style="--c:#7E1A2C;--a:#B8860B;--t:#FBF3E4;--t2:#F8ECEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 3　New-Year Picks &amp; Top 20 Movers</span></div>
+  <div class="titleblock"><div class="sesno">3-1<small>1/4</small></div><h1>お年玉は「12月中旬に仕込み、1〜2月に受け取る」</h1><p class="sub">損出し売りの反動を狙うアノマリーと、日米の本命・対抗・大穴</p></div>
+  <div class="abstract"><div class="lab">要旨</div><div><p>お年玉銘柄は年明けに上がる銘柄ではなく、12月の損出し売りで安くなった銘柄である。グロース株は12月に平均-5.7%下げ、1〜2月に戻しやすい。今年は人気テーマ株の下げが大きく、反発余地も大きい。応援銘柄のメタプラネット・データセクション・スペースXを含め、日米20銘柄を選んだ。</p><div class="kw">キーワード：お年玉銘柄、損出し売り、1月効果、小型グロース、12/1〜3/31</div></div></div>
+  <div class="body"><div class="fit">
+<div class="cols">
+  <div>
+    <h2><span class="n">1</span>お年玉アノマリーの実態</h2>
+    <ul class="b">
+      <li><b>12月は損出し売りで弱い</b>：東証グロース250 ETFの12月は2018〜2025年で<b class="dn">7敗1勝</b>、平均<b class="dn">-5.7%</b>。最悪は2018年の-19.8%。</li>
+      <li><b>年明けは戻しやすい</b>：同ETFの1月は8年中6年プラス。2018年12月に-19.8%下げた後、2019年1月は+8.9%。</li>
+      <li><b>12/1〜3/31を通して持つと勝ちにくい</b>：期間でプラスは8年中3年だけ。ただし期間中の最大上昇は直近3年で<b class="upc">+8.6〜12.0%</b>。</li>
+      <li><b>米国は「1月効果」が12月中旬に前倒し</b>：ラッセル2000の12/15〜31は平均+2.5%（1987〜2025年）。</li>
+    </ul>
+    <p class="small muted">集計：ETF（2516.T）・^RUT の終値から調査担当が算出。指数そのものの値ではありません。</p>
+  </div>
+  <div>
+    <div class="fig"><svg viewBox="0 0 340 165" xmlns="http://www.w3.org/2000/svg" role="img"><line x1="44" x2="220" y1="145.0" y2="145.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="148.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >92</text><line x1="44" x2="220" y1="125.7" y2="125.7" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="128.7" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >94</text><line x1="44" x2="220" y1="106.4" y2="106.4" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="109.4" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >96</text><line x1="44" x2="220" y1="87.1" y2="87.1" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="90.1" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >98</text><line x1="44" x2="220" y1="67.9" y2="67.9" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="70.9" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >100</text><line x1="44" x2="220" y1="48.6" y2="48.6" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="51.6" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >102</text><line x1="44" x2="220" y1="29.3" y2="29.3" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="32.3" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >104</text><line x1="44" x2="220" y1="10.0" y2="10.0" stroke="#E3E6EC" stroke-width="0.8"/><text x="39.0" y="13.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >106</text><text x="44.0" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >11月末</text><text x="63.6" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/10</text><text x="83.1" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/20</text><text x="102.7" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/26</text><text x="122.2" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1/10</text><text x="141.8" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1/31</text><text x="161.3" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2/15</text><text x="180.9" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2/28</text><text x="200.4" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3/15</text><text x="220.0" y="159.0" font-size="8" fill="#5A6170" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3/31</text><line x1="44" x2="220" y1="122.8" y2="122.8" stroke="#C1121F" stroke-width="1.4" stroke-dasharray="5 3"/><text x="226.0" y="126.3" font-size="8.6" fill="#C1121F" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >仕込み</text><line x1="44" x2="220" y1="24.5" y2="24.5" stroke="#13803B" stroke-width="1.4" stroke-dasharray="5 3"/><text x="226.0" y="28.0" font-size="8.6" fill="#13803B" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >利確</text><polyline points="44.0,67.9 63.6,92.0 83.1,122.8 102.7,108.4 122.2,72.7 141.8,34.1 161.3,24.5 180.9,48.6 200.4,58.2 220.0,77.5" fill="none" stroke="#7E1A2C" stroke-width="2.4" stroke-dasharray="" stroke-linejoin="round"/></svg><div class="cap"><b>Fig.1</b> 小型グロース株の12〜3月の値動きの模式図（11月末=100）。12月の平均下落と年明けの最大上昇を目安に描いたイメージで、実データではありません。</div></div>
+    <div class="box tint" style="margin-top:8px">
+      <h3>今年の狙い方</h3>
+      <p class="small">人気テーマ株は年初来で大きく下げています（メタプラネット-49%、OKLO-67%、ASTS-55%）。<b>損出し売りが大きいほど年明けの反発余地も大きい</b>と考えます。Session 1の下値シナリオ（日経48,000円）と重なれば、そこが絶好の仕込み場です。</p>
+    </div>
+  </div>
+  <div class="span2">
+    <h2><span class="n">2</span>応援3銘柄の早見表（詳細は3-2）</h2>
+    <table class="t">
+      <tr><th>銘柄</th><th class="r">株価</th><th class="r">高値からの下落</th><th>株価を動かすもの</th><th>買い場の目安</th></tr>
+      <tr><td><b>メタプラネット（3350）</b></td><td class="r">237円</td><td class="r dn">-61%（613円比）</td><td>ビットコイン価格、mNAV</td><td>BTCの底打ち確認後</td></tr>
+      <tr><td><b>データセクション（3905）</b></td><td class="r">1,583円</td><td class="r dn">-74%（6,140円比）</td><td>受注・中間決算・米国案件の稼働</td><td>決算を通過した12月の損出し局面</td></tr>
+      <tr><td><b>スペースX（SPCX）</b></td><td class="r">$141.99</td><td class="r dn">-33%（$211比）</td><td>ロックアップ解除の需給、Starship</td><td>12/9のロックアップ解除後</td></tr>
+    </table>
+  </div>
+  <div class="span2">
+    <h2><span class="n">3</span>結論：本命・対抗・大穴</h2>
+    <table class="t">
+      <tr><th style="width:52px">区分</th><th>日本株</th><th>米国株</th></tr>
+      <tr><td><span class='tag r'>本命</span></td><td><b>データセクション（3905）</b><br><span class='small'>受注と業績が数字で見え始めた。高値から-74%、12月に米国案件が全面稼働</span></td><td><b>ロケットラボ（RKLB）</b><br><span class='small'>Neutron初号機（Q4目標）が成功すれば宇宙テーマの主役。業績も伸びている</span></td></tr><tr><td><span class='tag c'>対抗</span></td><td><b>メタプラネット（3350）</b><br><span class='small'>時価総額が保有BTCの価値を下回る（mNAV 1倍割れ）。BTCが戻れば上げ幅は最大級</span></td><td><b>スペースX（SPCX）</b><br><span class='small'>12/9のロックアップ解除の売りを押し目買い。目標株価の平均は約$232</span></td></tr><tr><td><span class='tag g'>大穴</span></td><td><b>アクセルスペース（402A）</b><br><span class='small'>公開価格375円の半値以下。損出し売りの反動を狙う</span></td><td><b>オクロ（OKLO）</b><br><span class='small'>年初来-67%。原子力・電力テーマの再燃と規制審査の進展で数倍も</span></td></tr>
+    </table>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>楽天証券トウシル：東証グロース指数の12月・損出し売り</li><li>Stock Trader's Almanac：Russell 2000 の12月後半</li><li>yfinance：2516.T・1563.T・^RUT 終値から調査担当が集計</li><li>各社IR・報道（銘柄ページ参照）</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.9 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t3p2"><article class="sheet" style="--c:#7E1A2C;--a:#B8860B;--t:#FBF3E4;--t2:#F8ECEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 3　New-Year Picks &amp; Top 20 Movers</span></div>
+  <div class="titleblock"><div class="sesno">3-2<small>2/4</small></div><h1>応援銘柄3選：メタプラネット・データセクション・スペースX</h1><p class="sub">それぞれの現状・強気材料・リスク・12〜3月のカタリスト</p></div>
+  
+  <div class="body"><div class="fit">
+<div class="box tint2 small">発表者が応援する3銘柄です。いずれも高値から大きく下げており、<b>12月の損出し売りとSession 1の下値シナリオが重なる局面が仕込み候補</b>になります。数値は11/6（日本株）・11/9（米国株）時点、yfinance と各社IR・報道から。</div>
+<div class="cols3" style="gap:12px">
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+  <div class="box tint" style="padding:8px 9px">
+    <div class="small muted">ビットコイン保有企業</div>
+    <div style="font-size:15px;font-weight:700;color:#7E1A2C;line-height:1.3">メタプラネット</div>
+    <div class="small"><b>3350</b>　237円（11/6）</div>
+    <div class="small">暴騰度 <span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></div>
+  </div>
+  <div class="kpis" style="grid-template-columns:1fr 1fr;gap:5px"><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">2,954<small>億円</small></div><div class="l">時価総額</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">-49<small>%</small></div><div class="l">年初来</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">約4.4<small>万BTC</small></div><div class="l">保有（Q3末）</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">0.6<small>倍?</small></div><div class="l">mNAV［推計］</div></div></div>
+  <div><h3 class="upc">強気の材料</h3><ul class="b small"><li>時価総額が保有BTCの価値を下回る。BTCが戻れば株価は大きく動きやすい</li><li>目標は2026年末10万BTC、2027年末21万BTC</li><li>信用格付けの取得、優先株での資金調達を進める</li></ul></div>
+  <div><h3 class="dn">リスク</h3><ul class="b small"><li>mNAV 1倍未満では普通株で資金を集めにくく、買い増しが鈍る</li><li>BTC下落で評価損（Q1は7.25億ドルの純損失）</li></ul></div>
+  <div class="box" style="padding:6px 8px"><h3>12〜3月のカタリスト</h3><ul class="b small"><li>BTC価格（11/9時点 $75,129）</li><li>年末目標への進捗（10万BTCは難しいと推計）</li><li>2月の通期決算［日程要確認］</li></ul></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+  <div class="box tint" style="padding:8px 9px">
+    <div class="small muted">AIデータセンター（GPUクラウド）</div>
+    <div style="font-size:15px;font-weight:700;color:#7E1A2C;line-height:1.3">データセクション</div>
+    <div class="small"><b>3905</b>　1,583円（11/6）</div>
+    <div class="small">暴騰度 <span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></div>
+  </div>
+  <div class="kpis" style="grid-template-columns:1fr 1fr;gap:5px"><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">701<small>億円</small></div><div class="l">時価総額</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">-74<small>%</small></div><div class="l">5/29高値6,140円比</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">1,622<small>億円</small></div><div class="l">今期売上予想（前期336）</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">125<small>億円</small></div><div class="l">今期経常予想（前期36）</div></div></div>
+  <div><h3 class="upc">強気の材料</h3><ul class="b small"><li>9/18に米AIインフラ企業から5年で約1,399億円の大口契約</li><li>10月に豪州でGPU1万個規模の利用枠を受注（最大5年・2,000億円規模と報道）</li><li>Q1経常50億円で通期予想に対する進捗40%</li></ul></div>
+  <div><h3 class="dn">リスク</h3><ul class="b small"><li>Q1の利益は一括収入が中心。通期予想を支える正式受注はまだ不足との指摘</li><li>GPU購入の資金調達による希薄化、顧客の集中</li></ul></div>
+  <div class="box" style="padding:6px 8px"><h3>12〜3月のカタリスト</h3><ul class="b small"><li>11月中旬の中間決算［日程要確認］</li><li>12月に米国案件が全面稼働</li><li>追加受注（GPU10万〜30万個規模への拡張が目標）</li></ul></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+  <div class="box tint" style="padding:8px 9px">
+    <div class="small muted">宇宙・衛星通信・AI</div>
+    <div style="font-size:15px;font-weight:700;color:#7E1A2C;line-height:1.3">スペースX</div>
+    <div class="small"><b>SPCX（NASDAQ）</b>　$141.99（11/9取引中）</div>
+    <div class="small">暴騰度 <span class="stars">★★★<span style="color:#D5D9E1">★★</span></span></div>
+  </div>
+  <div class="kpis" style="grid-template-columns:1fr 1fr;gap:5px"><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">1.93<small>兆$</small></div><div class="l">時価総額</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">+5<small>%</small></div><div class="l">公開価格$135比</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">$232</div><div class="l">目標株価の平均［要確認］</div></div><div class="kpi" style="padding:5px 6px"><div class="v" style="font-size:15px">$108</div><div class="l">52週安値</div></div></div>
+  <div><h3 class="upc">強気の材料</h3><ul class="b small"><li>6/12上場、史上最大のIPO（調達約750億ドル）。7/7にNASDAQ100採用</li><li>Q2売上78億ドル（前年比+92%）。Starlinkが収益の柱</li><li>Starship初の有償ミッション（Starlink V3を26基）</li></ul></div>
+  <div><h3 class="dn">リスク</h3><ul class="b small"><li>12/9に180日ロックアップの一部解除予定［要確認］。需給悪化に注意</li><li>AI関連の設備投資が利益を圧迫。Q3は黒字/赤字の報道が分かれる</li></ul></div>
+  <div class="box" style="padding:6px 8px"><h3>12〜3月のカタリスト</h3><ul class="b small"><li>12/9 ロックアップ解除後の押し目</li><li>Starshipの打ち上げ</li><li>Q4決算（1〜2月）。S&amp;P500採用は早くても2027年6月以降</li></ul></div>
+</div></div>
+<div class="box">
+  <h3>3銘柄の共通点と違い</h3>
+  <p class="small">共通点は<b>「テーマの主役」かつ「高値から大きく下げた」</b>こと。違いは値動きの源です。メタプラネットはBTC価格、データセクションは受注と決算、スペースXは需給（ロックアップ）とStarshipの成否で動きます。<b>動く理由が違うので、3つに分けて持つと分散になります</b>。</p>
+</div></div></div>
+  <div class="refs"><ol><li>The Block: Metaplanet sold 10,000 BTC in Q3（2026/10/5）</li><li>JIO Invest Leaders / かぶ予報：データセクション</li><li>NPR: SpaceX IPO（2026/6/11）</li><li>Fortune: SpaceX lockup expiration（2026/8/5）</li><li>RTTNews: SpaceX Q3</li><li>yfinance 株価・時価総額</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.10 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t3p3"><article class="sheet" style="--c:#7E1A2C;--a:#B8860B;--t:#FBF3E4;--t2:#F8ECEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 3　New-Year Picks &amp; Top 20 Movers</span></div>
+  <div class="titleblock"><div class="sesno">3-3<small>3/4</small></div><h1>日本株10選：12/1〜3/31の最大暴騰候補</h1><p class="sub">応援銘柄2つを含め、テーマを分散して選んだ10銘柄</p></div>
+  
+  <div class="body"><div class="fit">
+<table class="t">
+  <tr><th class="c">#</th><th>銘柄</th><th>テーマ</th><th class="r">株価</th><th class="r">時価総額</th><th class="r">年初来</th><th>カタリスト</th><th>リスク</th><th>暴騰度</th></tr>
+  <tr style="background:#FBF3E4"><td class='c'>1</td><td><b>メタプラネット</b> <span class="tag">推し</span><br><span class='muted small'>3350</span></td><td>ビットコイン</td><td class='r'>237</td><td class='r'>2,954億</td><td class='r dn'>-49%</td><td>BTC反発、年末保有目標</td><td>BTC下落、mNAV<1</td><td><span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></td></tr><tr style="background:#FBF3E4"><td class='c'>2</td><td><b>データセクション</b> <span class="tag">推し</span><br><span class='muted small'>3905</span></td><td>AIデータセンター</td><td class='r'>1,583</td><td class='r'>701億</td><td class='r dn'>-25%</td><td>中間決算、追加受注</td><td>受注の確度、希薄化</td><td><span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></td></tr><tr><td class='c'>3</td><td><b>キオクシア</b><br><span class='muted small'>285A</span></td><td>AI・NAND</td><td class='r'>8,511</td><td class='r'>13.3兆</td><td class='r upc'>+125%</td><td>AI需要、決算</td><td>高値から急落後［要確認］</td><td><span class="stars">★★★<span style="color:#D5D9E1">★★</span></span></td></tr><tr><td class='c'>4</td><td><b>さくらインターネット</b><br><span class='muted small'>3778</span></td><td>GPUクラウド</td><td class='r'>2,715</td><td class='r'>1,124億</td><td class='r dn'>-2%</td><td>政府クラウド、GPU案件</td><td>先行投資の負担</td><td><span class="stars">★★★<span style="color:#D5D9E1">★★</span></span></td></tr><tr><td class='c'>5</td><td><b>ispace</b><br><span class='muted small'>9348</span></td><td>宇宙（月）</td><td class='r'>335</td><td class='r'>508億</td><td class='r dn'>-28%</td><td>補助金・受注</td><td>次の大きな材料まで遠い</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>6</td><td><b>アストロスケール</b><br><span class='muted small'>186A</span></td><td>宇宙（デブリ除去）</td><td class='r'>959</td><td class='r'>1,404億</td><td class='r upc'>+39%</td><td>ミッションの進捗</td><td>赤字が続く</td><td><span class="stars">★★★<span style="color:#D5D9E1">★★</span></span></td></tr><tr><td class='c'>7</td><td><b>アクセルスペース</b><br><span class='muted small'>402A</span></td><td>宇宙（IPO後）</td><td class='r'>179</td><td class='r'>123億</td><td class='r dn'>-65%</td><td>衛星打ち上げ・受注</td><td>公開価格375円を大きく下回る</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>8</td><td><b>石川製作所</b><br><span class='muted small'>6208</span></td><td>防衛（小型）</td><td class='r'>1,402</td><td class='r'>89億</td><td class='r dn'>-8%</td><td>防衛予算、地政学</td><td>テーマ頼みの値動き</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>9</td><td><b>助川電気</b><br><span class='muted small'>7711</span></td><td>核融合</td><td class='r'>3,620</td><td class='r'>210億</td><td class='r dn'>-42%</td><td>核融合の国家戦略</td><td>小型で値動きが荒い</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>10</td><td><b>フィックスターズ</b><br><span class='muted small'>3687</span></td><td>量子・AI</td><td class='r'>1,555</td><td class='r'>531億</td><td class='r upc'>+1%</td><td>量子関連のニュース</td><td>テーマ一巡で下落</td><td><span class="stars">★★★<span style="color:#D5D9E1">★★</span></span></td></tr>
+</table>
+<p class="cap">株価は11/6終値（円）、時価総額は yfinance。テーマが偏らないよう、ビットコイン・AI・宇宙・防衛・核融合・量子に分散。補欠：古河電工（5801、AI向け電力・光）、三菱重工（7011、防衛の大型株）。</p>
+<div class="cols">
+  <div class="fig"><svg viewBox="0 0 330 181.0" xmlns="http://www.w3.org/2000/svg" role="img"><text x="330.0" y="9.0" font-size="8" fill="#5A6170" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >■下落 ■上昇（年初来）</text><text x="98.0" y="23.2" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >メタプラネット</text><rect x="104" y="15.0" width="65.1" height="10.5" fill="#C1121F" rx="1.5"/><text x="173.1" y="23.2" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >49%</text><text x="98.0" y="39.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >データセクション</text><rect x="104" y="31.5" width="33.2" height="10.5" fill="#C1121F" rx="1.5"/><text x="141.2" y="39.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >25%</text><text x="98.0" y="56.2" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >キオクシア</text><rect x="104" y="48.0" width="166.1" height="10.5" fill="#13803B" rx="1.5"/><text x="274.1" y="56.2" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >125%</text><text x="98.0" y="72.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >さくらインターネット</text><rect x="104" y="64.5" width="2.7" height="10.5" fill="#C1121F" rx="1.5"/><text x="110.7" y="72.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2%</text><text x="98.0" y="89.2" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >ispace</text><rect x="104" y="81.0" width="37.2" height="10.5" fill="#C1121F" rx="1.5"/><text x="145.2" y="89.2" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >28%</text><text x="98.0" y="105.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >アストロスケール</text><rect x="104" y="97.5" width="51.8" height="10.5" fill="#13803B" rx="1.5"/><text x="159.8" y="105.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >39%</text><text x="98.0" y="122.2" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >アクセルスペース</text><rect x="104" y="114.0" width="86.4" height="10.5" fill="#C1121F" rx="1.5"/><text x="194.4" y="122.2" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >65%</text><text x="98.0" y="138.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >石川製作所</text><rect x="104" y="130.5" width="10.6" height="10.5" fill="#C1121F" rx="1.5"/><text x="118.6" y="138.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >8%</text><text x="98.0" y="155.2" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >助川電気</text><rect x="104" y="147.0" width="55.8" height="10.5" fill="#C1121F" rx="1.5"/><text x="163.8" y="155.2" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >42%</text><text x="98.0" y="171.7" font-size="8.8" fill="#1B1F27" text-anchor="end" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >フィックスターズ</text><rect x="104" y="163.5" width="1.3" height="10.5" fill="#13803B" rx="1.5"/><text x="109.3" y="171.7" font-size="8.6" fill="#1B1F27" text-anchor="start" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1%</text></svg><div class="cap"><b>Fig.2</b> 10銘柄の年初来騰落率（絶対値で表示、赤=下落）。下げた銘柄ほど損出し売りの対象になりやすい。</div></div>
+  <div>
+    <h2><span class="n">1</span>選び方の3つの基準</h2>
+    <ul class="b">
+      <li><b>テーマの主役であること</b>：相場が戻る時に最初に買われるのは、その年の人気テーマの中心銘柄です。</li>
+      <li><b>高値から大きく下げていること</b>：10銘柄中6銘柄が52週安値の近くにあります（ispace、アクセルスペース、石川製作所、助川電気など）。</li>
+      <li><b>12〜3月に材料があること</b>：決算、受注、打ち上げ、政策（防衛予算・核融合戦略）。</li>
+    </ul>
+    <div class="box tint2" style="margin-top:6px"><p class="small">時価総額100億円前後の小型株は、1日で±20%動くこともあります。<b>1銘柄あたりの金額を小さく、10銘柄に分けて</b>持つのが「暴騰候補」との付き合い方です。</p></div>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>yfinance：株価・時価総額・52週高安（2026/11/6終値）</li><li>各社IR・適時開示</li><li>報道（ispace・アストロスケール・アクセルスペース・助川電気ほか）</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.11 / 12</span></div>
+</article></section>
+<section class="sheet-wrap" id="t3p4"><article class="sheet" style="--c:#7E1A2C;--a:#B8860B;--t:#FBF3E4;--t2:#F8ECEE">
+  <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session 3　New-Year Picks &amp; Top 20 Movers</span></div>
+  <div class="titleblock"><div class="sesno">3-4<small>4/4</small></div><h1>米国株10選と「仕込み〜利確」カレンダー</h1><p class="sub">応援銘柄スペースXを含む10銘柄と、12/1〜3/31の売買タイミング</p></div>
+  
+  <div class="body"><div class="fit">
+<table class="t">
+  <tr><th class="c">#</th><th>銘柄</th><th>テーマ</th><th class="r">株価</th><th class="r">時価総額</th><th class="r">年初来</th><th>カタリスト</th><th>リスク</th><th>暴騰度</th></tr>
+  <tr style="background:#FBF3E4"><td class='c'>1</td><td><b>スペースX</b> <span class="tag">推し</span><br><span class='muted small'>SPCX</span></td><td>宇宙・AI</td><td class='r'>$141.99</td><td class='r'>$1.93兆</td><td class='r dn'>-12%</td><td>ロックアップ後の押し目、Starship</td><td>需給悪化、設備投資</td><td><span class="stars">★★★<span style="color:#D5D9E1">★★</span></span></td></tr><tr><td class='c'>2</td><td><b>ロケットラボ</b><br><span class='muted small'>RKLB</span></td><td>宇宙</td><td class='r'>$59.21</td><td class='r'>$379億</td><td class='r dn'>-22%</td><td>Neutron初号機（Q4目標）</td><td>再延期</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>3</td><td><b>ASTスペースモバイル</b><br><span class='muted small'>ASTS</span></td><td>衛星通信</td><td class='r'>$37.93</td><td class='r'>$114億</td><td class='r dn'>-55%</td><td>BlueBird衛星の展開</td><td>打ち上げ失敗、希薄化</td><td><span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></td></tr><tr><td class='c'>4</td><td><b>アイオンキュー</b><br><span class='muted small'>IONQ</span></td><td>量子</td><td class='r'>$35.35</td><td class='r'>$164億</td><td class='r dn'>-24%</td><td>技術発表</td><td>割高</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>5</td><td><b>Dウェーブ</b><br><span class='muted small'>QBTS</span></td><td>量子（小型）</td><td class='r'>$11.40</td><td class='r'>$43億</td><td class='r dn'>-60%</td><td>量子相場の再燃</td><td>希薄化</td><td><span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></td></tr><tr><td class='c'>6</td><td><b>オクロ</b><br><span class='muted small'>OKLO</span></td><td>原子力</td><td class='r'>$26.04</td><td class='r'>$51億</td><td class='r dn'>-67%</td><td>規制審査、試験炉</td><td>売上ゼロ、希薄化</td><td><span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></td></tr><tr><td class='c'>7</td><td><b>ストラテジー</b><br><span class='muted small'>MSTR</span></td><td>ビットコイン</td><td class='r'>$128.20</td><td class='r'>$543億</td><td class='r dn'>-18%</td><td>BTC反発</td><td>BTC下落</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>8</td><td><b>アイレン</b><br><span class='muted small'>IREN</span></td><td>AI・BTCマイニング</td><td class='r'>$22.06</td><td class='r'>$94億</td><td class='r dn'>-48%</td><td>AIクラウド契約</td><td>設備投資、BTC</td><td><span class="stars">★★★★<span style="color:#D5D9E1">★</span></span></td></tr><tr><td class='c'>9</td><td><b>ネビウス</b><br><span class='muted small'>NBIS</span></td><td>AIクラウド</td><td class='r'>$140.27</td><td class='r'>$381億</td><td class='r upc'>+56%</td><td>大型契約</td><td>高値$286から半値</td><td><span class="stars">★★★<span style="color:#D5D9E1">★★</span></span></td></tr><tr><td class='c'>10</td><td><b>インテュイティブ・マシーンズ</b><br><span class='muted small'>LUNR</span></td><td>月・宇宙（小型）</td><td class='r'>$11.90</td><td class='r'>$19億</td><td class='r dn'>-33%</td><td>NASA契約・ミッション［要確認］</td><td>ミッション失敗</td><td><span class="stars">★★★★★<span style="color:#D5D9E1"></span></span></td></tr>
+</table>
+<p class="cap">株価は11/9取引時間中、時価総額はドル（yfinance）。SPCXの年初来は6/12の上場日比。参考：BTC $75,129、MSTR $128.2。</p>
+<div class="fig"><svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg" role="img"><rect x="10.0" y="44" width="173.2" height="12" fill="#7E1A2C" opacity="0.85"/><text x="97.1" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12月</text><rect x="184.2" y="44" width="173.2" height="12" fill="#7E1A2C" opacity="0.70"/><text x="271.3" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1月</text><rect x="358.4" y="44" width="156.4" height="12" fill="#7E1A2C" opacity="0.55"/><text x="437.1" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2月</text><rect x="515.8" y="44" width="173.2" height="12" fill="#7E1A2C" opacity="0.40"/><text x="602.9" y="53.5" font-size="8.5" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3月</text><line x1="10.0" x2="10.0" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="10.0" cy="16" r="2.4" fill="#5A6170"/><text x="10.0" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/1</text><text x="10.0" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >師走入り</text><line x1="55.0" x2="55.0" y1="57" y2="78" stroke="#C1121F" stroke-width="1"/><circle cx="55.0" cy="78" r="2.4" fill="#C1121F"/><text x="55.0" y="89.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/9</text><text x="55.0" y="99.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >SPCXロックアップ解除</text><line x1="57.8" x2="57.8" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="57.8" cy="16" r="2.4" fill="#5A6170"/><text x="57.8" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/9 FOMC</text><line x1="88.7" x2="88.7" y1="57" y2="78" stroke="#C1121F" stroke-width="1"/><circle cx="88.7" cy="78" r="2.4" fill="#C1121F"/><text x="88.7" y="89.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12月中旬</text><text x="88.7" y="99.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >損出し売りピーク</text><line x1="156.1" x2="156.1" y1="43" y2="16" stroke="#C1121F" stroke-width="1"/><circle cx="156.1" cy="16" r="2.4" fill="#C1121F"/><text x="156.1" y="1.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >12/26頃</text><text x="156.1" y="11.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >年内受渡最終日</text><line x1="201.1" x2="201.1" y1="57" y2="78" stroke="#5A6170" stroke-width="1"/><circle cx="201.1" cy="78" r="2.4" fill="#5A6170"/><text x="201.1" y="89.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1/5頃</text><text x="201.1" y="99.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >大発会</text><line x1="347.2" x2="347.2" y1="43" y2="16" stroke="#5A6170" stroke-width="1"/><circle cx="347.2" cy="16" r="2.4" fill="#5A6170"/><text x="347.2" y="1.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >1月末</text><text x="347.2" y="11.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >大手決算</text><line x1="482.1" x2="482.1" y1="57" y2="78" stroke="#5A6170" stroke-width="1"/><circle cx="482.1" cy="78" r="2.4" fill="#5A6170"/><text x="482.1" y="89.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >2月下旬</text><text x="482.1" y="99.0" font-size="8.2" fill="#1B1F27" text-anchor="middle" font-weight="400" font-family="Meiryo UI,Noto Sans JP,sans-serif" >NVIDIA決算</text><line x1="673.1" x2="673.1" y1="43" y2="16" stroke="#C1121F" stroke-width="1"/><circle cx="673.1" cy="16" r="2.4" fill="#C1121F"/><text x="673.1" y="1.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >3/31</text><text x="673.1" y="11.0" font-size="8.2" fill="#C1121F" text-anchor="middle" font-weight="700" font-family="Meiryo UI,Noto Sans JP,sans-serif" >期間終了</text></svg><div class="cap"><b>Fig.3</b> 暴騰候補の「仕込み〜利確」カレンダー（12/1〜3/31）。赤は需給が大きく動く日。12月中旬〜年内受渡最終日に仕込み、1〜2月の戻りで利確するのが基本形。</div></div>
+<div class="cols" style="grid-template-columns:1fr 1.15fr">
+  <div>
+    <h2><span class="n">1</span>米国株の選び方</h2>
+    <ul class="b small">
+      <li><b>宇宙</b>：SPCX・RKLB・ASTS・LUNR。SPCXが相場の旗振り役で、12/9の需給を通過すれば周辺も動きやすい。</li>
+      <li><b>量子・原子力</b>：IONQ・QBTS・OKLO。年初来-24〜-67%と下げが深く、反発の上げ幅も大きい。</li>
+      <li><b>BTC・AIクラウド</b>：MSTR・IREN・NBIS。メタプラネットと同じくBTCとAI投資の向きで動く。</li>
+    </ul>
+  </div>
+  <div>
+    <h2><span class="n">2</span>飲み会の当てっこシート（3/31に答え合わせ）</h2>
+    <div class="vote"><div>名前</div><div>日本株の1位予想</div><div>米国株の1位予想</div><div>3/31の日経平均</div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <p class="cap">20銘柄から12/1終値→3/31終値の上昇率1位を予想。賞品は次回の飲み会で。</p>
+  </div>
+</div></div></div>
+  <div class="refs"><ol><li>yfinance：株価・時価総額（2026/11/9取引時間中）</li><li>Finviz: Rocket Lab Q3 / Neutron</li><li>Webull: Oklo</li><li>Fortune: SpaceX lockup（2026/8/5）</li></ol></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.12 / 12</span></div>
+</article></section></main>
+
+<script>
+(function(){
+  // 各シートの本文を、枠に収まる最大の倍率（1.0〜1.3）に拡大し、残りの余白は段落間に均等配分する
+  function grow(){
+    document.querySelectorAll('.sheet').forEach(function(s){
+      var b=s.querySelector('.body'), f=s.querySelector('.fit'); if(!b||!f) return;
+      var lo=1, hi=1.3;
+      f.style.minHeight=''; f.style.zoom=1;
+      for(var i=0;i<14;i++){ var m=(lo+hi)/2; f.style.zoom=m; if(f.scrollHeight*m<=b.clientHeight-2) lo=m; else hi=m; }
+      f.style.zoom=lo; s.dataset.zoom=lo.toFixed(3); var free=b.clientHeight/lo-f.scrollHeight; s.dataset.free=Math.round(free*lo);
+      f.style.minHeight=Math.floor((b.clientHeight-2)/lo)+'px';
+    });
+  }
+  function fit(){
+    document.querySelectorAll('.sheet-wrap').forEach(function(w){
+      var s=w.querySelector('.sheet'); s.style.transform=''; var k=Math.min(1,w.clientWidth/s.offsetWidth);
+      s.style.transform=k<1?'scale('+k+')':''; w.style.height=k<1?(s.offsetHeight*k)+'px':'';
+    });
+  }
+  function all(){ grow(); fit(); }
+  window.addEventListener('resize',fit);
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(all); }
+  window.addEventListener('load',all); all();
+})();
+</script>
+

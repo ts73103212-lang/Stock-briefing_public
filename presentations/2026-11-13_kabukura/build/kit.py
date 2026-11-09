@@ -43,7 +43,8 @@ h1{font-size:20.5px;line-height:1.32;margin:0;color:var(--c);text-wrap:balance;f
 .abstract .lab{font-weight:700;color:var(--c);font-size:10.5px;letter-spacing:.08em;padding-top:1px}
 .abstract p{margin:0}
 .kw{font-size:10px;color:var(--muted)}
-.body{flex:1;min-height:0;margin-top:10px;display:flex;flex-direction:column;gap:9px}
+.body{flex:1;min-height:0;margin-top:10px;overflow:hidden}
+.fit{display:flex;flex-direction:column;gap:9px;justify-content:space-between}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;min-height:0}
 .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px 12px}
 .span2{grid-column:span 2}
@@ -102,13 +103,27 @@ table.t td.c,table.t th.c{text-align:center}
 FIT_JS = r"""
 <script>
 (function(){
-  function fit(){
-    document.querySelectorAll('.sheet-wrap').forEach(function(w){
-      var s=w.querySelector('.sheet'); var full=s.offsetWidth; var avail=w.clientWidth;
-      var k=Math.min(1,avail/full); s.style.transform=k<1?'scale('+k+')':''; w.style.height=k<1?(s.offsetHeight*k)+'px':'';
+  // 各シートの本文を、枠に収まる最大の倍率（1.0〜1.3）に拡大し、残りの余白は段落間に均等配分する
+  function grow(){
+    document.querySelectorAll('.sheet').forEach(function(s){
+      var b=s.querySelector('.body'), f=s.querySelector('.fit'); if(!b||!f) return;
+      var lo=1, hi=1.3;
+      f.style.minHeight=''; f.style.zoom=1;
+      for(var i=0;i<14;i++){ var m=(lo+hi)/2; f.style.zoom=m; if(f.scrollHeight*m<=b.clientHeight-2) lo=m; else hi=m; }
+      f.style.zoom=lo; s.dataset.zoom=lo.toFixed(3); var free=b.clientHeight/lo-f.scrollHeight; s.dataset.free=Math.round(free*lo);
+      f.style.minHeight=Math.floor((b.clientHeight-2)/lo)+'px';
     });
   }
-  window.addEventListener('resize',fit); window.addEventListener('load',fit); fit();
+  function fit(){
+    document.querySelectorAll('.sheet-wrap').forEach(function(w){
+      var s=w.querySelector('.sheet'); s.style.transform=''; var k=Math.min(1,w.clientWidth/s.offsetWidth);
+      s.style.transform=k<1?'scale('+k+')':''; w.style.height=k<1?(s.offsetHeight*k)+'px':'';
+    });
+  }
+  function all(){ grow(); fit(); }
+  window.addEventListener('resize',fit);
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(all); }
+  window.addEventListener('load',all); all();
 })();
 </script>
 """
@@ -129,7 +144,7 @@ def sheet(theme: int, page: int, title: str, sub: str, body: str, refs: list[str
   <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session {theme}　{escape(t['en'])}</span></div>
   <div class="titleblock"><div class="sesno">{theme}-{page}<small>{page}/4</small></div><h1>{title}</h1><p class="sub">{sub}</p></div>
   {ab}
-  <div class="body">{body}</div>
+  <div class="body"><div class="fit">{body}</div></div>
   {refs_html}
   <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.{gpage} / 12</span></div>
 </article></section>"""
@@ -274,6 +289,39 @@ def timeline(events, *, w=700, h=96, start_label="", months=("12月", "1月", "2
         for j, ln in enumerate(lines):
             ty = (y2 - 5 - (len(lines) - 1 - j) * 10) if up else (y2 + 11 + j * 10)
             out.append(_t(xx, ty, ln, 8.2, col if imp else "#1B1F27", "middle", "700" if imp else "400"))
+    out.append("</svg>")
+    return "".join(out)
+
+
+def line_chart(xlabels, series, *, w=700, h=210, lo, hi, step, hlines=(), xticks=None, bands=()):
+    """折れ線。series=[(values,color,width,dash,label)]、hlines=[(value,label,color)]、bands=[(lo,hi,color,label)]。"""
+    pl, pr, pt, pb = 44, 120, 10, 20
+    n = len(xlabels)
+    iw, ih = w - pl - pr, h - pt - pb
+    def x(i):
+        return pl + i / (n - 1) * iw
+    def y(v):
+        return pt + (hi - v) / (hi - lo) * ih
+    out = [f'<svg viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" role="img">']
+    for b_lo, b_hi, col, lab in bands:
+        out.append(f'<rect x="{pl}" y="{y(b_hi):.1f}" width="{iw}" height="{y(b_lo)-y(b_hi):.1f}" fill="{col}" opacity="0.13"/>')
+    g = lo
+    while g <= hi + 1e-9:
+        out.append(f'<line x1="{pl}" x2="{pl+iw}" y1="{y(g):.1f}" y2="{y(g):.1f}" stroke="#E3E6EC" stroke-width="0.8"/>')
+        out.append(_t(pl - 5, y(g) + 3, f"{g:,.0f}", 8, "#5A6170", "end"))
+        g += step
+    for i in (xticks or range(0, n, max(1, n // 6))):
+        out.append(_t(x(i), h - 6, xlabels[i], 8, "#5A6170", "middle"))
+    for v, lab, col in hlines:
+        out.append(f'<line x1="{pl}" x2="{pl+iw}" y1="{y(v):.1f}" y2="{y(v):.1f}" stroke="{col}" stroke-width="1.4" stroke-dasharray="5 3"/>')
+        out.append(_t(pl + iw + 6, y(v) + 3.5, lab, 8.6, col, "start", "700"))
+    for vals, col, sw, dash, lab in series:
+        pts = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in enumerate(vals) if v is not None)
+        out.append(f'<polyline points="{pts}" fill="none" stroke="{col}" stroke-width="{sw}" stroke-dasharray="{dash}" stroke-linejoin="round"/>')
+        last = [(i, v) for i, v in enumerate(vals) if v is not None][-1]
+        if lab:
+            out.append(f'<circle cx="{x(last[0]):.1f}" cy="{y(last[1]):.1f}" r="3" fill="{col}"/>')
+            out.append(_t(pl + iw + 6, y(last[1]) + 3.5, lab, 8.6, col, "start", "700"))
     out.append("</svg>")
     return "".join(out)
 
