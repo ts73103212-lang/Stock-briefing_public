@@ -66,7 +66,8 @@ table.t{width:100%;border-collapse:collapse;font-size:10.2px;line-height:1.4;fon
 table.t th{background:var(--c);color:#fff;font-weight:700;padding:4px 5px;text-align:left;white-space:nowrap}
 table.t td{padding:3.6px 5px;border-bottom:1px solid var(--rule);vertical-align:top}
 table.t tr:nth-child(even) td{background:var(--soft)}
-table.t td.r,table.t th.r{text-align:right}
+table.t td.r,table.t th.r{text-align:right;white-space:nowrap}
+table.t.nw td{white-space:nowrap}
 table.t td.c,table.t th.c{text-align:center}
 .box{border-radius:3px;padding:8px 10px;background:var(--soft)}
 .box.tint{background:var(--t)}
@@ -146,7 +147,7 @@ def sheet(theme: int, page: int, title: str, sub: str, body: str, refs: list[str
   {ab}
   <div class="body"><div class="fit">{body}</div></div>
   {refs_html}
-  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、投資判断はご自身で。</span><span>p.{gpage} / 12</span></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、※は概算・報道ベースの数値。投資判断はご自身で。</span><span>p.{gpage} / 12</span></div>
 </article></section>"""
 
 
@@ -264,38 +265,46 @@ def scenario_bar(parts, *, w=340, h=46):
     return "".join(out)
 
 
-def timeline(events, *, w=700, h=96, start_label="", months=("12月", "1月", "2月", "3月"), color="#1D3557", accent="#C1121F"):
-    """12/1〜3/31 のイベントタイムライン。events=[(day_index 0-120, label, important)]。"""
-    pl, pr = 10, 10
+def timeline(events, *, w=700, h=150, months=("12月", "1月", "2月", "3月"), color="#1D3557", accent="#C1121F"):
+    """12/1〜3/31 のイベントタイムライン。events=[(day_index 0-120, label, important)]。
+    ラベルは上下交互、さらに2段の高さを交互に使い、近い日付が重ならないようにする。"""
+    pl, pr = 14, 14
     iw = w - pl - pr
     days = 121
     def x(d):
         return pl + d / days * iw
     out = [f'<svg viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" role="img">']
-    base = 50
-    # month bands
+    base = h / 2
     edges = [0, 31, 62, 90, 121]
     for i, m in enumerate(months):
-        out.append(f'<rect x="{x(edges[i]):.1f}" y="{base-6}" width="{x(edges[i+1])-x(edges[i])-1:.1f}" height="12" fill="{color}" opacity="{0.85 - i*0.15:.2f}"/>')
+        out.append(f'<rect x="{x(edges[i]):.1f}" y="{base-6:.1f}" width="{x(edges[i+1])-x(edges[i])-1:.1f}" height="12" fill="{color}" opacity="{0.85 - i*0.15:.2f}"/>')
         out.append(_t((x(edges[i]) + x(edges[i + 1])) / 2, base + 3.5, m, 8.5, "#FFFFFF", "middle", "700"))
-    for k, (d, lab, imp) in enumerate(events):
+    texts = []
+    for k, (d, lab, imp) in enumerate(sorted(events, key=lambda e: e[0])):
         xx = x(d)
         up = k % 2 == 0
-        y1, y2 = (base - 7, 16) if up else (base + 7, h - 22)
+        tier = (k // 2) % 2
+        reach = 14 + tier * 26
+        y1 = base - 7 if up else base + 7
+        y2 = y1 - reach if up else y1 + reach
         col = accent if imp else "#5A6170"
-        out.append(f'<line x1="{xx:.1f}" x2="{xx:.1f}" y1="{y1}" y2="{y2}" stroke="{col}" stroke-width="1"/>')
-        out.append(f'<circle cx="{xx:.1f}" cy="{y2}" r="2.4" fill="{col}"/>')
+        out.append(f'<line x1="{xx:.1f}" x2="{xx:.1f}" y1="{y1:.1f}" y2="{y2:.1f}" stroke="{col}" stroke-width="1"/>')
+        out.append(f'<circle cx="{xx:.1f}" cy="{y2:.1f}" r="2.4" fill="{col}"/>')
         lines = lab.split("|")
+        anchor = "start" if xx < 50 else ("end" if xx > w - 50 else "middle")
+        tx = xx - 3 if anchor == "start" else (xx + 3 if anchor == "end" else xx)
         for j, ln in enumerate(lines):
             ty = (y2 - 5 - (len(lines) - 1 - j) * 10) if up else (y2 + 11 + j * 10)
-            out.append(_t(xx, ty, ln, 8.2, col if imp else "#1B1F27", "middle", "700" if imp else "400"))
+            texts.append(_t(tx, ty, ln, 8.2, col if imp else "#1B1F27", anchor, "700" if imp else "400",
+                            'paint-order="stroke" stroke="#FFFFFF" stroke-width="3.2" stroke-linejoin="round"'))
+    out.extend(texts)  # 文字は線の上に白縁付きで重ね、引き出し線が文字を横切らないようにする
     out.append("</svg>")
     return "".join(out)
 
 
-def line_chart(xlabels, series, *, w=700, h=210, lo, hi, step, hlines=(), xticks=None, bands=()):
+def line_chart(xlabels, series, *, w=700, h=210, lo, hi, step, hlines=(), xticks=None, bands=(), pr=120):
     """折れ線。series=[(values,color,width,dash,label)]、hlines=[(value,label,color)]、bands=[(lo,hi,color,label)]。"""
-    pl, pr, pt, pb = 44, 120, 10, 20
+    pl, pt, pb = 44, 10, 20
     n = len(xlabels)
     iw, ih = w - pl - pr, h - pt - pb
     def x(i):

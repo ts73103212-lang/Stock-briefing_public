@@ -10,13 +10,13 @@ HERE = Path(__file__).parent
 def pages():
     out = []
     # ---------- 1-1 ----------
-    sox = bar_chart(["11/4", "11/5", "11/6", "11/9"], [-3.13, -12.25, 4.21, 6.5], w=330, h=150, ymin=-14, ymax=8, fmt="{:+.1f}%")
+    sox = bar_chart(["11/4", "11/5", "11/6", "11/9"], [-3.13, -12.3, 4.21, 6.5], w=330, h=150, ymin=-14, ymax=8, fmt="{:+.1f}%")
     body = f"""
 <div class="kpis">
   <div class="kpi"><div class="v">54<small>対</small>44</div><div class="l">上院（民主対共和）<br>選挙前は共和53対民主47</div></div>
   <div class="kpi"><div class="v">228<small>対</small>139</div><div class="l">下院（民主対共和）<br>民主が19議席増・一部未確定</div></div>
   <div class="kpi"><div class="v" style="color:#C1121F">-4.36<small>%</small></div><div class="l">11/5 S&amp;P500<br>NASDAQ -5.52%、VIX 28.8</div></div>
-  <div class="kpi"><div class="v" style="color:#C1121F">-3,643<small>円</small></div><div class="l">11/6 日経平均（57,434円）<br>下げ幅は歴代3位級</div></div>
+  <div class="kpi"><div class="v" style="color:#C1121F">-3,643<small>円</small></div><div class="l">11/6 日経平均（57,435円）<br>下げ幅は歴代3位級</div></div>
 </div>
 <div class="cols">
   <div>
@@ -69,7 +69,7 @@ def pages():
     cols = [C if y in confirmed else "#8DA2BF" for y in years]
     fig = bar_chart([f"'{str(y)[2:]}" for y in years], rets, colors=cols, w=700, h=170, ymin=0, ymax=36, fmt="{:.0f}", label_size=8.4, unit_note="単位：%")
     body = f"""
-<div class="fig">{fig}<div class="cap"><b>Fig.2</b> 中間選挙の投票日から1年後のS&amp;P500騰落率（1950〜2022年）。濃い棒は出典で確認済み、薄い棒は終値からの概算［要確認］。平均・中央値はPepperstoneの集計値。</div></div>
+<div class="fig">{fig}<div class="cap"><b>Fig.2</b> 中間選挙の投票日から1年後のS&amp;P500騰落率（1950〜2022年）。濃い棒は出典で確認済み、薄い棒は終値からの概算※。平均・中央値（下の数値欄）はPepperstoneの集計値。</div></div>
 <div class="kpis">
   <div class="kpi"><div class="v">19<small>戦</small>19<small>勝</small></div><div class="l">1950年以降、選挙後1年の<br>S&amp;P500は全てプラス</div></div>
   <div class="kpi"><div class="v">+15.1<small>%</small></div><div class="l">選挙後1年の平均<br>（中央値+14.5%）</div></div>
@@ -131,23 +131,23 @@ def pages():
       <tr><th>比べる相手</th><th class="r">水準</th><th class="r">48,000円まで</th></tr>
       <tr><td>6/25 年初来高値</td><td class="r">72,366</td><td class="r dn">-33.7%</td></tr>
       <tr><td>200日線（上値の壁に転換）</td><td class="r">61,964</td><td class="r dn">-22.5%</td></tr>
-      <tr><td><b>現在値（11/6終値）</b></td><td class="r"><b>57,435</b></td><td class="r dn"><b>-16.4%</b></td></tr>
+      <tr><td><b>現在値（11/9終値）</b></td><td class="r"><b>58,776</b></td><td class="r dn"><b>-18.3%</b></td></tr>
       <tr><td>フィボナッチ78.6%戻し</td><td class="r">55,225</td><td class="r dn">-13.1%</td></tr>
       <tr><td>3/31 年初来安値（ザラ場）</td><td class="r">50,558</td><td class="r dn">-5.1%</td></tr>
       <tr><td>100週線（参考）</td><td class="r">50,576</td><td class="r dn">-5.1%</td></tr>
     </table>
-    <p class="small" style="margin-top:4px">48,000円は<b>今年の上昇分をすべて失う水準</b>です。予想PERは約13.7倍（5月時点の予想EPS 3,495円で試算［要確認］）。東証の要請以降のPERレンジ16〜18倍を大きく下回ります。米国はS&amp;P500の200日線7,328（現在値から-2.7%）、NASDAQ100はすでに200日線割れです。</p>
+    <p class="small" style="margin-top:4px">48,000円は<b>今年の上昇分をすべて失う水準</b>です。予想PERは約13.7倍（5月時点の予想EPS 3,495円で試算※）。東証の要請以降のPERレンジ16〜18倍を大きく下回ります。米国はS&amp;P500が200日線7,328に接近（11/6終値7,377から-0.7%）、NASDAQ100はすでに200日線割れです。</p>
   </div>
   <div>
     <div class="alert">
       <div class="hd">⚠ 新天地さんの警告：この下げを想定していないと退場する</div>
-      <p class="small">新天地さんの見立ては「ここから一旦は大きく下げる。最大下げとして<b>200日線割れの定着と日経48,000円</b>くらいは想定しておくべき」というものです。現在値からは<b>約-16〜18%</b>。日経に連動する個別株は、その1.5〜2倍下げることも珍しくありません。</p>
-      <table class="t" style="margin-top:4px">
+      <p class="small">新天地さんの見立ては「ここから一旦は大きく下げる。最大下げとして<b>200日線割れの定着と日経48,000円</b>くらいは想定しておくべき」というものです。現在値（11/9終値58,776円）からは<b>約-18%</b>。日経に連動する個別株は、その1.5〜2倍下げることも珍しくありません。</p>
+      <table class="t nw" style="margin-top:4px">
         <tr><th>持ち方</th><th class="r">日経-18%時の損失目安</th><th>結果</th></tr>
         <tr><td>現物・指数並み</td><td class="r">-18%</td><td>耐えられる</td></tr>
         <tr><td>現物・高ベータ株</td><td class="r">-30〜40%</td><td>心が折れやすい</td></tr>
-        <tr><td>信用2倍</td><td class="r dn">-36%（資産比）</td><td class="dn">追証→強制決済</td></tr>
-        <tr><td>信用3倍・フルレバ</td><td class="r dn">-54%以上</td><td class="dn">退場</td></tr>
+        <tr><td>信用2倍</td><td class="r dn">-36%（資産比）</td><td class="dn">追証・強制決済</td></tr>
+        <tr><td>信用3倍</td><td class="r dn">-54%以上</td><td class="dn">退場</td></tr>
       </table>
     </div>
     <h2 style="margin-top:7px"><span class="n">2</span>下げを大きくする需給要因</h2>
@@ -163,14 +163,14 @@ def pages():
 
     # ---------- 1-4 ----------
     sb = scenario_bar([("強気：年末ラリーで高値奪回へ", 25, "#13803B"), ("メイン：2番底→春に回復", 50, C), ("弱気：48,000円まで", 25, A)], w=700, h=46)
-    ev = [(3, "12/4|米雇用統計", False), (8, "12/9 FOMC|利上げ?", True), (9, "12/10頃|米CPI", False), (10, "12/11|メジャーSQ", True),
-          (17, "12/18|日銀会合", True), (26, "12/26頃|損出し売り一巡", False), (33, "1/3|新議会招集", False), (38, "1/8 SQ", False),
+    ev = [(3, "12/4|米雇用統計", False), (8, "12/9|FOMC利上げ?", True), (9, "12/10頃|米CPI", False), (10, "12/11|メジャーSQ", True),
+          (17, "12/18|日銀会合", True), (26, "12/26頃|損出し売り一巡", False), (33, "1/3|新議会招集", False), (34, "1/4|大発会", False), (38, "1/8 SQ", False),
           (57, "1月下旬|FOMC・日銀", True), (64, "2/3 節分|国内決算", False), (84, "2/23頃|NVIDIA決算", True), (101, "3/12|メジャーSQ", True)]
-    tl = timeline(ev, w=700, h=104, color=C, accent=A)
+    tl = timeline(ev, w=700, color=C, accent=A)
     body = f"""
 <div class="fig">{sb}<div class="cap"><b>Fig.4</b> 12月〜3月のシナリオ確率（演者の主観）。</div></div>
 <table class="t">
-  <tr><th>シナリオ</th><th>日経平均</th><th>S&amp;P500</th><th>こうなるきっかけ</th></tr>
+  <tr><th style="width:11%">シナリオ</th><th style="width:30%">日経平均</th><th style="width:20%">S&amp;P500</th><th>こうなるきっかけ</th></tr>
   <tr><td><span class="tag u">強気 25%</span></td><td>65,000円台を回復<br>（25日・75日線）</td><td>7,818の高値更新</td><td>11/17 NVIDIA決算が好調、データセンター規制のトーンダウン、12月FOMCで利上げ見送り、イラン停戦</td></tr>
   <tr><td><span class="tag c">メイン 50%</span></td><td>54,000〜56,000円で2番底<br>→ 200日線（約62,000円）まで戻す</td><td>7,100〜7,800</td><td>2018年型の短縮版。12月の需給悪化（解約・損出し）を経て、1月以降に回復</td></tr>
   <tr><td><span class="tag r">弱気 25%</span></td><td><b class="dn">48,000円</b>（-18%）</td><td>200日線割れが定着<br>2018年並みなら約6,250</td><td>FOMC利上げで米10年債5%超、データセンター停止の法制化、大手の投資削減、原油100ドル超、急な円高</td></tr>
@@ -181,7 +181,7 @@ def pages():
     <h2><span class="n">1</span>退場しないための5つのルール</h2>
     <ul class="b">
       <li><b>信用・レバレッジは12月まで最小限</b>。日経-18%で追証が出ない建玉に落とす。</li>
-      <li><b>現金を30%残す</b>。下げは「買い場」に変わるが、現金がなければ買えない。</li>
+      <li><b>資金全体の現金を30%残す</b>。下げは「買い場」に変わるが、現金がなければ買えない。</li>
       <li><b>買いは3回に分ける</b>：56,000円／52,000円／48,000円（Session 2・3の銘柄もここで仕込む）。</li>
       <li><b>逆指値を先に置く</b>。売る理由は買う前に決める。</li>
       <li><b>反発は戻り売りを疑う</b>。200日線（約62,000円）回復までは強気にならない。</li>
