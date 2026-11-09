@@ -52,3 +52,4 @@ details a{color:var(--navy);word-break:break-all}
 .cands{padding-left:1.2em;font-size:14px;line-height:1.7}
 .cands span{color:var(--muted);font-size:13px}
 @media (max-width:420px){.toc-item a{grid-template-columns:88px 1fr}}
+article hr{border:none;border-top:1px solid var(--line);margin:32px 0}

@@ -62,7 +62,20 @@ def body_with_figures(a: dict, names: dict) -> str:
                 f'<figure><img src="img/{names["figs"][n - 1]}" alt="{_e(alt)}" loading="lazy">'
                 f"<figcaption>図{circled(n)}</figcaption></figure>")
 
-    return _PAYWALL_RE.sub(PAYWALL_HTML, _FIG_RE.sub(fig, a["body_html"]))
+    body = _PAYWALL_RE.sub(PAYWALL_HTML, _FIG_RE.sub(fig, a["body_html"]))
+    return add_section_dividers(body)
+
+
+_H2_RE = re.compile(r"(?=<h2[\s>])")
+
+
+def add_section_dividers(body: str) -> str:
+    """節（h2）の前に区切り線を入れる（2026-11-09 ユーザー指示）。本文の先頭が h2 のときは入れない。"""
+    parts = _H2_RE.split(body)
+    out = parts[0]
+    for part in parts[1:]:
+        out += ("<hr>\n" if out.strip() else "") + part
+    return out
 
 
 def _article_block(a: dict, names: dict, heading_tag: str = "h2") -> str:
