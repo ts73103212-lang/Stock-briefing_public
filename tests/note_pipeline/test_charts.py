@@ -152,3 +152,33 @@ def test_table_font_fits_cell():
 def test_header_wrap_keeps_unit_with_number():
     toks = header._TOKEN_RE.findall("日経平均3,643円安")
     assert "3,643円" in toks
+
+
+def test_chart_a_hlines_positions_ylim_and_notes(tmp_path):
+    spec = {"type": "A", **COMMON, **SPECS["A"], "ylim": [90, 170],
+            "hlines": [{"y": 125, "label": "自社株買い価格 125円"},
+                       {"y": 100, "label": "前回安値", "color": "down", "style": "dotted"}],
+            "annotations": [{"date": "2026-11-04", "text": "11/4 決算", "pos": "above-left"},
+                            {"date": "2026-11-04", "text": "場中高値160円", "y": 160, "pos": "below-left",
+                             "highlight": False},
+                            {"date": "2026-08-01", "text": "8/1 高値", "style": "note", "pos": "below"}]}
+    assert Image.open(charts.render(spec, tmp_path / "a.jpg", number=1)).size == (1920, 1080)
+
+
+@pytest.mark.parametrize("pos,expect", [
+    ("above", (0, 1, "center")), ("below", (0, -1, "center")), ("left", (-1, 0, "right")),
+    ("right", (1, 0, "left")), ("above-left", (-1, 1, "right")), ("below-right", (1, -1, "left"))])
+def test_annotation_offset_direction(pos, expect):
+    dx, dy, ha, va = charts.annotation_offset(pos)
+    sign = lambda v: (v > 0) - (v < 0)  # noqa: E731
+    assert (sign(dx), sign(dy), ha) == expect
+
+
+def test_annotation_offset_rejects_unknown():
+    with pytest.raises(ValueError):
+        charts.annotation_offset("middle")
+
+
+def test_chart_b_series_labels(tmp_path):
+    spec = {"type": "B", **COMMON, **SPECS["B"], "series_labels": ["売上収益", "営業利益"]}
+    assert Image.open(charts.render(spec, tmp_path / "b.jpg", number=1)).size == (1920, 1080)
