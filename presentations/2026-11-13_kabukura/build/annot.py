@@ -40,6 +40,9 @@ CAL = {
 TOP, BOTTOM = 245, 965  # 表示する縦範囲（ツールバーより下〜日付目盛り）
 W = 1854
 X_OCT1, PX_WEEK = 1587, 13.05
+NOW = date(2026, 11, 10)
+ZONE_X0, ZONE_X1 = 1672, 1850  # 価格軸の欄を塗りつぶして予想ゾーンにする
+PANEL_Y1 = 712  # 価格パネルの下端
 
 YEL, PINK, CYAN, WHITE, GREEN, RED = "#FFE14D", "#FF5FA2", "#5CE1E6", "#FFFFFF", "#7CFC8A", "#FF4D4D"
 HAND = "font-family=\"Yomogi,'Klee One','Meiryo UI',sans-serif\""
@@ -71,8 +74,11 @@ class Chart:
 
     @staticmethod
     def x(d: str | date):
+        """過去は実際の日付目盛り。11/10より先は右端の「予想ゾーン」（x1672〜1848）に圧縮して描く。"""
         if isinstance(d, str):
             d = date.fromisoformat(d)
+        if d > NOW:
+            return ZONE_X0 + 8 + (d - NOW).days / (date(2027, 3, 31) - NOW).days * (ZONE_X1 - ZONE_X0 - 14)
         return X_OCT1 + (d - date(2026, 10, 1)).days / 7 * PX_WEEK
 
     def _text(self, x, y, s, size=11, color=YEL, anchor="start", rot=0, weight="700"):
@@ -82,13 +88,13 @@ class Chart:
             f'<text x="{x:.0f}" y="{y:.0f}" font-size="{fs:.0f}" fill="{color}" text-anchor="{anchor}" font-weight="{weight}" {HAND}{tr} '
             f'paint-order="stroke" stroke="#0B1240" stroke-width="{fs*0.28:.0f}" stroke-linejoin="round">{s}</text>')
 
-    def hline(self, v, label, color=YEL, x0=60, x1=1690, dash=True, size=10.5, lx=None, above=True):
+    def hline(self, v, label, color=YEL, x0=60, x1=1848, dash=True, size=10.5, lx=None, above=True):
         y = self.y(v)
         sw = 2.2 * self.u
         self.items.append(f'<line x1="{x0}" x2="{x1}" y1="{y:.0f}" y2="{y:.0f}" stroke="{color}" stroke-width="{sw:.1f}" stroke-dasharray="{"%d %d" % (8*self.u, 5*self.u) if dash else ""}" stroke-linecap="round"/>')
         self._text(lx if lx is not None else x0 + 10, y - 6 * self.u if above else y + 15 * self.u, label, size, color)
 
-    def band(self, va, vb, label=None, color=PINK, x0=60, x1=1690, size=10.5, lx=None, op=0.28):
+    def band(self, va, vb, label=None, color=PINK, x0=60, x1=1848, size=10.5, lx=None, op=0.28):
         ya, yb = sorted([self.y(va), self.y(vb)])
         self.items.append(f'<rect x="{x0}" y="{ya:.0f}" width="{x1-x0}" height="{yb-ya:.0f}" fill="{color}" opacity="{op}" rx="{6*self.u:.0f}"/>')
         if label:
@@ -135,13 +141,33 @@ class Chart:
         g.append("</g>")
         self.top_items.append("".join(g))
 
+    def zone(self):
+        """価格軸の欄を紺で塗り、予想ゾーン（12月〜3月）の目盛りを描く。"""
+        y0 = max(self.view[1], TOP)
+        z = [f'<rect x="{ZONE_X0}" y="{y0}" width="{W-ZONE_X0}" height="{PANEL_Y1-y0}" fill="#141C5C"/>',
+             f'<line x1="{ZONE_X0}" x2="{ZONE_X0}" y1="{y0}" y2="{PANEL_Y1}" stroke="#FFE14D" stroke-width="{1.2*self.u:.1f}" stroke-dasharray="{4*self.u:.0f} {4*self.u:.0f}" opacity="0.7"/>']
+        for m, d in (("12月", "2026-12-01"), ("1月", "2027-01-01"), ("2月", "2027-02-01"), ("3月", "2027-03-01")):
+            xx = self.x(d)
+            z.append(f'<line x1="{xx:.0f}" x2="{xx:.0f}" y1="{y0}" y2="{PANEL_Y1}" stroke="#FFFFFF" stroke-width="{0.6*self.u:.1f}" opacity="0.18"/>')
+        yb = min(self.view[3], PANEL_Y1) - 6 * self.u
+        for m, d in (("12", "2026-12-15"), ("1", "2027-01-15"), ("2", "2027-02-14"), ("3月", "2027-03-15")):
+            z.append(f'<text x="{self.x(d):.0f}" y="{yb:.0f}" font-size="{8.5*self.u:.0f}" fill="#AFC3E8" text-anchor="middle" {HAND}>{m}</text>')
+        z.append(f'<text x="{(ZONE_X0+ZONE_X1)/2:.0f}" y="{y0 + 13*self.u:.0f}" font-size="{9.5*self.u:.0f}" fill="#FFE14D" text-anchor="middle" font-weight="700" {HAND}>予想ゾーン</text>')
+        return "".join(z)
+
+    def now(self, v, label, dy=-1):
+        """現在値の白丸とラベル（最新の足の左上）。"""
+        x, y = self.x(NOW), self.y(v)
+        self.top_items.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{4.5*self.u:.0f}" fill="#FFFFFF" stroke="#0B1240" stroke-width="{1.5*self.u:.0f}"/>')
+        self._text(x - 8 * self.u, y + dy * 12 * self.u, label, 10.5, WHITE, "end")
+
     def svg(self):
         b64 = _img_b64(self.key)
         h = BOTTOM - TOP
         x0, y0, x1, y1 = self.view
         return (f'<svg viewBox="{x0} {y0} {x1-x0} {y1-y0}" xmlns="http://www.w3.org/2000/svg" role="img" style="background:#121A5A;border-radius:3px">'
                 f'<image href="data:image/jpeg;base64,{b64}" x="0" y="{TOP}" width="{W}" height="{h}"/>'
-                + "".join(self.items) + "".join(self.top_items) + "</svg>")
+                + self.zone() + "".join(self.items) + "".join(self.top_items) + "</svg>")
 
 
 def image_fig(path: Path, key: str, box=None, width=1236, quality=80) -> str:

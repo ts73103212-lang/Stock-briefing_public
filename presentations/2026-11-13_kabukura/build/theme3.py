@@ -3,14 +3,14 @@ import math
 from datetime import date
 from pathlib import Path
 
-from kit import sheet, bar_chart, timeline, _t
+from kit import sheet, bar_chart, timeline, line_chart, _t
 from annot import Chart, YEL, PINK, CYAN, WHITE, GREEN
 
 C, A, R = "#7E1A2C", "#B8860B", "#C1121F"
 HERE = Path(__file__).parent
 
 
-def btc_cycle_chart(w=700, h=250):
+def btc_cycle_chart(w=700, h=310):
     """BTCの2週足（対数軸）に半減期・天井・底・200週線を描く。"""
     data = json.loads((HERE / "btc_2w.json").read_text())
     ds = [date.fromisoformat(d) for d, _ in data]
@@ -28,7 +28,7 @@ def btc_cycle_chart(w=700, h=250):
     o = [f'<svg viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" role="img">']
     # 底の予想ゾーン
     o.append(f'<rect x="{x(date(2026,10,1)):.1f}" y="{pt}" width="{x(date(2027,1,31))-x(date(2026,10,1)):.1f}" height="{h-pt-pb}" fill="{R}" opacity="0.10"/>')
-    o.append(_t(x(date(2026, 12, 1)), pt + 10, "底の予想時期", 8.5, R, "middle", "700"))
+    o.append(_t(x(date(2026, 12, 1)), h - pb - 4, "底の予想", 8, R, "middle", "700"))
     for v in (1000, 10000, 100000):
         o.append(f'<line x1="{pl}" x2="{w-pr}" y1="{y(v):.1f}" y2="{y(v):.1f}" stroke="#E3E6EC" stroke-width="0.8"/>')
         o.append(_t(pl - 4, y(v) + 3, f"${v:,}", 8, "#5A6170", "end"))
@@ -41,19 +41,21 @@ def btc_cycle_chart(w=700, h=250):
     o.append(f'<polyline points="{pts}" fill="none" stroke="#9AA5B1" stroke-width="1.4" stroke-dasharray="4 2"/>')
     pts = " ".join(f"{x(d):.1f},{y(v):.1f}" for d, v in zip(ds, vs))
     o.append(f'<polyline points="{pts}" fill="none" stroke="{C}" stroke-width="1.6"/>')
-    tops = [(date(2017, 12, 16), 19497, "天井"), (date(2021, 11, 8), 67567, "天井"), (date(2025, 10, 6), 124753, "天井 $124,753")]
+    tops = [(date(2017, 12, 16), 19497, "天井"), (date(2021, 11, 8), 67567, "天井"), (date(2025, 10, 6), 124753, "天井 $124,753（2025/10）")]
     bots = [(date(2015, 1, 14), 178, "底 -87%"), (date(2018, 12, 15), 3237, "底 -83%"), (date(2022, 11, 21), 15787, "底 -77%")]
     for d, v, lab in tops:
         o.append(f'<circle cx="{x(d):.1f}" cy="{y(v):.1f}" r="3" fill="#13803B"/>')
-        o.append(_t(x(d), y(v) - 6, lab, 8, "#13803B", "middle", "700"))
+        o.append(_t(x(d) - (6 if v > 100000 else 0), y(v) - 6, lab, 8, "#13803B", "end" if v > 100000 else "middle", "700"))
     for d, v, lab in bots:
         o.append(f'<circle cx="{x(d):.1f}" cy="{y(v):.1f}" r="3" fill="{R}"/>')
         o.append(_t(x(d), y(v) + 13, lab, 8, R, "middle", "700"))
     # 今ここ
     o.append(f'<circle cx="{x(date(2026,11,10)):.1f}" cy="{y(73303):.1f}" r="4.5" fill="{A}" stroke="#fff" stroke-width="1.5"/>')
-    o.append(_t(x(date(2026, 11, 10)) - 8, y(73303) + 16, "今ここ $73,303（天井から13か月・-41%）", 8.6, "#8A6D12", "end", "700"))
-    o.append(_t(x(date(2026, 6, 30)), y(58559) + 13, "6/30 $58,559", 8, R, "middle", "700"))
-    o.append(_t(w - pr, y(68014) - 26, "200週線 $68,014", 8, "#5A6170", "end", "700"))
+    o.append(_t(x(date(2026, 11, 10)) - 12, y(73303) + 40, "今ここ $73,303", 9, "#8A6D12", "end", "700"))
+    o.append(_t(x(date(2026, 11, 10)) - 12, y(73303) + 51, "（天井から13か月・-41%）", 8, "#8A6D12", "end", "700"))
+    o.append(f'<line x1="{x(date(2026,11,10))-10:.1f}" y1="{y(73303)+30:.1f}" x2="{x(date(2026,11,10))-2:.1f}" y2="{y(73303)+5:.1f}" stroke="#8A6D12" stroke-width="1"/>')
+    o.append(_t(x(date(2026, 6, 30)) - 40, y(58559) + 14, "6/30 $58,559", 8, R, "end", "700"))
+    o.append(_t(x(date(2020, 9, 1)), y(2600), "200週線（灰色の点線）", 8, "#5A6170", "middle", "700"))
     o.append("</svg>")
     return "".join(o)
 
@@ -85,9 +87,9 @@ def pages():
     <h2 style="margin-top:8px"><span class="n">2</span>だから3銘柄に絞った</h2>
     <table class="t">
       <tr><th>銘柄</th><th>どちらの底に乗るか</th><th>先に見る指標</th></tr>
-      <tr><td><b>メタプラネット</b><br><span class="small muted">3350</span></td><td>暗号資産の底。BTCが戻るとBTC以上に動く</td><td>BTC価格、200週線$68,014</td></tr>
-      <tr><td><b>データセクション</b><br><span class="small muted">3905</span></td><td>データセンターショックの底。日本のネオクラウド</td><td>コアウィーブ・ネビウス・イオレ</td></tr>
-      <tr><td><b>スペースX</b><br><span class="small muted">SPCX</span></td><td>AI×宇宙。12/9のロックアップ解除が需給の底</td><td>ロックアップの規模、Starship</td></tr>
+      <tr><td style="white-space:nowrap"><b>メタプラネット</b><br><span class="small muted">3350</span></td><td>暗号資産の底。BTCが戻るとBTC以上に動く</td><td>BTC価格、200週線$68,014</td></tr>
+      <tr><td style="white-space:nowrap"><b>データセクション</b><br><span class="small muted">3905</span></td><td>データセンターショックの底。日本のネオクラウド</td><td>コアウィーブ・ネビウス・イオレ</td></tr>
+      <tr><td style="white-space:nowrap"><b>スペースX</b><br><span class="small muted">SPCX</span></td><td>AI×宇宙。12/9のロックアップ解除が需給の底</td><td>ロックアップの規模、Starship</td></tr>
     </table>
   </div>
 </div>
@@ -131,28 +133,39 @@ def pages():
                      ["yfinance：BTC-USD 週足・200週移動平均（自前集計、2014/9以降）", "techcentral：2013〜15年サイクル（$1,163→$152）", "半減期の日付：各種報道"]))
 
     # ---------- 3-3 メタプラネット ----------
-    mp = Chart("mp", 420, view=(560, 300, 1854, 690))
-    mp.hline(384, "142週線 384", CYAN, x0=570, x1=1700, lx=1300)
-    mp.hline(318, "52週線 318＝3月の目標", WHITE, x0=570, x1=1700, lx=1300, above=False)
-    mp.band(197, 215, None, PINK, x0=570, x1=1700)
-    mp.note_xy(1250, mp.y(197) + 34, "2026年安値197＝二番底ゾーン", PINK, 11)
+    mp = Chart("mp", 343, view=(560, 300, 1854, 690))
     mp.circle("2025-06-16", 1895, r=16, color=YEL, label="上場来高値 1,895（2025/6）", dx=1, dy=0.2)
-    mp.path([("2026-11-10", 237), ("2026-11-27", 255), ("2026-12-28", 205)], YEL)
-    mp.path([("2026-12-28", 205), ("2027-03-20", 380)], GREEN, dash=True)
-    mp.sticker(1080, 330, ["ズバリ", "仕込み205円→3月380円"], YEL, size=13)
-    ms = Chart("mstr", 270, view=(1000, 340, 1854, 650))
-    ms.hline(139.6, "52週線 140", CYAN, x0=1010, x1=1700, lx=1020)
-    ms.hline(82.3, "2026年安値 82", PINK, x0=1010, x1=1700, lx=1020, above=False)
+    mp.now(237, "237")
+    mp.note_xy(1050, 520, "高値から -88%", PINK, 15)
+    mpw = json.loads((HERE / "mp_w.json").read_text())
+    fut = [("26/11/27", 255), ("26/12/04", 240), ("26/12/11", 225), ("26/12/18", 212), ("26/12/25", 205), ("27/01/08", 230), ("27/01/22", 265),
+           ("27/02/05", 300), ("27/02/19", 330), ("27/03/05", 355), ("27/03/19", 380)]
+    labs = [d[2:].replace("-", "/") for d, _ in mpw] + [d for d, _ in fut]
+    past = [v for _, v in mpw] + [None] * len(fut)
+    proj = [None] * (len(mpw) - 1) + [mpw[-1][1]] + [v for _, v in fut]
+    ticks = [i for i, l in enumerate(labs) if l[3:5] in ("01", "04", "07", "10") and l[6:8] <= "07"]
+    mpz = line_chart(labs, [(past, C, 2.0, "", "現在 237"), (proj, "#D4A017", 2.4, "5 3", "")], w=340, h=230, lo=150, hi=650, step=100,
+                     hlines=[(384, "142週線 384", "#0E9C9C"), (318, "52週線 318", "#5A6170"), (197, "安値 197", R)], xticks=ticks, pr=66, bands=[(197, 215, R, "")])
+    ms = Chart("mstr", 270, view=(1300, 340, 1854, 650))
+    ms.hline(139.6, "52週線 140", CYAN, x0=1310, x1=1848, lx=1320)
+    ms.hline(82.3, "2026年安値 82", PINK, x0=1310, x1=1848, lx=1320, above=True)
+    ms.now(125.6, "125.6")
     ms.path([("2026-11-10", 125.6), ("2026-12-28", 105)], YEL)
     ms.path([("2026-12-28", 105), ("2027-03-20", 160)], GREEN, dash=True)
     lev = bar_chart(["BTC", "メタプラ", "MSTR"], [4.6, 8.9, 14.0], colors=["#9AA5B1", R, C], w=250, h=120, ymin=0, ymax=16, fmt="{:.1f}倍")
     body = f"""
-<div class="fig">{mp.svg()}<div class="cap"><b>Fig.3</b> メタプラネット（3350）週足に演者が書き込み。上場来高値1,895円（2025/6）から-88%。年末に2026年安値（197円）付近で二番底を作り、BTCの底打ちとともに3月に52週線（318円）超えの380円を狙うルート。</div></div>
+<div class="cols">
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="fig">{mp.svg()}<div class="cap"><b>Fig.3</b> メタプラネット（3350）週足。上場来高値1,895円（2025/6）から-88%の暴落の全体像。</div></div>
+    <div class="fig">{lev}<div class="cap"><b>Fig.5</b> 2022年の底から2024年までの上昇倍率（自前集計）。メタプラは2024年4月にBTC戦略を開始。</div></div>
+  </div>
+  <div class="fig">{mpz}<div class="cap"><b>Fig.4</b> 直近1年を拡大（週足終値、yfinance）。金色の点線が演者の想定：年末に安値197円付近で二番底→3月に380円。</div></div>
+</div>
 <div class="cols" style="grid-template-columns:1.15fr 1fr">
   <div>
     <h2><span class="n">1</span>なぜメタプラネットか</h2>
     <ul class="b">
-      <li><b>BTCの底打ちを一番大きく受け取る</b>：前回の底（2022年）から、BTCは4.6倍、MSTRは14倍、メタプラは8.9倍になりました（Fig.4）。</li>
+      <li><b>BTCの底打ちを一番大きく受け取る</b>：前回の底（2022年）から、BTCは4.6倍、MSTRは14倍、メタプラは8.9倍になりました（Fig.5）。</li>
       <li><b>株価が保有BTCの価値を下回る</b>（mNAV 1倍前後※）：この状態での自社株買いは、1株あたりのBTCを増やします。10/14〜31に9,645万株（約1.6億ドル）を買い戻しました。</li>
       <li><b>保有は44,000BTC</b>（9/30）。520億円の転換社債（報道）で借入を返し、財務を整えています。</li>
     </ul>
@@ -164,8 +177,7 @@ def pages():
     </ul>
   </div>
   <div>
-    <div class="fig">{lev}<div class="cap"><b>Fig.4</b> 2022年の底から2024年までの上昇倍率（自前集計）。メタプラは2024年4月にBTC戦略を開始。</div></div>
-    <div class="fig" style="margin-top:6px">{ms.svg()}<div class="cap"><b>Fig.5</b> 参考：米ストラテジー（MSTR）週足。BTC保有84.9万BTC。BTCの約2倍動く。</div></div>
+    <div class="fig">{ms.svg()}<div class="cap"><b>Fig.6</b> 参考：米ストラテジー（MSTR）週足。BTC保有84.9万BTC。BTCの約2倍動く。</div></div>
   </div>
 </div>
 <div class="box tint"><p class="small"><b>ズバリ：12月後半に205円近辺で仕込み、3月に380円（+85%）</b>。先に見るのはBTC。BTCが$58,000〜62,000で二番底を作るのを確かめてから買います。撤退ラインは190円（2026年安値197円を明確に割ったら）。</p></div>"""
@@ -174,22 +186,22 @@ def pages():
 
     # ---------- 3-4 データセクション ----------
     dsc = Chart("ds", 700, view=(900, 300, 1854, 690))
-    dsc.hline(2634, "26週線 2,634＝3月の目標", CYAN, x0=910, x1=1700, lx=920)
-    dsc.hline(1351, "200週線 1,351", WHITE, x0=910, x1=1700, lx=920, above=True)
-    dsc.band(1100, 1250, None, PINK, x0=910, x1=1700)
+    dsc.hline(2634, "26週線 2,634＝3月の目標", CYAN, x0=910, x1=1848, lx=920)
+    dsc.hline(1351, "200週線 1,351", WHITE, x0=910, x1=1848, lx=920, above=True)
+    dsc.band(1100, 1250, None, PINK, x0=910, x1=1848)
     dsc.note_xy(920, dsc.y(1100) + 34, "仕込みゾーン 1,100〜1,250（52週安値1,230）", PINK, 10.5)
-    dsc.circle("2026-05-29", 6140, r=14, color=YEL, label="上場来高値 6,140（5/29）", dx=-1, dy=0.3)
+    dsc.circle("2026-05-29", 6140, r=14, color=YEL, label="上場来高値 6,140（5/29）", dx=1, dy=0.3)
     dsc.circle("2026-11-10", 1399, r=12, color=PINK, label="11/10 説明会で-10%", dx=-1, dy=-1.6)
     dsc.path([("2026-11-10", 1399), ("2026-11-20", 1550), ("2026-12-28", 1150)], YEL)
     dsc.path([("2026-12-28", 1150), ("2027-03-20", 2600)], GREEN, dash=True)
     dsc.sticker(1000, 340, ["ズバリ", "仕込み1,150円→3月2,600円"], YEL, size=13)
     body = f"""
-<div class="fig">{dsc.svg()}<div class="cap"><b>Fig.6</b> データセクション（3905）週足に演者が書き込み。上場来高値6,140円（5/29）から-77%。11/16の中間決算と12月の損出し・増資懸念で1,100〜1,250円まで下げ、3月に26週線（2,634円）近くまで戻すルート。</div></div>
+<div class="fig">{dsc.svg()}<div class="cap"><b>Fig.7</b> データセクション（3905）週足に演者が書き込み。上場来高値6,140円（5/29）から-77%。11/16の中間決算と12月の損出し・増資懸念で1,100〜1,250円まで下げ、3月に26週線（2,634円）近くまで戻すルート。</div></div>
 <div class="cols">
   <div>
     <h2><span class="n">1</span>なぜデータセクションか</h2>
     <ul class="b">
-      <li><b>日本で数少ない、本格的なネオクラウド</b>（GPUを貸すAIデータセンター）。米AIインフラ企業と5年で<b>約1,399億円</b>の契約を結び、10/23に提供を始めました。顧客のデポジットは入金済みと説明しています。</li>
+      <li><b>日本で数少ない、本格的なネオクラウド</b>（GPUを貸すAIデータセンター）。米AIインフラ企業と5年で<b>1,399億23百万円</b>（偶然にも11/10の株価と同じ数字）の契約を結び、10/23に提供を始めました。顧客のデポジットは入金済みと説明しています。</li>
       <li>今期予想は売上<b>1,622億円</b>（前期336億円）、経常利益125億円。豪州ではB300を1万基並べる計画。</li>
       <li>高値から-77%と、<b>12月の損出しで最も売られやすい</b>銘柄の一つ。売り切った後の1月の戻りが大きい。</li>
     </ul>
@@ -218,34 +230,21 @@ def pages():
 
     # ---------- 3-5 なぜCRWV・NBIS・イオレを見るのか ----------
     def neo(key, view, lines, stick, sy, sx):
-        c = Chart(key, 225, view=view)
+        c = Chart(key, 343, view=view)
         for v, lab, col, above in lines:
-            c.hline(v, lab, col, x0=view[0] + 10, x1=1700, lx=view[0] + 18, above=above, size=12)
-        c.sticker(sx, sy, stick, YEL, size=12.5)
+            c.hline(v, lab, col, x0=view[0] + 10, x1=1848, lx=view[0] + 18, above=above, size=10.5)
+        c.sticker(sx, sy, stick, YEL, size=11)
         return c.svg()
     cw = neo("crwv", (1300, 330, 1854, 640), [(86.7, "52週線 86.7", CYAN, True), (43.7, "11/5安値 43.7", PINK, False)], ["11/11朝 決算", "受注残・社債利回り"], 345, 1330)
-    nb = neo("nbis", (1300, 300, 1854, 620), [(160.8, "52週線 161", CYAN, True), (73.9, "52週安値 74", PINK, False)], ["11/12夜 決算", "受注残400億ドル超"], 315, 1330)
-    io = neo("iore", (1200, 360, 1854, 620), [(485, "52週線 485", CYAN, True), (332, "52週安値 332", PINK, False)], ["国内GPU小型株の", "温度計"], 375, 1230)
+    nb = neo("nbis", (1300, 300, 1854, 620), [(160.8, "52週線 161", CYAN, True), (73.9, "52週安値 74", PINK, True)], ["11/12夜 決算", "受注残400億ドル超"], 315, 1330)
+    io = neo("iore", (1200, 360, 1854, 620), [(485, "52週線 485", CYAN, True), (332, "52週安値 332", PINK, False)], ["国内GPU小型株の", "温度計"], 375, 1450)
     body = f"""
-<div class="cols3">
-  <div class="fig">{cw}<div class="cap"><b>Fig.7</b> コアウィーブ（CRWV）。高値138ドルから-64%。米ネオクラウドの最大手。</div></div>
-  <div class="fig">{nb}<div class="cap"><b>Fig.8</b> ネビウス（NBIS）。高値300ドルから-53%。マイクロソフト・Metaと大型契約。</div></div>
-  <div class="fig">{io}<div class="cap"><b>Fig.9</b> イオレ（2334）。GPUサーバー販売から「ネオクラウド」へ転換中の東証グロース株。</div></div>
-</div>
-<div class="cols" style="grid-template-columns:1.2fr 1fr">
+<div class="cols">
+  <div class="fig">{cw}<div class="cap"><b>Fig.8</b> コアウィーブ（CRWV）。高値138ドルから-64%。米ネオクラウドの最大手。</div></div>
+  <div class="fig">{nb}<div class="cap"><b>Fig.9</b> ネビウス（NBIS）。高値300ドルから-53%。マイクロソフト・Metaと大型契約。</div></div>
+  <div class="fig">{io}<div class="cap"><b>Fig.10</b> イオレ（2334）。GPUサーバー販売から「ネオクラウド」へ転換中の東証グロース株。</div><p class="small muted" style="margin-top:6px">イオレとデータセクションに直接の取引関係は確認できていません。両社は6月にそろって天井をつけ、同じ「国内のGPU小型株」として資金が出入りしています。</p></div>
   <div>
-    <h2><span class="n">1</span>3社がデータセクションの「先行指標」になる理由</h2>
-    <table class="t">
-      <tr><th>見るもの</th><th>どこで見るか</th><th>データセクションにとっての意味</th></tr>
-      <tr><td><b>① GPUの単価</b></td><td>CRWV・NBISの新規契約の単価（H100で1時間2〜6ドル、B200で4〜9ドル）</td><td>1,399億円契約の妥当性と、更新時の単価</td></tr>
-      <tr><td><b>② 受注残</b></td><td>CRWV 1,042億ドル（6月末）、NBIS 400億ドル超</td><td>需要が続くか＝豪州・タイ案件が埋まるか</td></tr>
-      <tr><td><b>③ 借金のコスト</b></td><td>CRWVの社債の利回り（10月に額面80割れの報道）、NBISの転換社債の条件</td><td>次の資金調達が増資か借入か。希薄化のリスク</td></tr>
-      <tr><td><b>④ 稼働の速さ</b></td><td>両社の稼働電力（MW）の立ち上がり、遅延の有無</td><td>3案件の遅延報道と比べる</td></tr>
-      <tr><td><b>⑤ 株価の温度</b></td><td>CRWVの52週線との距離、イオレの値動き</td><td>米国と国内の投資家がGPU株をまだ買う気があるか</td></tr>
-    </table>
-  </div>
-  <div>
-    <h2><span class="n">2</span>同じ構造、同じリスク</h2>
+    <h2><span class="n">1</span>同じ構造、同じリスク</h2>
     <p class="small">ネオクラウドはどこも「<b>借金でGPUを買い、AI企業に貸して回収する</b>」商売です。だから共通のリスクで一緒に動きます。</p>
     <ul class="b small">
       <li><b>GPUの陳腐化</b>：3〜4年で価値が大きく落ちる。担保価値と借り換えに響く</li>
@@ -256,27 +255,43 @@ def pages():
     <div class="box tint" style="margin-top:6px"><p class="small"><b>結論</b>：<b>米国2社の決算（11/11・11/12）で受注残が伸び、社債が落ち着けば、データセクションの11/16決算も「通過」できる</b>。逆に米国2社が売られるなら、データセクションの仕込みは12月後半まで待つ。</p></div>
   </div>
 </div>
-<p class="small muted">イオレとデータセクションに直接の取引関係は確認できていません。両社は6月にそろって天井をつけ、同じ「国内のGPU小型株」として資金が出入りしています。</p>"""
+<div>
+  <div>
+    <h2><span class="n">2</span>3社がデータセクションの「先行指標」になる理由</h2>
+    <table class="t">
+      <tr><th style="width:22%">見るもの</th><th style="width:42%">どこで見るか</th><th>データセクションにとっての意味</th></tr>
+      <tr><td><b>① GPUの単価</b></td><td>CRWV・NBISの新規契約の単価（H100で1時間2〜6ドル、B200で4〜9ドル）</td><td>1,399億円契約の妥当性と、更新時の単価</td></tr>
+      <tr><td><b>② 受注残</b></td><td>CRWV 1,042億ドル（6月末）、NBIS 400億ドル超</td><td>需要が続くか＝豪州・タイ案件が埋まるか</td></tr>
+      <tr><td><b>③ 借金のコスト</b></td><td>CRWVの社債の利回り（10月に額面80割れの報道）、NBISの転換社債の条件</td><td>次の資金調達が増資か借入か。希薄化のリスク</td></tr>
+      <tr><td><b>④ 稼働の速さ</b></td><td>両社の稼働電力（MW）の立ち上がり、遅延の有無</td><td>3案件の遅延報道と比べる</td></tr>
+      <tr><td><b>⑤ 株価の温度</b></td><td>CRWVの52週線との距離、イオレの値動き</td><td>米国と国内の投資家がGPU株をまだ買う気があるか</td></tr>
+    </table>
+  </div>
+  <div>
+  </div>
+</div>
+"""
     out.append(sheet(3, 5, "なぜコアウィーブ・ネビウス・イオレを見るのか", "データセクションと同じ「借金でGPUを買って貸す」商売。5つの先行指標", body,
                      ["証券アプリ CRWV・NBIS・イオレ 週足（2026/11/10、演者のスクリーンショット）", "techtimes：CoreWeave Q3 決算プレビュー", "BusinessWire：CoreWeave 新規容量を高単価で契約（9/17）", "gurufocus：Nebius Q2 2026", "yfinance：52週線・52週高安"]))
 
     # ---------- 3-6 スペースXとお年玉3銘柄のまとめ ----------
     sp = Chart("spcx", 343, view=(1330, 340, 1854, 690))
-    sp.hline(211.4, "上場来高値 211", WHITE, x0=1340, x1=1700, lx=1350, above=False)
-    sp.hline(135, "公開価格 135", CYAN, x0=1340, x1=1700, lx=1350)
-    sp.band(108, 125, None, PINK, x0=1340, x1=1700)
-    sp.note_xy(1350, sp.y(108) + 34, "仕込み 108〜125", PINK, 11)
+    sp.hline(211.4, "上場来高値 211", WHITE, x0=1340, x1=1848, lx=1350, above=False)
+    sp.hline(135, "公開価格 135", CYAN, x0=1340, x1=1848, lx=1350)
+    sp.band(108, 125, None, PINK, x0=1340, x1=1848)
+    sp.note_xy(1350, sp.y(125) - 8 * sp.u, "仕込み 108〜125", PINK, 11)
+    sp.now(142, "142")
     sp.path([("2026-11-10", 142), ("2026-12-09", 122)], YEL)
     sp.path([("2026-12-09", 122), ("2027-03-20", 180)], GREEN, dash=True)
     sp.sticker(1420, 360, ["ズバリ", "12/9後125→3月180"], YEL, size=12)
     tl = timeline([(0, "12/1|師走入り", False), (8, "12/9|SPCX解除・FOMC", True), (14, "12月中旬|損出しピーク", True), (27, "12/28|年内受渡最終日", True),
                    (34, "1/4|大発会・NISA新枠", True), (58, "1月下旬|大手決算・投資計画", False), (75, "2月|メタプラ通期決算", False), (84, "2月下旬|NVIDIA決算", False), (118, "3/31|答え合わせ", True)],
                   w=700, color=C, accent=R)
-    vote = "".join(f"<div>{h}</div>" for h in ["名前", "3銘柄で1位は？", "3/31のBTC", "3/31の日経"]) + "".join("<div></div>" for _ in range(12))
+    vote = "".join(f"<div>{h}</div>" for h in ["名前", "1位の銘柄", "3/31 BTC", "3/31 日経"]) + "".join("<div></div>" for _ in range(12))
     body = f"""
 <div class="cols">
   <div>
-    <div class="fig">{sp.svg()}<div class="cap"><b>Fig.10</b> スペースX（SPCX）週足。6/12上場。12/9のロックアップ解除の売りで125ドル前後まで下げてから、3月に180ドルを狙う。</div></div>
+    <div class="fig">{sp.svg()}<div class="cap"><b>Fig.11</b> スペースX（SPCX）週足。6/12上場。12/9のロックアップ解除の売りで125ドル前後まで下げてから、3月に180ドルを狙う。</div></div>
   </div>
   <div>
     <h2><span class="n">1</span>なぜスペースXか</h2>
@@ -295,7 +310,7 @@ def pages():
   <tr style="background:#FBF3E4"><td><b>データセクション</b></td><td class="r">1,399円</td><td class="r">1,150円</td><td class="r upc"><b>2,600円</b></td><td class="r upc">+126%</td><td class="r dn">1,000円</td><td>11/16決算、CRWV・NBISの受注残と社債</td></tr>
   <tr style="background:#FBF3E4"><td><b>スペースX</b></td><td class="r">$142</td><td class="r">$125</td><td class="r upc"><b>$180</b></td><td class="r upc">+44%</td><td class="r dn">$105</td><td>12/9のロックアップ解除の規模と売りの一巡</td></tr>
 </table>
-<div class="fig">{tl}<div class="cap"><b>Fig.11</b> お年玉3銘柄の「仕込み〜利確」カレンダー（12/1〜3/31）。赤が需給の転換点。</div></div>
+<div class="fig">{tl}<div class="cap"><b>Fig.12</b> お年玉3銘柄の「仕込み〜利確」カレンダー（12/1〜3/31）。赤が需給の転換点。</div></div>
 <div class="cols">
   <div class="box tint"><h3>結論</h3><p class="small">お年玉は「年明けに上がる銘柄」ではなく、<b>12月に一番売られて、1月に一番戻る銘柄</b>。今年は暗号資産とAIデータセンターの2つの底が重なる可能性があり、その真ん中にいるのがこの3銘柄です。<b>Session 1の下値シナリオ（日経48,000〜50,000円）が来たら、それが仕込みの合図</b>。</p></div>
   <div>
