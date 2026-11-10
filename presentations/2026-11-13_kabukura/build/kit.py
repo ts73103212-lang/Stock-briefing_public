@@ -3,10 +3,12 @@ from __future__ import annotations
 
 from html import escape
 
+PER = 6  # 1テーマあたりのページ数
+
 THEMES = {
     1: {"label": "世界経済の行方", "en": "Global Macro after the Midterms", "c": "#1D3557", "a": "#C1121F", "t": "#EEF2F8", "t2": "#FBEDEE"},
     2: {"label": "半導体の巻き返しとAI投資", "en": "Semiconductors & AI", "c": "#0B4F5C", "a": "#0E9C9C", "t": "#E8F4F4", "t2": "#FFF6E0"},
-    3: {"label": "お年玉銘柄と暴騰候補20", "en": "New-Year Picks & Top 20 Movers", "c": "#7E1A2C", "a": "#B8860B", "t": "#FBF3E4", "t2": "#F8ECEE"},
+    3: {"label": "お年玉銘柄：半導体×暗号資産", "en": "New-Year Picks: Chips x Crypto", "c": "#7E1A2C", "a": "#B8860B", "t": "#FBF3E4", "t2": "#F8ECEE"},
 }
 
 CSS = r"""
@@ -139,15 +141,15 @@ def sheet(theme: int, page: int, title: str, sub: str, body: str, refs: list[str
     refs_html = ""
     if refs:
         refs_html = '<div class="refs"><ol>' + "".join(f"<li>{r}</li>" for r in refs) + "</ol></div>"
-    gpage = (theme - 1) * 4 + page
+    gpage = (theme - 1) * PER + page
     return f"""
 <section class="sheet-wrap" id="{sid or f't{theme}p{page}'}"><article class="sheet" style="{style}">
   <div class="runhead"><span><b>株クラ秋季研究会 2026</b>｜2026年11月13日（金）</span><span>Session {theme}　{escape(t['en'])}</span></div>
-  <div class="titleblock"><div class="sesno">{theme}-{page}<small>{page}/4</small></div><h1>{title}</h1><p class="sub">{sub}</p></div>
+  <div class="titleblock"><div class="sesno">{theme}-{page}<small>{page}/{PER}</small></div><h1>{title}</h1><p class="sub">{sub}</p></div>
   {ab}
   <div class="body"><div class="fit">{body}</div></div>
   {refs_html}
-  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、※は概算・報道ベースの数値。投資判断はご自身で。</span><span>p.{gpage} / 12</span></div>
+  <div class="foot"><span>話題提供用の資料です。投資勧誘ではありません。数値は記載日時点、※は概算・報道ベースの数値。投資判断はご自身で。</span><span>p.{gpage} / {PER*3}</span></div>
 </article></section>"""
 
 
@@ -157,7 +159,7 @@ def document(title: str, sheets: list[str]) -> str:
     return f"""<title>{escape(title)}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Yomogi&display=swap">
 <style>{CSS}</style>
 <main class="deck">{toc}{''.join(sheets)}</main>
 {FIT_JS}

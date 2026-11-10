@@ -1,4 +1,5 @@
 from kit import sheet, bar_chart, hbar_chart, timeline
+from annot import Chart, YEL, PINK, CYAN, WHITE, GREEN
 
 C, A = "#0B4F5C", "#0E9C9C"
 
@@ -10,7 +11,7 @@ def pages():
                      colors=["#9AA5B1", "#9AA5B1", "#9AA5B1", "#C1121F"], fmt="{:.0f}%", w=330, h=150, ymin=-90, ymax=0)
     body = f"""
 <div class="kpis">
-  <div class="kpi"><div class="v">10,003</div><div class="l">SOX指数（11/9取引中）<br>11/5に1日で-12.3%</div></div>
+  <div class="kpi"><div class="v">10,034</div><div class="l">SOX指数（11/9終値）<br>11/5に1日で-12.3%</div></div>
   <div class="kpi"><div class="v" style="color:#C1121F">-38<small>%</small></div><div class="l">6/22高値14,634→11/5安値<br>9,011。弱気相場入り</div></div>
   <div class="kpi"><div class="v">+8<small>%</small></div><div class="l">200日線10,841までの距離<br>回復＝トレンド転換の目安</div></div>
   <div class="kpi"><div class="v">725<small>B$</small></div><div class="l">米大手4社の2026年AI投資<br>（中央値・据え置き〜増額）</div></div>
@@ -49,11 +50,11 @@ def pages():
   <div class="span2">
     <h2><span class="n">3</span>SOX指数の節目</h2>
     <table class="t">
-      <tr><th>節目</th><th class="r">水準</th><th class="r">現在値10,003から</th><th>意味</th></tr>
-      <tr><td>6/22 年初来高値</td><td class="r">14,634</td><td class="r upc">+46.3%</td><td>ここまで戻れば「完全回復」。2027年のAI投資増額が前提</td></tr>
-      <tr><td>75日線</td><td class="r">11,709</td><td class="r upc">+17.1%</td><td>中期の上値メド。戻り売りが出やすい</td></tr>
-      <tr><td><b>200日線</b></td><td class="r"><b>10,841</b></td><td class="r upc"><b>+8.4%</b></td><td><b>回復＝トレンド転換の合図（巻き返しの条件②）</b></td></tr>
-      <tr><td>11/5 安値</td><td class="r">9,011</td><td class="r dn">-9.9%</td><td>割れたら2番底を探る展開。撤退ライン</td></tr>
+      <tr><th>節目</th><th class="r">水準</th><th class="r">現在値10,034から</th><th>意味</th></tr>
+      <tr><td>6/22 年初来高値</td><td class="r">14,634</td><td class="r upc">+45.8%</td><td>ここまで戻れば「完全回復」。2027年のAI投資増額が前提</td></tr>
+      <tr><td>75日線</td><td class="r">11,709</td><td class="r upc">+16.7%</td><td>中期の上値メド。戻り売りが出やすい</td></tr>
+      <tr><td><b>200日線</b></td><td class="r"><b>10,841</b></td><td class="r upc"><b>+8.0%</b></td><td><b>回復＝トレンド転換の合図（巻き返しの条件②）</b></td></tr>
+      <tr><td>11/5 安値</td><td class="r">9,011</td><td class="r dn">-10.2%</td><td>割れたら2番底を探る展開。撤退ライン</td></tr>
     </table>
   </div>
 </div>"""
@@ -99,7 +100,104 @@ def pages():
     out.append(sheet(2, 2, "AIのお金の流れ：払う側は減らさず、受け取る側の株価だけが下げた", "バリューチェーン8層と、需要を決める米大手4社のAI投資", body,
                      ["WSTS 2026年春季予測（JEITA, 2026/6/2）", "DatacenterDynamics: Moody's hyperscaler capex forecasts", "各社決算資料（Meta, Amazon, Alphabet 2026年Q3）", "Broadcom 決算説明（ASIC市場機会）"]))
 
-    # ---------- 2-3 ----------
+    # ---------- 2-3 チャートで読む米国の半導体 ----------
+    sx = Chart("sox", 700, view=(1100, 300, 1854, 612))
+    sx.hline(10852, "戻りの目標 10,852（200日線）", CYAN, x0=1110, x1=1700, lx=1120)
+    sx.hline(9011, "11/5安値 9,011（撤退ライン）", WHITE, x0=1110, x1=1700, lx=1120, above=False)
+    sx.band(8124, 8700, "78.6%押し 8,124〜", PINK, x0=1110, x1=1700, lx=1120)
+    sx.hline(7017, "142週線 7,017", WHITE, x0=1110, x1=1700, lx=1400, above=False)
+    sx.path([("2026-11-10", 10034), ("2026-11-24", 10850), ("2026-12-28", 8500)], YEL)
+    sx.path([("2026-12-28", 8500), ("2027-02-10", 10000)], GREEN, dash=True)
+    sx.sticker(1330, 318, ["ズバリ", "年末 SOX 8,500"], YEL, size=13)
+    def small(key, view, lines, path, stick, sy):
+        c = Chart(key, 225, view=view)
+        for v, lab, col, above in lines:
+            c.hline(v, lab, col, x0=view[0] + 10, x1=1700, lx=view[0] + 18, above=above, size=12)
+        c.path(path, YEL)
+        c.sticker(view[0] + 40, sy, ["ズバリ " + stick], YEL, size=13)
+        return c.svg()
+    nd = small("ndx", (1250, 350, 1854, 600), [(28006, "200日線 28,006", CYAN, True), (25000, "25,000", PINK, False)],
+               [("2026-11-10", 27908), ("2026-11-24", 28600), ("2026-12-28", 25000)], "25,000", 362)
+    ts = small("tsm", (1250, 300, 1854, 520), [(401, "200日線 401", CYAN, True), (381, "52週線 381", WHITE, False), (340, "340", PINK, False)],
+               [("2026-11-10", 388.6), ("2026-11-24", 420), ("2026-12-28", 340)], "340ドル", 312)
+    mu = small("mu", (1250, 330, 1854, 600), [(934, "13週線 934", CYAN, True), (666, "52週線 666", WHITE, True), (600, "600", PINK, False)],
+               [("2026-11-10", 733), ("2026-11-24", 850), ("2026-12-28", 600)], "600ドル", 342)
+    body = f"""
+<div class="fig">{sx.svg()}<div class="cap"><b>Fig.4</b> SOX指数（米半導体株）の週足に演者が書き込み。11/17のNVIDIA決算で200日線まで戻した後、年末に78.6%押し（8,124〜）を試すルート。緑の点線は年明けの戻り。</div></div>
+<div class="cols3">
+  <div class="fig">{nd}<div class="cap"><b>Fig.5</b> NASDAQ100。200日線（28,006）の攻防。割れれば25,000。</div></div>
+  <div class="fig">{ts}<div class="cap"><b>Fig.6</b> TSMC（ADR）。下げは浅く、52週線381が支え。</div></div>
+  <div class="fig">{mu}<div class="cap"><b>Fig.7</b> マイクロン。13週線を割り、52週線666が最後の砦。</div></div>
+</div>
+<div class="cols">
+  <div>
+    <h2><span class="n">1</span>4枚のチャートから読めること</h2>
+    <ul class="b">
+      <li><b>SOXは「戻り売り」の形</b>：13週・26週線が下向きに転じ、200日線（10,852）が上値の壁です。11/17のNVIDIA決算で届いても、そこは売られやすい。</li>
+      <li><b>強弱がはっきり分かれた</b>：TSMCは52週線の上で踏ん張り、マイクロンは13週線を大きく割りました。下げの主役はメモリと装置です。</li>
+      <li><b>NASDAQ100は200日線ちょうど</b>：AI関連の大型株全体が分かれ目にいます。ここを週足で割ると、半導体の二番底が深くなります。</li>
+    </ul>
+  </div>
+  <div>
+    <h2><span class="n">2</span>ズバリ表（年末の想定）</h2>
+    <table class="t">
+      <tr><th>指数・銘柄</th><th class="r">現在</th><th class="r">戻り目標</th><th class="r">年末ズバリ</th><th class="r">現在から</th></tr>
+      <tr><td><b>SOX</b></td><td class="r">10,034</td><td class="r">10,852</td><td class="r dn"><b>8,500</b></td><td class="r dn">-15%</td></tr>
+      <tr><td>NASDAQ100</td><td class="r">27,908</td><td class="r">28,600</td><td class="r dn">25,000</td><td class="r dn">-10%</td></tr>
+      <tr><td>TSMC</td><td class="r">$389</td><td class="r">$420</td><td class="r dn">$340</td><td class="r dn">-13%</td></tr>
+      <tr><td>マイクロン</td><td class="r">$733</td><td class="r">$850</td><td class="r dn">$600</td><td class="r dn">-18%</td></tr>
+    </table>
+    <p class="small" style="margin-top:4px">SOXの8,124〜8,500円は、2025年11月の安値6,352から6月高値14,635への上昇の<b>78.6%押し</b>。Session 1の日経48,000〜50,000円とほぼ同じ「今年の上げをほぼ帳消し」の水準です。</p>
+  </div>
+</div>"""
+    out.append(sheet(2, 3, "チャートで読む米国の半導体：SOXは200日線まで戻して、もう一度売られる", "SOX・NASDAQ100・TSMC・マイクロンの週足に、戻りの目標と年末の下値を書き込む", body,
+                     ["証券アプリ SOX・NASDAQ100・TSMC・マイクロン 週足（2026/11/10、演者のスクリーンショット）", "yfinance：200日線・52週線・13週線・52週安値（11/10取得、自前計算）", "NVIDIA IR：Q3 FY27決算（11/17）"]))
+
+    # ---------- 2-4 チャートで読む日本の半導体・電線 ----------
+    def jp(key, view, lines, path, stick, sy):
+        c = Chart(key, 343, view=view)
+        for v, lab, col, above in lines:
+            c.hline(v, lab, col, x0=view[0] + 10, x1=1700, lx=view[0] + 18, above=above, size=10.5)
+        c.path(path, YEL)
+        c.sticker(view[0] + 30, sy, ["ズバリ", stick], YEL, size=12)
+        return c.svg()
+    ad = jp("advt", (1200, 330, 1854, 590), [(31897, "戻り目標 31,900（26週線）", CYAN, True), (27811, "52週線 27,811", WHITE, False), (20200, "日経5万円なら 20,200", PINK, False)],
+            [("2026-11-10", 29690), ("2026-11-24", 32000), ("2026-12-28", 21000)], "年末 21,000円", 342)
+    kx = jp("kxa", (1200, 320, 1854, 680), [(15448, "戻り目標 15,400（13週線）", CYAN, True), (13113, "52週線 13,113", WHITE, False), (4000, "日経5万円なら 4,000", PINK, False)],
+            [("2026-11-10", 8832), ("2026-11-24", 11000), ("2026-12-28", 4500)], "年末 4,500円", 332)
+    fj = jp("fjk", (1200, 340, 1854, 640), [(4410, "52週線 4,410", CYAN, True), (2637, "52週安値 2,637", WHITE, True), (2306, "142週線 2,306", PINK, False)],
+            [("2026-11-10", 3010), ("2026-11-24", 3500), ("2026-12-28", 2300)], "年末 2,300円", 352)
+    fr = jp("frk", (1200, 330, 1854, 650), [(3123, "52週線 3,123", CYAN, True), (1500, "142週線 1,500", PINK, False)],
+            [("2026-11-10", 2115), ("2026-11-24", 2600), ("2026-12-28", 1500)], "年末 1,500円", 342)
+    body = f"""
+<div class="cols">
+  <div class="fig">{ad}<div class="cap"><b>Fig.8</b> アドバンテスト（6857）。上方修正と自社株買いでも、日経に対するベータは1.85。</div></div>
+  <div class="fig">{kx}<div class="cap"><b>Fig.9</b> キオクシア（285A）。ベータ3.17と日本株で最も振れが大きい。</div></div>
+  <div class="fig">{fj}<div class="cap"><b>Fig.10</b> フジクラ（5803）。データセンター向け光ファイバー。142週線まで。</div></div>
+  <div class="fig">{fr}<div class="cap"><b>Fig.11</b> 古河電工（5801）。年初来+88%からの急落。142週線1,500円まで。</div></div>
+</div>
+<table class="t">
+  <tr><th>銘柄</th><th class="r">現在値</th><th class="r">ベータ</th><th class="r">日経5万円時の理論値</th><th>テクニカルの節目</th><th class="r">年末ズバリ</th><th class="r">現在から</th></tr>
+  <tr><td><b>アドバンテスト</b></td><td class="r">29,690</td><td class="r">1.85</td><td class="r">約20,200</td><td>52週線27,811を割ると節目が遠い</td><td class="r dn"><b>21,000</b></td><td class="r dn">-29%</td></tr>
+  <tr><td><b>キオクシア</b></td><td class="r">8,833</td><td class="r">3.17</td><td class="r">約4,000</td><td>上場来の上げの起点が遠い</td><td class="r dn"><b>4,500</b></td><td class="r dn">-49%</td></tr>
+  <tr><td><b>フジクラ</b></td><td class="r">3,010</td><td class="r">1.90</td><td class="r">約2,020</td><td>52週安値2,637・142週線2,306</td><td class="r dn"><b>2,300</b></td><td class="r dn">-24%</td></tr>
+  <tr><td><b>古河電工</b></td><td class="r">2,115</td><td class="r">2.42</td><td class="r">約1,230</td><td>142週線1,500</td><td class="r dn"><b>1,500</b></td><td class="r dn">-29%</td></tr>
+</table>
+<p class="cap">ベータは直近1年の週次リターンで日経平均に対して自前計算。理論値＝現在値×（1－ベータ×17.3%）。日経の現在値60,459円から50,000円までは-17.3%。</p>
+<div class="cols">
+  <div class="box tint">
+    <h3>日本の半導体・電線は「日経の2〜3倍」動く</h3>
+    <p class="small">4銘柄のベータは1.85〜3.17。日経が-17%なら<b>-30〜50%</b>です。逆に、日経が48,000〜50,000円から戻る局面では<b>最も大きく戻る</b>グループでもあります。下げの最終局面で拾うなら、業績が裏付けるアドバンテストとフジクラが第一候補です。</p>
+  </div>
+  <div class="box tint2">
+    <h3>演者の注意点</h3>
+    <p class="small">キオクシアは6月高値36,172円から-76%と、すでに「暴落後」です。ベータどおりに4,000円台まで下げるかは分かりません。<b>ズバリの数字は「そこまで下げても困らない量にしておく」ための目安</b>で、当てにいくための数字ではありません。</p>
+  </div>
+</div>"""
+    out.append(sheet(2, 4, "チャートで読む日本の半導体・電線：日経の2〜3倍動く4銘柄の下値", "アドバンテスト・キオクシア・フジクラ・古河電工の週足に、ベータから出した年末の下値を書き込む", body,
+                     ["証券アプリ 各社 週足（2026/11/10、演者のスクリーンショット）", "yfinance：週次ベータ・移動平均・52週安値（自前計算）", "アドバンテスト 2026/10/28 適時開示"]))
+
+    # ---------- 2-5 売られすぎマップ ----------
     names = ["キオクシア", "フジクラ", "SKハイニックス※", "SCREEN", "ソフトバンクG", "ディスコ", "LRCX", "AMAT", "東京エレクトロン", "Vertiv", "Micron", "レーザーテック", "Broadcom", "アドバンテスト", "NVIDIA", "TSMC", "MSFT"]
     dd = [76.5, 62.1, 61.2, 59.9, 58.8, 53.7, 49.7, 49.3, 47.2, 46.3, 39.1, 44.0, 33.5, 33.1, 26.2, 19.3, 2.7]
     pairs = sorted(zip(names, dd), key=lambda p: -p[1])
@@ -135,7 +233,7 @@ def pages():
   </div>
   <div>
     <h2><span class="n">2</span>どこまで売られたか</h2>
-    <div class="fig">{fig4}<div class="cap"><b>Fig.4</b> 52週高値からの下落率。※SKハイニックスは分割調整漏れの可能性あり。</div></div>
+    <div class="fig">{fig4}<div class="cap"><b>Fig.12</b> 52週高値からの下落率。※SKハイニックスは分割調整漏れの可能性あり。</div></div>
   </div>
   <div style="display:flex;flex-direction:column;gap:8px">
     <h2><span class="n">3</span>本命・対抗・大穴</h2>
@@ -147,17 +245,17 @@ def pages():
     参考（高値比）：AMAT -49%、LRCX -50%、ディスコ -54%、レーザーテック -44%、SCREEN -60%、ソフトバンクG -59%、さくらインターネット -37%、Alphabet -27%、Meta -18%、Palantir -19%、Constellation -26%。
   </div>
 </div>"""
-    out.append(sheet(2, 3, "売られすぎマップ：12銘柄の「下げ幅」と「戻る理由」", "高値からの下落率と材料・リスクを並べ、本命・対抗・大穴に分ける", body,
+    out.append(sheet(2, 5, "売られすぎマップ：12銘柄の「下げ幅」と「戻る理由」", "高値からの下落率と材料・リスクを並べ、本命・対抗・大穴に分ける", body,
                      ["yfinance 株価・52週高値（2026/11/6・11/9取得）", "アドバンテスト 2026年10/28 適時開示（業績予想修正・自己株式取得）", "AMD 2026年Q3決算", "FourWeekMBA: AI memory stocks fell up to 26%"]))
 
-    # ---------- 2-4 ----------
+    # ---------- 2-6 戦い方 ----------
     ev = [(0, "12/1|師走入り", False), (8, "12/9 FOMC", True), (9, "12/9-11|SEMICON Japan", False), (10, "12/10頃|Broadcom決算", False),
           (16, "12/16頃|Micron決算", True), (45, "1月中旬|TSMC決算", True), (57, "1/27 FOMC", False), (63, "1月末〜2月|大手4社決算", True),
           (72, "2月上旬|東エレク・アドテスト", False), (87, "2月下旬|NVIDIA決算", True), (106, "3/17 FOMC", False), (107, "3月中旬|NVIDIA GTC", True)]
     tl = timeline(ev, w=700, color=C, accent="#C1121F")
     alloc = hbar_chart(["GPU・ファウンドリ", "製造装置・検査", "メモリ", "電力・DC", "現金（押し目用）"], [30, 30, 10, 10, 20], colors=[C, C, A, A, "#9AA5B1"], fmt="{:.0f}%", w=330, row=21, label_w=104, vmax=40)
     body = f"""
-<div class="fig">{tl}<div class="cap"><b>Fig.5</b> 12月〜3月の半導体関連イベント（日付は予定・例年ベースを含む※）。赤は相場を動かしやすいもの。11/17のNVIDIA決算は期間前の最重要イベント。</div></div>
+<div class="fig">{tl}<div class="cap"><b>Fig.13</b> 12月〜3月の半導体関連イベント（日付は予定・例年ベースを含む※）。赤は相場を動かしやすいもの。11/17のNVIDIA決算は期間前の最重要イベント。</div></div>
 <div class="cols">
   <div>
     <h2><span class="n">1</span>3段階の押し目買いプラン</h2>
@@ -168,11 +266,11 @@ def pages():
       <tr><td style="white-space:nowrap"><b>Step 3</b></td><td>1〜2月決算で2027年投資が増額</td><td>残り1/3。メモリ・電力も追加</td></tr>
       <tr><td><b class="dn">撤退</b></td><td>9,011を終値で割る</td><td>買い増し停止。Session 1の下値シナリオへ</td></tr>
     </table>
-    <p class="small" style="margin-top:5px">Session 1で見た「日経48,000円まで下げる」シナリオでは、半導体株はさらに下げる可能性が高いと考えます。<b>一度に全額を入れず、時間と価格を分けること</b>が退場しないための最低条件です。</p>
+    <p class="small" style="margin-top:5px">Session 1で見た「日経48,000〜50,000円まで下げる」シナリオでは、半導体株はさらに下げる可能性が高いと考えます。<b>一度に全額を入れず、時間と価格を分けること</b>が退場しないための最低条件です。</p>
   </div>
   <div>
     <h2><span class="n">2</span>配分のたたき台（半導体・AI枠を100とした場合）</h2>
-    <div class="fig">{alloc}<div class="cap"><b>Fig.6</b> 演者のたたき台。半導体・AI枠の内訳。現金20%は下値シナリオ時の買い増し用（資金全体の現金30%＝1-4とは別枠）。</div></div>
+    <div class="fig">{alloc}<div class="cap"><b>Fig.14</b> 演者のたたき台。半導体・AI枠の内訳。現金20%は下値シナリオ時の買い増し用（資金全体の現金30%＝1-4とは別枠）。</div></div>
     <h2 style="margin-top:7px"><span class="n">3</span>主なリスク</h2>
     <ul class="b small">
       <li>2027年に大手4社がAI投資を鈍化させる（最大のリスク）</li>
@@ -195,6 +293,6 @@ def pages():
     <p class="small">① 今回の下げは2000年型か2022年型か　② NVIDIA決算の「合格ライン」はいくらか（売上108B$超え？　次期ガイダンス120B$？）　③ 日本株で一番戻りが大きいのは装置・検査・メモリ・電線のどれか</p>
   </div>
 </div>"""
-    out.append(sheet(2, 4, "12月〜3月の戦い方：3段階で分けて買い、撤退ラインを先に決める", "イベント日程・押し目買いの条件・配分のたたき台", body,
+    out.append(sheet(2, 6, "12月〜3月の戦い方：3段階で分けて買い、撤退ラインを先に決める", "イベント日程・押し目買いの条件・配分のたたき台", body,
                      ["Federal Reserve: 2026-27 FOMC 日程", "SEMI: SEMICON Japan 2026（12/9-11）", "各社IR（決算発表予定日。例年ベースは要確認）", "Session 1 本資料（下値シナリオ）"]))
     return out
