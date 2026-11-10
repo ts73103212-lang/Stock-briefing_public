@@ -1,20 +1,20 @@
 {
-  "fetched_at": "2026-11-10 11:35 JST",
+  "fetched_at": "2026-11-10 13:16 JST",
   "status": "OK",
   "total_hits": 4,
   "stocks": [
     {
       "ticker": "3632",
-      "close": 487.0,
-      "change": 7.51,
-      "volume": 2489700,
-      "vol_ratio": 2.3,
-      "turnover_mil": 1212.5,
+      "close": 493.0,
+      "change": 8.83,
+      "volume": 2907000,
+      "vol_ratio": 2.6,
+      "turnover_mil": 1433.2,
       "market_cap_bil": 779.1,
-      "rsi": 76.2,
-      "vwap": 485.7,
-      "ema5": 456.4,
-      "ema25": 434.7,
+      "rsi": 77.5,
+      "vwap": 487.7,
+      "ema5": 458.4,
+      "ema25": 435.2,
       "atr": 12.9
     }
   ]
