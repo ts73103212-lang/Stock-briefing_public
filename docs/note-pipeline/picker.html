@@ -1,0 +1,203 @@
+<title>noteネタ選び</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* レイアウト：1列のカード一覧＋画面下に固定の確定バー。スマホで片手で選べることを優先 */
+:root{
+  --bg:#F4F6F9; --card:#FFFFFF; --ink:#18202C; --muted:#5C6676; --line:#DCE1E8;
+  --navy:#1E3A5F; --gold:#C8961E; --gold-soft:#FBF2DC; --pick:#1E3A5F; --pick-soft:#E6EEF8;
+  --ok:#13803B; --warn:#B45309; --ng:#B91C1C;
+  --f:"Meiryo UI","メイリオ",Meiryo,"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F141B; --card:#18202B; --ink:#E7ECF3; --muted:#9AA6B6; --line:#2A3443;
+  --navy:#8FB4E3; --gold:#E2B54A; --gold-soft:#2C2616; --pick:#8FB4E3; --pick-soft:#1C2B3F;
+  --ok:#4ADE80; --warn:#F59E0B; --ng:#F87171; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F141B; --card:#18202B; --ink:#E7ECF3; --muted:#9AA6B6; --line:#2A3443;
+  --navy:#8FB4E3; --gold:#E2B54A; --gold-soft:#2C2616; --pick:#8FB4E3; --pick-soft:#1C2B3F;
+  --ok:#4ADE80; --warn:#F59E0B; --ng:#F87171; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-block:20px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;flex-direction:column;gap:10px}
+h1{font-size:22px;margin:0;color:var(--navy);text-wrap:balance}
+.sub{color:var(--muted);font-size:13px;margin:0}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.days button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+.days button[aria-pressed="true"]{background:var(--navy);color:var(--bg);border-color:var(--navy)}
+.status{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px}
+.pill{border-radius:999px;padding:2px 10px;font-weight:700;border:1px solid currentColor}
+.pill.open{color:var(--ok)} .pill.closed{color:var(--muted)} .pill.done{color:var(--navy)}
+h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
+.grid{display:grid;gap:10px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.card:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.card[aria-pressed="true"]{border-color:var(--pick);background:var(--pick-soft)}
+.card[disabled]{cursor:default}
+.mark{grid-row:span 3;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--bg);margin-top:2px}
+.card[aria-pressed="true"] .mark{background:var(--pick);border-color:var(--pick)}
+.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+.chip{background:var(--gold-soft);color:var(--ink);border-radius:4px;padding:0 6px;font-weight:700}
+.code{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy)}
+.title{font-size:16px;font-weight:700;line-height:1.45;min-width:0}
+.sum{color:var(--muted);font-size:13.5px;min-width:0}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
+.tag{font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--muted)}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar .in{max-width:760px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bar .count{font-weight:700;min-width:5.5em}
+.bar button{font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;cursor:pointer;border:1.5px solid var(--navy)}
+.btn-main{background:var(--navy);color:var(--bg)} .btn-sub{background:transparent;color:var(--navy)}
+.bar button:disabled{opacity:.45;cursor:default}
+.msg{font-size:13px;color:var(--muted);flex:1 1 200px;min-width:0}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:24px;color:var(--muted);text-align:left;margin-top:16px}
+.result{background:var(--card);border:1.5px solid var(--navy);border-radius:12px;padding:12px 14px;margin-top:14px}
+.result ol{margin:6px 0 0;padding-left:1.4em}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>noteネタ選び</h1>
+    <p class="sub">平日11:50ごろに候補10本が届きます。16:15までに1〜3本を選んで確定すると、その本数だけ記事を書きます。選ばなければその日はお休みです。</p>
+    <div class="days" id="days" aria-label="日付"></div>
+    <div class="status" id="status"></div>
+  </header>
+  <main id="main">
+    <div class="empty" id="loading">候補を読み込んでいます…</div>
+  </main>
+</div>
+<div class="bar" id="bar" hidden>
+  <div class="in">
+    <span class="count" id="count">0 / 3本</span>
+    <button class="btn-main" id="confirm" type="button">この本数で確定</button>
+    <button class="btn-sub" id="skip" type="button">今日は書かない</button>
+    <span class="msg" id="msg" role="status"></span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DEADLINE = "16:15", MAX = 3;
+  const $ = (id) => document.getElementById(id);
+  let db = null, days = [], current = null, picks = {}, sel = new Set(), unsubPick = null;
+
+  function jstNow(){
+    const p = new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
+    const g = (t) => p.find(x => x.type === t).value;
+    return {date:`${g("year")}-${g("month")}-${g("day")}`, time:`${g("hour")}:${g("minute")}`.replace(/^24/,"00")};
+  }
+  function isOpen(day){ const n = jstNow(); return day.date === n.date && n.time < (day.deadline || DEADLINE); }
+  function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function label(d){ const [y,m,dd] = d.split("-"); const w = "日月火水木金土"[new Date(+y, +m - 1, +dd).getDay()]; return `${+m}/${+dd}（${w}）`; }
+
+  function renderDays(){
+    const box = $("days"); box.textContent = "";
+    days.forEach(d => {
+      const b = el("button", null, label(d.date)); b.type = "button";
+      b.setAttribute("aria-pressed", String(current && current.date === d.date));
+      b.addEventListener("click", () => select(d.date));
+      box.appendChild(b);
+    });
+  }
+
+  function renderStatus(){
+    const s = $("status"); s.textContent = "";
+    if (!current) return;
+    const open = isOpen(current), p = picks[current.date];
+    if (open) s.appendChild(el("span","pill open",`受付中・締切 ${current.deadline || DEADLINE}`));
+    else s.appendChild(el("span","pill closed","締切済み"));
+    if (p) s.appendChild(el("span","pill done", p.ids && p.ids.length ? `${p.ids.length}本で確定済み` : "今日は書かない（確定済み）"));
+  }
+
+  function card(c, idx){
+    const b = el("button","card"); b.type = "button";
+    const on = sel.has(c.id); b.setAttribute("aria-pressed", String(on));
+    const mark = el("span","mark", on ? String([...sel].indexOf(c.id) + 1) : "");
+    const meta = el("div","meta");
+    meta.appendChild(el("span","chip", c.genre || (c.kind === "stock" ? "個別銘柄" : "話題")));
+    if (c.kind === "stock"){ meta.appendChild(el("span","code", `${c.code || ""} ${c.name || ""}`.trim())); if (c.sector) meta.appendChild(el("span",null,c.sector)); }
+    const title = el("div","title", c.title || "（無題）");
+    const sum = el("div","sum", c.summary || "");
+    b.append(mark, meta, title, sum);
+    if (Array.isArray(c.tags) && c.tags.length){ const t = el("div","tags"); c.tags.slice(0,5).forEach(x => t.appendChild(el("span","tag",x))); b.appendChild(t); }
+    if (!isOpen(current)) b.disabled = true;
+    b.addEventListener("click", () => {
+      if (!isOpen(current)) return;
+      if (sel.has(c.id)) sel.delete(c.id);
+      else if (sel.size < MAX) sel.add(c.id);
+      else { $("msg").textContent = "選べるのは3本までです。外してから選んでください。"; return; }
+      $("msg").textContent = ""; render();
+    });
+    return b;
+  }
+
+  function render(){
+    renderDays(); renderStatus();
+    const main = $("main"); main.textContent = "";
+    if (!current){
+      const e = el("div","empty","まだ候補がありません。平日の11:50ごろに、その日の候補10本がここに届きます。");
+      main.appendChild(e); $("bar").hidden = true; return;
+    }
+    const cands = Array.isArray(current.candidates) ? current.candidates : [];
+    const topics = cands.filter(c => c.kind !== "stock"), stocks = cands.filter(c => c.kind === "stock");
+    if (topics.length){ main.appendChild(el("h2",null,`話題・用語・トリッキー（${topics.length}）`)); const g = el("div","grid"); topics.forEach(c => g.appendChild(card(c))); main.appendChild(g); }
+    if (stocks.length){ main.appendChild(el("h2",null,`個別銘柄（${stocks.length}）`)); const g = el("div","grid"); stocks.forEach(c => g.appendChild(card(c))); main.appendChild(g); }
+    const p = picks[current.date];
+    if (p){
+      const r = el("div","result"); r.appendChild(el("strong",null, p.ids && p.ids.length ? "確定した記事" : "この日は書かない、で確定しています"));
+      if (p.ids && p.ids.length){ const ol = el("ol"); p.ids.forEach(id => { const c = cands.find(x => x.id === id); ol.appendChild(el("li",null, c ? c.title : id)); }); r.appendChild(ol); }
+      main.appendChild(r);
+    }
+    const open = isOpen(current);
+    $("bar").hidden = !open;
+    $("count").textContent = `${sel.size} / ${MAX}本`;
+    $("confirm").disabled = sel.size === 0;
+  }
+
+  function select(date){
+    current = days.find(d => d.date === date) || null;
+    const p = current ? picks[current.date] : null;
+    sel = new Set(p && Array.isArray(p.ids) ? p.ids : []);
+    $("msg").textContent = "";
+    if (unsubPick) unsubPick();
+    if (current && db){
+      unsubPick = db.doc("picks/" + current.date).onSnapshot(s => {
+        if (s.exists) picks[current.date] = s.data(); else delete picks[current.date];
+        render();
+      }, () => {});
+    }
+    render();
+  }
+
+  async function save(ids){
+    if (!db || !current || !isOpen(current)) return;
+    const btns = [$("confirm"), $("skip")]; btns.forEach(b => b.disabled = true);
+    $("msg").textContent = "保存しています…";
+    try {
+      await db.doc("picks/" + current.date).set({date: current.date, ids, confirmed_at: new Date().toISOString()});
+      $("msg").textContent = ids.length ? `${ids.length}本で確定しました。16:15から書き始めます。締切までは選び直せます。` : "今日は書かない、で確定しました。";
+    } catch (e) {
+      $("msg").textContent = "保存できませんでした。通信を確認して、もう一度押してください。";
+    } finally { btns.forEach(b => b.disabled = false); render(); }
+  }
+  $("confirm").addEventListener("click", () => save([...sel]));
+  $("skip").addEventListener("click", () => { sel.clear(); save([]); });
+
+  async function start(){
+    const timer = setTimeout(() => { if (!days.length) { $("loading") && ($("loading").textContent = "候補を読み込めませんでした。ページを開き直してください。"); } }, 10000);
+    db = await claude.use("db");
+    if (!db){ clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","このページは、サインインした本人だけが使えます。")); return; }
+    db.collection("days").orderBy("date","desc").limit(7).onSnapshot(snap => {
+      clearTimeout(timer);
+      days = snap.docs.map(d => d.data()).filter(d => d && d.date);
+      const keep = current && days.find(d => d.date === current.date);
+      select(keep ? keep.date : (days[0] ? days[0].date : null));
+    }, () => { clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","候補を読み込めませんでした。ページを開き直してください。")); });
+    setInterval(() => { if (current) render(); }, 60000);
+  }
+  if (window.claude && claude.use) start();
+  else { $("main").textContent = ""; $("main").appendChild(el("div","empty","claude.ai の中で開いてください。")); }
+})();
+</script>

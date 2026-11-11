@@ -4,7 +4,9 @@
 実装計画: `docs/superpowers/plans/2026-11-04-note-content-pipeline.md`
 
 体制（サブエージェント）: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
-- 進行役プロンプト: `daily-task-prompt.md`（平日16:15）、`weekly-paid-prompt.md`（土曜午前）
+- 進行役プロンプト: `candidates-task-prompt.md`（平日11:47、ネタ候補10本）、`daily-task-prompt.md`（平日16:15、選ばれた分だけ執筆）、`weekly-paid-prompt.md`（土曜午前）
+- ネタ選びページ: `picker.html`（公開先 https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir 。データベース `days/<日付>`＝候補、`picks/<日付>`＝選択、`notes/<日付>`＝12時の調査メモ。本人だけが読み書きできる）
+- 平日の流れ: 11:47 候補10本（話題・用語・トリッキー4＋個別銘柄6）→ 16:15 までにユーザーが1〜3本を選ぶ → 16:15 選ばれた分だけ書く（選ばれなければお休み）
 - 役割定義: `.claude/agents/note-*.md`（PM・相場分析・日本株・米国株・個別株分析・証券アナリスト・視覚化）
 - 全員が読む編集ルール: `editorial-rules.md`
 
