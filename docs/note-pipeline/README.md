@@ -89,6 +89,8 @@ python3 -m venv .venv && .venv/bin/python -m pip install -r requirements-note.tx
 - 注釈の `y`: 終値以外の点を指す（場中高値、ストップ高の値など）。
 - 注釈の `style: "note"`: 枠なしの小さな注記（点と出来高の色付けもしない）。`highlight: false` で金の点・出来高の色付けだけを止める。
 - `ylim`: 縦軸の範囲。
+- `hlines` の `label_pos: "right"`（ラベルを右端に）、`label_x`（ラベル左端の位置、軸の割合 0〜1）、`label_below: true`（線の下に置く）: ラベルが株価線と重なるときに使う。
+- 注釈の `offset: [dx, dy]`（pt）: 吹き出しを余白に置き、引き出し線で点とつなぐ。
 
 ## 動作確認（設計書 §10）
 

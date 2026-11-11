@@ -97,8 +97,13 @@ def chart_a(spec: dict, out: Path, number: int) -> Path:
         ls = {"dashed": "--", "dotted": ":", "solid": "-"}.get(line.get("style", "dashed"), "--")
         price.axhline(line["y"], color=color, linestyle=ls, linewidth=2.2, zorder=3.5)
         if line.get("label"):
-            price.annotate(line["label"], (0.005, line["y"]), xycoords=("axes fraction", "data"),
-                           xytext=(4, 6), textcoords="offset points", ha="left", va="bottom",
+            # label_pos: "left"（既定）/ "right"、label_x: 左端の位置（軸の割合 0〜1）、label_below: 線の下に置く
+            right = line.get("label_pos") == "right"
+            below = bool(line.get("label_below"))
+            lx = line.get("label_x", 0.995 if right else 0.005)
+            price.annotate(line["label"], (lx, line["y"]), xycoords=("axes fraction", "data"),
+                           xytext=(-4 if right else 4, -6 if below else 6), textcoords="offset points",
+                           ha="right" if right else "left", va="top" if below else "bottom",
                            fontsize=SIZES["tick"], fontweight="bold", color=color, zorder=6,
                            bbox={"boxstyle": "round,pad=0.15", "fc": PALETTE["bg"], "ec": "none", "alpha": 0.85})
     anns = spec.get("annotations", [])
@@ -113,7 +118,10 @@ def chart_a(spec: dict, out: Path, number: int) -> Path:
             colors[i] = PALETTE["gold"]
             price.plot([d], [y], "o", color=PALETTE["gold"], markersize=13, zorder=4,
                        markeredgecolor="white", markeredgewidth=2)
-        if ann.get("pos"):
+        if ann.get("offset"):  # [dx, dy] pt。余白に置いて引き出し線で結ぶ
+            dx, dy = ann["offset"]
+            ha, va = ("right" if dx < 0 else "left"), ("top" if dy < 0 else "bottom")
+        elif ann.get("pos"):
             dx, dy, ha, va = annotation_offset(ann["pos"])
         else:  # 自動配置（従来どおり）: 端では内側に寄せ、近い注釈は段違いにする
             frac = i / max(len(dates) - 1, 1)
