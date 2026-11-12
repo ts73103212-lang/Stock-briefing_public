@@ -228,7 +228,7 @@ def pages():
     body = f"""
 <div class="cols" style="grid-template-columns:1fr 1fr">
   <div class="span2">
-    <h2><span class="n">1</span>注目12銘柄の比較</h2>
+    <h2><span class="n">1</span>注目13銘柄の比較</h2>
     <table class="t">
       <tr><th>銘柄</th><th>コード</th><th class="r">株価</th><th class="r">年初来</th><th class="r">高値比</th><th>買い材料</th><th>リスク</th></tr>
       {tr}
@@ -241,7 +241,7 @@ def pages():
   </div>
   <div style="display:flex;flex-direction:column;gap:8px">
     <h2><span class="n">3</span>本命・対抗・大穴</h2>
-    <div class="box tint"><h3>本命：装置・検査</h3><p class="small">東京エレクトロン（-47%）、アドバンテスト。AI投資の増額が見えれば遅れて業績に効きます。アドバンテストは上方修正と自社株買いで下値の支えがあります。</p></div>
+    <div class="box tint"><h3>本命：装置・検査</h3><p class="small">東京エレクトロン（-41%）、アドバンテスト。AI投資の増額が見えれば遅れて業績に効きます。アドバンテストは上方修正と自社株買いで下値の支えがあります。</p></div>
     <div class="box tint"><h3>対抗：ファウンドリ・専用チップ</h3><p class="small">TSMC、ブロードコム。NVIDIAは後任CEOが決まるまで様子見。CEO辞任の日に+4.9%買われたブロードコムは、12/9の決算が材料です（Session 3-6）。</p></div>
     <div class="box tint2"><h3>大穴：メモリ・電力</h3><p class="small">Micron、フジクラ、Vertiv。戻る時の上昇率は最大ですが、選挙後の規制リスクと値動きの大きさから<b>小さく・分けて</b>持つ前提です。</p></div>
   </div>
@@ -249,7 +249,7 @@ def pages():
     参考（高値比、11/12）：AMAT -47%、LRCX -46%、ディスコ -46%、レーザーテック -36%、SCREEN -56%、ソフトバンクG -57%、さくらインターネット -26%、Alphabet -27%、Meta -20%、Palantir -19%、Constellation -27%。
   </div>
 </div>"""
-    out.append(sheet(2, 5, "売られすぎマップ：12銘柄の「下げ幅」と「戻る理由」", "高値からの下落率と材料・リスクを並べ、本命・対抗・大穴に分ける", body,
+    out.append(sheet(2, 5, "売られすぎマップ：13銘柄の「下げ幅」と「戻る理由」", "高値からの下落率と材料・リスクを並べ、本命・対抗・大穴に分ける", body,
                      ["yfinance 株価・52週高値（2026/11/12終値、11/13取得）", "アドバンテスト 2026年10/28 適時開示（業績予想修正・自己株式取得）", "AMD 2026年Q3決算", "FourWeekMBA: AI memory stocks fell up to 26%"]))
 
     # ---------- 2-6 戦い方 ----------
