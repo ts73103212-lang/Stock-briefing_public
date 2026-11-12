@@ -25,9 +25,14 @@ ArtifactData で `<PICKER_URL>` を読む（今日 = JST の実行日 `YYYY-MM-D
 1. `action: get`, `collection: days`, `doc_id: <今日>` — 今日の候補
 2. `action: get`, `collection: picks`, `doc_id: <今日>` — ユーザーの選択（`{"ids": ["c2", "c7"], ...}`）
 
+`picks/<今日>` の形: `{"ids": ["c2", "c7"], "long": "c4" | null, "free": {"title", "memo", "mode": "normal" | "long"} | null, ...}`
+- `ids`＝通常記事にする候補（最大3本）、`long`＝長文（有料）記事にする候補（1本まで）、`free`＝ユーザーの自由記述（1枠。`mode` で通常か長文か）。
+
 - `days` がない（休場日、または候補出しが失敗した日）→ **何もせず終了**（通知なし。候補出しの失敗はそのタスクが通知済み）。
-- `picks` がない、または `ids` が空 → PushNotification `🐾 本日はネタの選択がなかったので、記事はお休みです` を送って**終了**（調査も執筆もしない）。
-- 選択がある → 以降のフェーズへ。`ids` の順に候補を取り出し、フェーズ0で `$WORK/inputs/picks.json` に `{"date": ..., "picked": [選ばれた候補...], "others": [選ばれなかった候補...]}` として保存する。`ids` は最大3本。
+- `picks` がない、または `ids` が空・`long` が null・`free` が null のすべて → PushNotification `🐾 本日はネタの選択がなかったので、記事はお休みです` を送って**終了**（調査も執筆もしない）。
+- 選択がある → 以降のフェーズへ。フェーズ0で `$WORK/inputs/picks.json` に次の形で保存する:
+  `{"date": ..., "normal": [ids の順に候補...（free.mode が normal なら末尾に {"id": "free", "kind": "free", "title", "memo"}）], "long": 候補 または {"id": "free", "kind": "free", ...} または null, "others": [選ばれなかった候補...]}`
+  通常は最大3本、長文は1本まで。**通常が0本で長文だけ**の日は、フェーズ1〜8を飛ばしてフェーズ9だけを行う。
 
 ## フェーズ0: 準備（16:15〜）
 
@@ -60,9 +65,10 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 
 ## フェーズ2: ネタ確定（選択から plan.json を組み立てる）
 
-PM は呼ばない。`picks.json` から機械的に `$WORK/plan.json` を作る（内容は書き換えない）:
+PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` の `normal` から機械的に `$WORK/plan.json` を作る（内容は書き換えない）:
 
-- `articles`: 選ばれた順に `id` を `"1"`, `"2"`, `"3"`。
+- 自由記述（`kind: "free"`）が含まれていれば、先に `note-pm`（モード: 自由記述、通常）を起動し、`$WORK/free_article.json`（記事1本分のエントリ）を作ってもらう。ユーザーの `title` と `memo` を切り口として尊重する。
+- `articles`: 選ばれた順に `id` を `"1"`, `"2"`, `"3"`（自由記述は `free_article.json` の内容をそのまま入れる）。
   - `kind: "topic"` の候補 → `{"id", "kind": "theme", "topic": title, "angle", "facts_needed", "assignee": "note-market-analyst"}`
   - `kind: "stock"` の候補 → `{"id", "kind": "stock", "code", "name", "angle", "facts_needed", "assignee": "note-stock-analyst"}`
 - `candidates`（選外）: 選ばれなかった候補を `{"title": title, "reason": "今回は選ばれず"}` で並べる。
@@ -112,6 +118,16 @@ PM は呼ばない。`picks.json` から機械的に `$WORK/plan.json` を作る
   - 本数不足: `🐾 今日のnote 2本ができました（1本は見送り）：①… ②…`
   - 全体失敗: `🐾 本日は失敗：<理由>`
 
+## フェーズ9: 長文（有料）記事（`picks.json` の `long` があるときだけ）
+
+通常記事の納品（フェーズ8）が終わってから始める。通常が0本の日はフェーズ0の準備の直後に始める。目安は **19:30 JST までに通知**（2時間以内）。手順は `weekly-paid-prompt.md` と同じで、違いは次の点だけ:
+
+- 作業ディレクトリ `WORK2=$WORK/paid`（`mkdir -p $WORK2/{inputs,research,deep,drafts,figs,review,out}`）。`$WORK/inputs/*` と `$WORK/research/*.md` をコピーして使い回す（`digest.json` は不要）。
+- ネタ決定の代わりに `note-pm`（モード: 自由記述、長文）を起動し、`long` の候補（または自由記述）から `$WORK2/plan.json`（記事1本、`kind: "paid"`、`price`、`meta`、`facts_needed` を担当に割り振り）を作る。候補の `angle`・`facts_needed`、自由記述の `memo` を尊重する。
+- 深掘り（並列）→ 執筆（週末モード）→ 図5〜6枚 → レビュー（差戻し1回まで。時間がなければ「差戻し不可」）→ 納品。
+- 納品は `--mode paid` でビルドし、Artifact で**新規に** publish（`url` なし、`icon` は "article"）。
+- PushNotification: `🐾 長文記事ができました：<タイトル> <URL>`（失敗時は `🐾 長文記事は失敗：<理由>`）。通常記事の通知（フェーズ8）とは別に送る。
+
 ## 失敗時の動き（設計書 §8）
 
 | 状況 | 動き |
@@ -121,4 +137,6 @@ PM は呼ばない。`picks.json` から機械的に `$WORK/plan.json` を作る
 | メルマガ未着 | mail.md に「未着」。PM がページに注記 |
 | 銘柄材料が裏付けできない | PM が次の候補に差し替え（時間がなければ見送り） |
 | 3本そろわない | できた本数だけ納品し、通知に本数を明記 |
+| 自由記述の内容が編集ルールに反する（売買推奨など） | PM が切り口を編集ルールの範囲に直し、`notes` に注記 |
+| 長文が19:30までに終わらない | 差戻しを省いて納品。それでも無理なら「長文記事は失敗：時間切れ」 |
 | 全体失敗 | 「本日は失敗：理由」を通知 |
