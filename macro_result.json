@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-13 06:15 JST",
+  "fetched_at": "2026-11-13 06:35 JST",
   "status": "OK",
   "note": "fast_info.last_priceを優先取得（市場クローズ後はその日の終値）。sourceがfast_infoなら最新値、daily_historyならdata_date日の終値。change_pctは前営業日終値比。statusがOK以外はweb検索で補完。",
   "macro": [
@@ -50,9 +50,9 @@
     {
       "name": "VIX",
       "ticker": "^VIX",
-      "close": 18.79,
+      "close": 18.7,
       "prev_close": 17.48,
-      "change_pct": 7.49,
+      "change_pct": 6.98,
       "data_date": null,
       "source": "fast_info",
       "comment": "20超え警戒 / 30超えパニック水準",
@@ -61,9 +61,9 @@
     {
       "name": "WTI原油",
       "ticker": "CL=F",
-      "close": 89.06,
+      "close": 88.9,
       "prev_close": 85.27,
-      "change_pct": 4.44,
+      "change_pct": 4.26,
       "data_date": null,
       "source": "fast_info",
       "comment": "エネルギー・ナフサ・輸送コスト",
@@ -72,9 +72,9 @@
     {
       "name": "金(XAUUSD)",
       "ticker": "GC=F",
-      "close": 3879.3,
+      "close": 3878.0,
       "prev_close": 3980.5,
-      "change_pct": -2.54,
+      "change_pct": -2.58,
       "data_date": null,
       "source": "fast_info",
       "comment": "リスクオフ・インフレ指標",
