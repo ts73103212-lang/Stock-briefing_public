@@ -1,0 +1,210 @@
+<title>週末の有料記事 ネタ選び</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* レイアウト：土曜・日曜の候補5本を1列のカードで並べ、1本を選んで確定する。配色は有料記事らしい深紅 */
+:root{
+  --bg:#F6F4F2; --card:#FFFFFF; --ink:#1D1A1C; --muted:#6B6166; --line:#E2DCDF;
+  --main:#7E1A2C; --main-soft:#F8E9EC; --gold:#B8860B; --gold-soft:#FBF2DC;
+  --ok:#13803B; --ng:#B91C1C;
+  --f:"Meiryo UI","メイリオ",Meiryo,"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141012; --card:#1E181B; --ink:#F0E9EC; --muted:#A99CA3; --line:#352C31;
+  --main:#E08A9B; --main-soft:#3A1F26; --gold:#E2B54A; --gold-soft:#2C2616; --ok:#4ADE80; --ng:#F87171; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141012; --card:#1E181B; --ink:#F0E9EC; --muted:#A99CA3; --line:#352C31;
+  --main:#E08A9B; --main-soft:#3A1F26; --gold:#E2B54A; --gold-soft:#2C2616; --ok:#4ADE80; --ng:#F87171; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-block:20px 130px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;flex-direction:column;gap:10px}
+h1{font-size:22px;margin:0;color:var(--main);text-wrap:balance}
+.sub{color:var(--muted);font-size:13px;margin:0}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.days button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+.days button[aria-pressed="true"]{background:var(--main);color:var(--bg);border-color:var(--main)}
+.status{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px}
+.pill{border-radius:999px;padding:2px 10px;font-weight:700;border:1px solid currentColor}
+.pill.open{color:var(--ok)} .pill.closed{color:var(--muted)} .pill.done{color:var(--main)}
+h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
+.grid{display:grid;gap:10px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;text-align:left;font:inherit;color:inherit;width:100%;cursor:pointer;min-width:0}
+.card[aria-pressed="true"]{border-color:var(--main);background:var(--main-soft)}
+.card[disabled]{cursor:default}
+.mark{grid-row:span 4;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--bg);margin-top:2px}
+.card[aria-pressed="true"] .mark{background:var(--main);border-color:var(--main)}
+.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+.chip{background:var(--gold-soft);color:var(--ink);border-radius:4px;padding:0 6px;font-weight:700}
+.title{font-size:16px;font-weight:700;line-height:1.45;min-width:0}
+.sum{color:var(--muted);font-size:13.5px;min-width:0}
+.outline{font-size:12.5px;color:var(--ink);margin-top:4px;padding-left:1.2em}
+.outline li{margin:0}
+.free{background:var(--card);border:1.5px dashed var(--gold);border-radius:12px;padding:12px 14px;display:grid;gap:8px}
+.free[data-on="1"]{border-style:solid;border-color:var(--main);background:var(--main-soft)}
+.free label{font-size:12px;color:var(--muted);display:block;margin-bottom:2px}
+.free input,.free textarea{font:inherit;width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--ink)}
+.free textarea{min-height:88px;resize:vertical}
+.free .hint{font-size:12px;color:var(--muted)}
+.modes{display:flex;gap:6px;flex-wrap:wrap}
+.modes button{font:inherit;font-size:13px;font-weight:700;border-radius:8px;padding:6px 12px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.modes button[aria-pressed="true"]{background:var(--main);border-color:var(--main);color:var(--bg)}
+.modes button:disabled{opacity:.4;cursor:default}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar .in{max-width:760px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bar .count{font-weight:700;font-size:14px;min-width:6em}
+.bar button{font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;cursor:pointer;border:1.5px solid var(--main)}
+.btn-main{background:var(--main);color:var(--bg)} .btn-sub{background:transparent;color:var(--main)}
+.bar button:disabled{opacity:.45;cursor:default}
+.msg{font-size:13px;color:var(--muted);flex:1 1 200px;min-width:0}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:24px;color:var(--muted);margin-top:16px}
+.result{background:var(--card);border:1.5px solid var(--main);border-radius:12px;padding:12px 14px;margin-top:14px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>週末の有料記事 ネタ選び</h1>
+    <p class="sub">土曜・日曜の10:10ごろに、その日の候補5本が届きます。13:00までに1本を選んで確定すると、その日の有料記事（7,000字級・図5〜6枚）を書きます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
+    <div class="days" id="days" aria-label="日付"></div>
+    <div class="status" id="status"></div>
+  </header>
+  <main id="main"><div class="empty" id="loading">候補を読み込んでいます…</div></main>
+</div>
+<div class="bar" id="bar" hidden>
+  <div class="in">
+    <span class="count" id="count">0 / 1本</span>
+    <button class="btn-main" id="confirm" type="button">この内容で確定</button>
+    <button class="btn-sub" id="skip" type="button">今日は書かない</button>
+    <span class="msg" id="msg" role="status"></span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DEADLINE = "13:00", MAX = 1;
+  const $ = (id) => document.getElementById(id);
+  let db = null, days = [], current = null, picks = {}, unsubPick = null;
+  let selId = null, free = {use:false, title:"", memo:""};
+
+  function jstNow(){
+    const p = new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
+    const g = (t) => p.find(x => x.type === t).value;
+    return {date:`${g("year")}-${g("month")}-${g("day")}`, time:`${g("hour")}:${g("minute")}`.replace(/^24/,"00")};
+  }
+  function isOpen(day){ const n = jstNow(); return day.date === n.date && n.time < (day.deadline || DEADLINE); }
+  function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function label(d){ const [y,m,dd] = d.split("-"); const w = "日月火水木金土"[new Date(+y, +m - 1, +dd).getDay()]; return `${+m}/${+dd}（${w}）`; }
+  function count(){ return (selId ? 1 : 0) + (free.use ? 1 : 0); }
+  function loadDraft(date){ try { const d = JSON.parse(localStorage.getItem("wfree-" + date) || "null"); if (d) free = Object.assign({use:false,title:"",memo:""}, d); } catch (e) {} }
+  function saveDraft(){ try { if (current) localStorage.setItem("wfree-" + current.date, JSON.stringify(free)); } catch (e) {} }
+
+  function renderDays(){
+    const box = $("days"); box.textContent = "";
+    days.forEach(d => { const b = el("button", null, label(d.date)); b.type = "button"; b.setAttribute("aria-pressed", String(current && current.date === d.date)); b.addEventListener("click", () => select(d.date)); box.appendChild(b); });
+  }
+  function renderStatus(){
+    const s = $("status"); s.textContent = "";
+    if (!current) return;
+    const open = isOpen(current), p = picks[current.date];
+    s.appendChild(el("span", open ? "pill open" : "pill closed", open ? `受付中・締切 ${current.deadline || DEADLINE}` : "締切済み"));
+    if (p) s.appendChild(el("span","pill done", (p.id || p.free) ? "1本で確定済み" : "今日は書かない（確定済み）"));
+  }
+  function card(c){
+    const on = selId === c.id;
+    const b = el("button","card"); b.type = "button"; b.setAttribute("aria-pressed", String(on));
+    const mark = el("span","mark", on ? "✓" : "");
+    const meta = el("div","meta"); meta.appendChild(el("span","chip", c.genre || "有料記事")); if (c.price) meta.appendChild(el("span",null,c.price));
+    const title = el("div","title", c.title || "（無題）");
+    const sum = el("div","sum", c.summary || "");
+    b.append(mark, meta, title, sum);
+    if (Array.isArray(c.outline) && c.outline.length){ const ol = el("ol","outline"); c.outline.slice(0,5).forEach(x => ol.appendChild(el("li",null,x))); b.appendChild(ol); }
+    if (!isOpen(current)) b.disabled = true;
+    b.addEventListener("click", () => {
+      if (!isOpen(current)) return;
+      if (selId === c.id) selId = null;
+      else if (count() >= MAX) { $("msg").textContent = "週末の有料記事は1日1本です。外してから選んでください。"; return; }
+      else selId = c.id;
+      $("msg").textContent = ""; render();
+    });
+    return b;
+  }
+  function freeCard(){
+    const box = el("div","free"); if (free.use) box.dataset.on = "1";
+    const open = isOpen(current);
+    const h = el("div","title","自由記述（自分でテーマを書く）");
+    const l1 = el("label",null,"タイトル案（必須）"); const t = el("input"); t.id = "free-title"; t.value = free.title; t.disabled = !open; t.placeholder = "例：今週のAI株急落を、2000年と2022年と比べて7,000字で";
+    const l2 = el("label",null,"書いてほしい内容のメモ（切り口・銘柄・章立ての希望など）"); const m = el("textarea"); m.id = "free-memo"; m.value = free.memo; m.disabled = !open;
+    t.addEventListener("input", () => { free.title = t.value; saveDraft(); updateBar(); });
+    m.addEventListener("input", () => { free.memo = m.value; saveDraft(); });
+    const modes = el("div","modes");
+    const bu = el("button",null, free.use ? "✓ この枠を記事にする" : "この枠を記事にする"); bu.type = "button"; bu.setAttribute("aria-pressed", String(free.use)); bu.disabled = !open;
+    bu.addEventListener("click", () => {
+      if (free.use) { free.use = false; }
+      else if (count() >= MAX) { $("msg").textContent = "週末の有料記事は1日1本です。候補の選択を外してから選んでください。"; return; }
+      else free.use = true;
+      $("msg").textContent = ""; saveDraft(); render();
+    });
+    modes.appendChild(bu);
+    const hint = el("div","hint","メモはこのページだけに保存され、確定するとClaudeに渡ります。");
+    box.append(h, l1, t, l2, m, modes, hint);
+    return box;
+  }
+  function updateBar(){
+    const c = count(); $("count").textContent = `${c} / ${MAX}本`;
+    const ok = !free.use || free.title.trim().length > 0;
+    $("confirm").disabled = c === 0 || !ok;
+    $("confirm").textContent = free.use && !ok ? "自由記述のタイトルを入力" : "この内容で確定";
+  }
+  function render(){
+    renderDays(); renderStatus();
+    const main = $("main"); main.textContent = "";
+    if (!current){ main.appendChild(el("div","empty","まだ候補がありません。土曜・日曜の10:10ごろに、その日の候補5本がここに届きます。")); $("bar").hidden = true; return; }
+    const cands = Array.isArray(current.candidates) ? current.candidates : [];
+    main.appendChild(el("h2",null,`今日の候補（${cands.length}）`)); const g = el("div","grid"); cands.forEach(c => g.appendChild(card(c))); main.appendChild(g);
+    main.appendChild(el("h2",null,"自由記述（1枠）")); main.appendChild(freeCard());
+    const p = picks[current.date];
+    if (p){
+      const r = el("div","result");
+      if (p.id){ const c = cands.find(x => x.id === p.id); r.appendChild(el("strong",null,"確定した記事：")); r.append(c ? c.title : p.id); }
+      else if (p.free){ r.appendChild(el("strong",null,"確定した記事（自由記述）：")); r.append(p.free.title || ""); }
+      else r.appendChild(el("strong",null,"この日は書かない、で確定しています"));
+      main.appendChild(r);
+    }
+    $("bar").hidden = !isOpen(current); updateBar();
+  }
+  function select(date){
+    current = days.find(d => d.date === date) || null;
+    const p = current ? picks[current.date] : null;
+    selId = p && p.id ? p.id : null; free = {use:false,title:"",memo:""};
+    if (current) loadDraft(current.date);
+    if (p && p.free) free = {use:true, title:p.free.title || "", memo:p.free.memo || ""};
+    $("msg").textContent = "";
+    if (unsubPick) unsubPick();
+    if (current && db){ unsubPick = db.doc("picks/" + current.date).onSnapshot(s => { if (s.exists) picks[current.date] = s.data(); else delete picks[current.date]; render(); }, () => {}); }
+    render();
+  }
+  async function save(clear){
+    if (!db || !current || !isOpen(current)) return;
+    const btns = [$("confirm"), $("skip")]; btns.forEach(b => b.disabled = true); $("msg").textContent = "保存しています…";
+    const doc = clear ? {date: current.date, id: null, free: null, confirmed_at: new Date().toISOString()}
+                      : {date: current.date, id: selId, free: free.use ? {title: free.title.trim(), memo: free.memo.trim(), mode: "long"} : null, confirmed_at: new Date().toISOString()};
+    try { await db.doc("picks/" + current.date).set(doc); $("msg").textContent = clear ? "今日は書かない、で確定しました。" : "1本で確定しました。13:00過ぎから書き始めます。締切までは選び直せます。"; }
+    catch (e) { $("msg").textContent = "保存できませんでした。通信を確認して、もう一度押してください。"; }
+    finally { btns.forEach(b => b.disabled = false); render(); }
+  }
+  $("confirm").addEventListener("click", () => save(false));
+  $("skip").addEventListener("click", () => { selId = null; free.use = false; save(true); });
+  async function start(){
+    const timer = setTimeout(() => { if (!days.length) { const l = $("loading"); if (l) l.textContent = "候補を読み込めませんでした。ページを開き直してください。"; } }, 10000);
+    db = await claude.use("db");
+    if (!db){ clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","このページは、サインインした本人だけが使えます。")); return; }
+    db.collection("days").orderBy("date","desc").limit(6).onSnapshot(snap => {
+      clearTimeout(timer); days = snap.docs.map(d => d.data()).filter(d => d && d.date);
+      const keep = current && days.find(d => d.date === current.date); select(keep ? keep.date : (days[0] ? days[0].date : null));
+    }, () => { clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","候補を読み込めませんでした。ページを開き直してください。")); });
+    setInterval(() => { if (current) render(); }, 60000);
+  }
+  if (window.claude && claude.use) start(); else { $("main").textContent = ""; $("main").appendChild(el("div","empty","claude.ai の中で開いてください。")); }
+})();
+</script>
