@@ -1,4 +1,6 @@
-# 週末タスク 進行役プロンプト（有料記事、土曜午前）
+# 週末タスク 進行役プロンプト（有料記事、土日 13:05 JST）
+
+> 2026-11-14 から「週末のネタ選びページで選ばれた1本だけを書く」運用。土日 9:47 の候補出しタスク（`weekend-candidates-prompt.md`）が `<WEEKEND_PICKER_URL>` に候補5本を出し、ユーザーが 13:00 までに1本（または自由記述）を選ぶ。**このタスクは選ばれた1本だけを書く。選ばれなければ何も書かない。**
 
 > 定期タスク（毎回新しいセッション）に貼る本文。`<DELIVERY_URL>` は日次の納品ページの固定URL。有料記事は毎週**新しいアーティファクト**として公開する（記事ごとにURLを分けて残す）。
 > 体制: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
@@ -10,6 +12,16 @@
 
 共通の約束（作業ディレクトリ、サブエージェントの起動方法、要約は10行以内、本文をリポジトリに置かない）は `docs/note-pipeline/daily-task-prompt.md` の「共通の約束」と同じ。`WORK=<スクラッチパッド>/note-run/paid-<日付>`。
 
+## フェーズ-1: 選択の確認（最初に。venv を作るより前）
+
+ArtifactData で `<WEEKEND_PICKER_URL>` を読む（今日 = JST の実行日）:
+1. `action: get`, `collection: days`, `doc_id: <今日>` — 候補5本
+2. `action: get`, `collection: picks`, `doc_id: <今日>` — 選択 `{"id": "w3" | null, "free": {"title", "memo", "mode": "long"} | null}`
+
+- `days` がない → **何もせず終了**（通知なし）。
+- `picks` がない、または `id` も `free` も null → PushNotification `🐾 本日の有料記事はネタの選択がなかったのでお休みです` を送って**終了**。
+- 選択がある → `$WORK/inputs/pick.json` に選ばれた候補（または自由記述）を保存して以降へ。`notes/<今日>` の `market`・`jp`・`mail`・`digest` も `$WORK/research/market.md`, `jp.md`, `$WORK/inputs/mail.md`, `digest.json` に書き出す（フェーズ0の同じ項目は省略できる）。
+
 ## フェーズ0: 準備
 
 - 日次プロンプトのフェーズ0のうち、コード取得・pip install・ディレクトリ作成・引けJSONのコピーを行う（休場日判定はしない）。
@@ -17,9 +29,10 @@
   `.venv/bin/python -c "import json,sys; from note_pipeline.history import parse_meta, DIGEST_META; json.dump(parse_meta(open(sys.argv[1]).read(), DIGEST_META), sys.stdout, ensure_ascii=False, indent=1)" $WORK/inputs/prev.html > $WORK/inputs/digest.json`
 - 今週のメルマガ（話題の語句・銘柄名だけ）を `$WORK/inputs/mail.md` に。
 
-## フェーズ1: ネタ決定
+## フェーズ1: ネタ確定
 
-- `note-pm`（モード: ネタ決定、mode: paid）→ `plan.json`（記事1本、kind: paid、facts_needed を担当に割り振り）。digest が空なら、相場分析の調査（モード: 調査）を先に1回走らせてから PM に渡す。
+- `note-pm`（モード: 自由記述、長文）→ `plan.json`（記事1本、kind: paid、`price`・`meta`、facts_needed を担当に割り振り）。`pick.json` の候補の `angle`・`outline`・`facts_needed`、または自由記述の `title`・`memo` を尊重し、テーマを変えない。
+- （旧運用の名残）選択の仕組みを使わない場合だけ `note-pm`（モード: ネタ決定、mode: paid）で PM が選ぶ。
 
 ## フェーズ2: 深掘り（並列）
 
@@ -41,4 +54,4 @@
 ```
 
 - Artifact で `$WORK/out/index.html` と `img/*.jpg`（`files`）を**新規に** publish する（`url` は付けない）。`icon` は "article"。
-- PushNotification: `🐾 今週の有料記事ができました：<タイトル> <URL>`（失敗時は `🐾 有料記事は失敗：<理由>`）。
+- PushNotification: `🐾 今日の有料記事ができました：<タイトル> <URL>`（失敗時は `🐾 有料記事は失敗：<理由>`）。目安は 15:30 JST まで。
