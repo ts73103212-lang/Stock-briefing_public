@@ -1,6 +1,8 @@
-# 見どころ下調べ 導入計画（2026-11-14 合意、未実装）
+# 見どころ下調べ 導入計画（2026-11-14 合意、2026-11-14 実装済み）
 
-ユーザーと合意した設計。実装は別チャットで行う。
+ユーザーと合意した設計。実装先: `candidates-task-prompt.md`・`weekend-candidates-prompt.md`（フェーズ4・5）、`daily-task-prompt.md`・`weekly-paid-prompt.md`（選ばれた見どころの受け渡し）、`picker.html`・`weekend-picker.html`、`.claude/agents/note-pm.md`（`highlight_plan`・レビュー項目7）、`note-market-analyst.md`・`note-jp-equity.md`（モード: 見どころ）、`note-stock-analyst.md`・`note-securities-analyst.md`。
+
+実装で決めた細部: 日の文書に `highlights_status`（pending / done / partial / failed）と `highlights_eta` を持たせ、ページの表示を切り替える。下調べは2体（相場分析・日本株）で並列。検査は進行役がスクリプトで行う（空の項目・推奨表現を外すだけ）。
 
 ## 目的
 

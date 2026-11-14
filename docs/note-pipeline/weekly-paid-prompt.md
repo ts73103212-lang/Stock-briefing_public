@@ -1,6 +1,7 @@
 # 週末タスク 進行役プロンプト（有料記事、土日 16:30 JST）
 
 > 2026-11-14 から「週末のネタ選びページで選ばれた1本だけを書く」運用。土日 8:05 の候補出しタスク（`weekend-candidates-prompt.md`）が `<WEEKEND_PICKER_URL>` に候補5本を出し、ユーザーが 16:00 までに1本（または自由記述）を選ぶ。**このタスクは選ばれた1本だけを書く。選ばれなければ何も書かない。**
+> 候補には**見どころ**（5〜10点、出典付き）が付き、ユーザーが入れたい見どころと「これも入れて」を選ぶ。選ばれた見どころを柱に、裏取りと肉付けから始める。設計: `highlights-plan.md`
 
 > 定期タスク（毎回新しいセッション）に貼る本文。`<DELIVERY_URL>` は日次の納品ページの固定URL。有料記事は毎週**新しいアーティファクト**として公開する（記事ごとにURLを分けて残す）。
 > 体制: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
@@ -16,11 +17,11 @@
 
 ArtifactData で `<WEEKEND_PICKER_URL>` を読む（今日 = JST の実行日）:
 1. `action: get`, `collection: days`, `doc_id: <今日>` — 候補5本
-2. `action: get`, `collection: picks`, `doc_id: <今日>` — 選択 `{"id": "w3" | null, "free": {"title", "memo", "mode": "long"} | null}`
+2. `action: get`, `collection: picks`, `doc_id: <今日>` — 選択 `{"id": "w3" | null, "free": {"title", "memo", "mode": "long"} | null, "highlights": ["h1", "h2"], "extra": "自由記述"}`（`highlights`・`extra` は無いこともある）
 
 - `days` がない → **何もせず終了**（通知なし）。
 - `picks` がない、または `id` も `free` も null → PushNotification `🐾 本日の有料記事はネタの選択がなかったのでお休みです` を送って**終了**。
-- 選択がある → `$WORK/inputs/pick.json` に選ばれた候補（または自由記述）を保存して以降へ。`notes/<今日>` の `market`・`jp`・`mail`・`digest` も `$WORK/research/market.md`, `jp.md`, `$WORK/inputs/mail.md`, `digest.json` に書き出す（フェーズ0の同じ項目は省略できる）。
+- 選択がある → `$WORK/inputs/pick.json` に選ばれた候補（または自由記述）を保存して以降へ。候補の `highlights` は **`picks.highlights` に入っている id のものだけ**を残し（`picks.highlights` が無ければ全部残す。`[]` なら見どころなし）、`picks.extra` を `extra`（無ければ ""）として付ける。`notes/<今日>` の `market`・`jp`・`mail`・`digest` も `$WORK/research/market.md`, `jp.md`, `$WORK/inputs/mail.md`, `digest.json` に書き出す（フェーズ0の同じ項目は省略できる）。
 
 ## フェーズ0: 準備
 
@@ -31,16 +32,16 @@ ArtifactData で `<WEEKEND_PICKER_URL>` を読む（今日 = JST の実行日）
 
 ## フェーズ1: ネタ確定
 
-- `note-pm`（モード: 自由記述、長文）→ `plan.json`（記事1本、kind: paid、`price`・`meta`、facts_needed を担当に割り振り）。`pick.json` の候補の `angle`・`outline`・`facts_needed`、または自由記述の `title`・`memo` を尊重し、テーマを変えない。
+- `note-pm`（モード: 自由記述、長文）→ `plan.json`（記事1本、kind: paid、`price`・`meta`、facts_needed を担当に割り振り）。`pick.json` の候補の `angle`・`outline`・`facts_needed`・選ばれた `highlights`・`extra`、または自由記述の `title`・`memo` を尊重し、テーマを変えない。`plan.json` の記事に `highlights` と `extra` をそのまま引き継ぐ。
 - （旧運用の名残）選択の仕組みを使わない場合だけ `note-pm`（モード: ネタ決定、mode: paid）で PM が選ぶ。
 
 ## フェーズ2: 深掘り（並列）
 
-- plan.json の `assignee` に入っている担当をすべて並列起動。出力は `deep/paid_market.md`（相場分析）、`deep/paid_jp.md`（日本株）、`deep/paid_us.md`（米国株）、`deep/paid_<コード>.md`（個別株分析）。
+- plan.json の `assignee` に入っている担当をすべて並列起動。全員に「**選ばれた見どころ（`highlights`）のうち自分の担当分野のものの裏取りと肉付けから始めること。`extra` も調べること**」と伝える。出力は `deep/paid_market.md`（相場分析）、`deep/paid_jp.md`（日本株）、`deep/paid_us.md`（米国株）、`deep/paid_<コード>.md`（個別株分析）。
 
 ## フェーズ3: 執筆 → 図
 
-- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う）→ `note-viz`（図5〜6枚）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
+- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える）→ `note-viz`（図5〜6枚）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
 
 ## フェーズ4: レビュー（差戻し2回まで）
 

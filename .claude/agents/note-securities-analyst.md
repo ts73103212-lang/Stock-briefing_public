@@ -10,6 +10,8 @@ model: opus
 
 入力: `WORK/plan.json` の該当記事、`WORK/deep/a{id}.md`（週末は `WORK/deep/paid_*.md` すべて）、`WORK/research/*.md`
 - 数字は `deep/` と `research/` にある**出典付きの数字だけ**を使う。「未確認」の事項は書かない
+- **ユーザーが選んだ見どころ（`plan.json` の記事の `highlights`）は全部本文に入れ、記事の柱にする**（見出しや図の題材にするのが目安）。深掘りで「未確認」になった見どころだけは入れず、`notes` に「見どころ h2 は裏付けが取れず不採用」と書く
+- 「これも入れて」（`extra`）の要望も本文に入れる（編集ルールに反する部分は除き、`notes` に注記）
 - 図の位置に `<!--fig:N-->` を置き、図の中身は `figure_requests` で視覚化担当に依頼する
 
 ```json

@@ -1,6 +1,7 @@
 # 日次タスク 進行役プロンプト（平日 16:15 JST）
 
 > 2026-11-12 から「選んだネタだけ書く」運用。11:47 の候補出しタスク（`candidates-task-prompt.md`）がネタ選びページ `<PICKER_URL>`（https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir ）に候補10本を出し、ユーザーが 16:15 までに1〜3本を選ぶ。**このタスクは選ばれた分だけ書く。選ばれなければ何も書かない。**
+> 2026-11-16 から候補に**見どころ**（記事に入れると面白い要素、出典付き）が付き、ユーザーが入れたい見どころと「これも入れて」を選ぶ。選ばれた見どころを柱に、裏取りと肉付けから始める（一から調べ直さない）。設計: `highlights-plan.md`
 
 > 定期タスク（毎回新しいセッション）に貼る本文。`<DELIVERY_URL>` は納品ページの固定URL。
 > 体制: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
@@ -25,13 +26,15 @@ ArtifactData で `<PICKER_URL>` を読む（今日 = JST の実行日 `YYYY-MM-D
 1. `action: get`, `collection: days`, `doc_id: <今日>` — 今日の候補
 2. `action: get`, `collection: picks`, `doc_id: <今日>` — ユーザーの選択（`{"ids": ["c2", "c7"], ...}`）
 
-`picks/<今日>` の形: `{"ids": ["c2", "c7"], "long": "c4" | null, "free": {"title", "memo", "mode": "normal" | "long"} | null, ...}`
+`picks/<今日>` の形: `{"ids": ["c2", "c7"], "long": "c4" | null, "free": {"title", "memo", "mode": "normal" | "long"} | null, "highlights": {"c2": ["h1", "h3"], ...}, "extra": {"c2": "自由記述", ...}, ...}`
 - `ids`＝通常記事にする候補（最大3本）、`long`＝長文（有料）記事にする候補（1本まで）、`free`＝ユーザーの自由記述（1枠。`mode` で通常か長文か）。
+- `highlights`＝候補ごとに、記事に入れる見どころの id（`days` の候補の `highlights[].id`）。`extra`＝候補ごとの「これも入れて」。どちらも無い・候補のキーが無いこともある（見どころが届かなかった日、古いページで選んだ日）。
 
 - `days` がない（休場日、または候補出しが失敗した日）→ **何もせず終了**（通知なし。候補出しの失敗はそのタスクが通知済み）。
 - `picks` がない、または `ids` が空・`long` が null・`free` が null のすべて → PushNotification `🐾 本日はネタの選択がなかったので、記事はお休みです` を送って**終了**（調査も執筆もしない）。
 - 選択がある → 以降のフェーズへ。フェーズ0で `$WORK/inputs/picks.json` に次の形で保存する:
   `{"date": ..., "normal": [ids の順に候補...（free.mode が normal なら末尾に {"id": "free", "kind": "free", "title", "memo"}）], "long": 候補 または {"id": "free", "kind": "free", ...} または null, "others": [選ばれなかった候補...]}`
+  - 選ばれた候補には、`days` の候補の `highlights` のうち **`picks.highlights[候補id]` に入っている id のものだけ**を `highlights` として残し（キーが無ければ候補の見どころを全部残す。`[]` なら見どころなし）、`picks.extra[候補id]` を `extra`（文字列、無ければ ""）として付ける。`others` の候補からは `highlights` を消してよい。
   通常は最大3本、長文は1本まで。**通常が0本で長文だけ**の日は、フェーズ1〜8を飛ばしてフェーズ9だけを行う。
 
 ## フェーズ0: 準備（16:15〜）
@@ -69,13 +72,15 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 
 - 自由記述（`kind: "free"`）が含まれていれば、先に `note-pm`（モード: 自由記述、通常）を起動し、`$WORK/free_article.json`（記事1本分のエントリ）を作ってもらう。ユーザーの `title` と `memo` を切り口として尊重する。
 - `articles`: 選ばれた順に `id` を `"1"`, `"2"`, `"3"`（自由記述は `free_article.json` の内容をそのまま入れる）。
-  - `kind: "topic"` の候補 → `{"id", "kind": "theme", "topic": title, "angle", "facts_needed", "assignee": "note-market-analyst"}`
-  - `kind: "stock"` の候補 → `{"id", "kind": "stock", "code", "name", "angle", "facts_needed", "assignee": "note-stock-analyst"}`
+  - `kind: "topic"` の候補 → `{"id", "kind": "theme", "topic": title, "angle", "facts_needed", "highlights", "extra", "assignee": "note-market-analyst"}`
+  - `kind: "stock"` の候補 → `{"id", "kind": "stock", "code", "name", "angle", "facts_needed", "highlights", "extra", "assignee": "note-stock-analyst"}`
+  - `highlights`（選ばれた見どころ）と `extra`（これも入れて）は `picks.json` のものをそのまま入れる。
 - `candidates`（選外）: 選ばれなかった候補を `{"title": title, "reason": "今回は選ばれず"}` で並べる。
 - `notes`: メルマガ未着などの注記があれば入れる。
 - `{"date": "<今日>", "mode": "daily", ...}` の形は従来の `plan.json` と同じ。
 
 深掘りの担当には「**12時の候補出しは前場時点。株価・騰落率は引けの数字で確かめ直すこと**」と必ず伝える。
+あわせて「**選ばれた見どころ（`highlights`）の裏取りと肉付けから始めること。`extra`（これも入れて）も調べること**」と伝える。見どころが無い記事（見どころが届かなかった日など）は「見どころを3点、自分で探して `deep/` の冒頭に書くこと」と伝える。
 
 ## フェーズ3: 深掘り（並列、記事ごと）
 
@@ -84,7 +89,7 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 
 ## フェーズ4: 執筆（並列、記事ごと）
 
-- `note-securities-analyst`（記事id）を記事の数だけ
+- `note-securities-analyst`（記事id）を記事の数だけ。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える。
 
 ## フェーズ5: 図（並列、記事ごと）
 
@@ -123,7 +128,7 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 通常記事の納品（フェーズ8）が終わってから始める。通常が0本の日はフェーズ0の準備の直後に始める。目安は **19:30 JST までに通知**（2時間以内）。手順は `weekly-paid-prompt.md` と同じで、違いは次の点だけ:
 
 - 作業ディレクトリ `WORK2=$WORK/paid`（`mkdir -p $WORK2/{inputs,research,deep,drafts,figs,review,out}`）。`$WORK/inputs/*` と `$WORK/research/*.md` をコピーして使い回す（`digest.json` は不要）。
-- ネタ決定の代わりに `note-pm`（モード: 自由記述、長文）を起動し、`long` の候補（または自由記述）から `$WORK2/plan.json`（記事1本、`kind: "paid"`、`price`、`meta`、`facts_needed` を担当に割り振り）を作る。候補の `angle`・`facts_needed`、自由記述の `memo` を尊重する。
+- ネタ決定の代わりに `note-pm`（モード: 自由記述、長文）を起動し、`long` の候補（または自由記述）から `$WORK2/plan.json`（記事1本、`kind: "paid"`、`price`、`meta`、`facts_needed` を担当に割り振り）を作る。候補の `angle`・`facts_needed`・選ばれた `highlights`・`extra`、自由記述の `memo` を尊重する。平日の候補の見どころは3〜5点なので、7,000字に足りない分は PM が `facts_needed` に見どころ探しを足す（執筆側で見どころを足す）。
 - 深掘り（並列）→ 執筆（週末モード）→ 図5〜6枚 → レビュー（差戻し1回まで。時間がなければ「差戻し不可」）→ 納品。
 - 納品は `--mode paid` でビルドし、Artifact で**新規に** publish（`url` なし、`icon` は "article"）。
 - PushNotification: `🐾 長文記事ができました：<タイトル> <URL>`（失敗時は `🐾 長文記事は失敗：<理由>`）。通常記事の通知（フェーズ8）とは別に送る。

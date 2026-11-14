@@ -4,10 +4,11 @@
 実装計画: `docs/superpowers/plans/2026-11-04-note-content-pipeline.md`
 
 体制（サブエージェント）: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
-- 進行役プロンプト: `candidates-task-prompt.md`（平日11:47、ネタ候補10本）、`daily-task-prompt.md`（平日16:15、選ばれた分だけ執筆）、`weekend-candidates-prompt.md`（土日8:05（9:00までに掲載）、有料記事のテーマ候補5本）、`weekly-paid-prompt.md`（土日16:30、選ばれた1本を執筆）
+- 進行役プロンプト: `candidates-task-prompt.md`（平日11:47、ネタ候補10本を12:10ごろ掲載 → 見どころを12:40ごろ書き足し）、`daily-task-prompt.md`（平日16:15、選ばれた分だけ執筆）、`weekend-candidates-prompt.md`（土日8:05、有料記事のテーマ候補5本を8:35ごろ掲載 → 見どころを9:30までに書き足し）、`weekly-paid-prompt.md`（土日16:30、選ばれた1本を執筆）
 - ネタ選びページ: `picker.html`（公開先 https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir 。データベース `days/<日付>`＝候補、`picks/<日付>`＝選択、`notes/<日付>`＝12時の調査メモ。本人だけが読み書きできる）
 - 週末のネタ選びページ: `weekend-picker.html`（公開先 https://claude.ai/artifact/CFwy1xxH6MQMp5V64fHHP1 。`days`・`picks`・`notes` の構造は平日と同じ。土日とも 16:00 締切、1日1本）
-- 平日の流れ: 11:47 候補10本（話題・用語・トリッキー4＋個別銘柄6）→ 16:15 までにユーザーが「通常1〜3本・長文（有料）1本まで・自由記述1枠」を選ぶ → 16:15 選ばれた分だけ書く（通常は17:30まで、長文は19:30までに通知。選ばれなければお休み）
+- 見どころ下調べ（`highlights-plan.md`）: 各候補に `highlights`（出典付きの見どころ。平日3〜5点、週末5〜10点）を書き足し、ユーザーがページのチェックボックスで入れるものを選び、「これも入れて」を書く。`picks` に `highlights`・`extra` として保存され、執筆チームは選ばれた見どころの裏取りと肉付けから始める
+- 平日の流れ: 11:47 候補10本（話題・用語・トリッキー4＋個別銘柄6）＋見どころ → 16:15 までにユーザーが「通常1〜3本・長文（有料）1本まで・自由記述1枠」と見どころを選ぶ → 16:15 選ばれた分だけ書く（通常は17:30まで、長文は19:30までに通知。選ばれなければお休み）
 - 役割定義: `.claude/agents/note-*.md`（PM・相場分析・日本株・米国株・個別株分析・証券アナリスト・視覚化）
 - 全員が読む編集ルール: `editorial-rules.md`
 

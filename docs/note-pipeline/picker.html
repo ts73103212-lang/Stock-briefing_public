@@ -33,7 +33,7 @@ h1{font-size:22px;margin:0;color:var(--navy);text-wrap:balance}
 .pill.open{color:var(--ok)} .pill.closed{color:var(--muted)} .pill.done{color:var(--navy)}
 h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
 .grid{display:grid;gap:10px}
-.card{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;text-align:left;font:inherit;color:inherit;width:100%;min-width:0}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;text-align:left;font:inherit;color:inherit;width:100%;box-sizing:border-box;min-width:0}
 .card[data-mode="normal"]{border-color:var(--pick);background:var(--pick-soft)}
 .card[data-mode="long"]{border-color:var(--long);background:var(--long-soft)}
 .mark{grid-row:span 4;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--bg);margin-top:2px}
@@ -70,13 +70,28 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
 .result ul{margin:6px 0 0;padding-left:1.3em}
 .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:0 6px;margin-right:4px;color:var(--bg);background:var(--pick)}
 .tag.l{background:var(--long)}
+.hl{grid-column:1 / -1;display:grid;gap:8px;margin-top:8px;padding-top:10px;border-top:1px solid var(--line);min-width:0}
+.hl-head{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.hl-list{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.hl-item{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer;min-width:0}
+.hl-item input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--navy);grid-row:span 2}
+.hl-item.off{opacity:.55}
+.hl-item .h{font-weight:700;font-size:14px;line-height:1.45;min-width:0}
+.hl-item .e{font-size:12.5px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.hl-item .e a{color:var(--navy)}
+.hl-type{display:inline-block;font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-right:6px;color:var(--muted);vertical-align:1px}
+.hl-wait{font-size:13px;color:var(--warn);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:8px 10px}
+.hl label.x{font-size:12px;color:var(--muted)}
+.hl textarea{font:inherit;font-size:14px;width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--ink);min-height:52px;resize:vertical}
+.hlcount{font-size:12px;color:var(--muted)}
+.card :focus-visible,.free :focus-visible,.bar :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 
 <div class="wrap">
   <header>
     <h1>noteネタ選び</h1>
-    <p class="sub">平日11:50ごろに候補10本が届きます。16:15までに「通常記事」を1〜3本、「長文（有料）記事」を1本まで選んで確定すると、その分だけ書きます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
+    <p class="sub">平日12:10ごろに候補10本、12:40ごろに各候補の「見どころ」（記事に入れると面白い要素）が届きます。16:15までに「通常記事」を1〜3本、「長文（有料）記事」を1本まで選んで確定すると、その分だけ書きます。選んだ候補の下で、入れたい見どころにチェックし、「これも入れて」を書けます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
     <div class="days" id="days" aria-label="日付"></div>
     <div class="status" id="status"></div>
   </header>
@@ -99,6 +114,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
   const $ = (id) => document.getElementById(id);
   let db = null, days = [], current = null, picks = {}, unsubPick = null;
   let sel = [], longId = null, free = {use: false, mode: "normal", title: "", memo: ""};
+  let hl = {}, ex = {};  // 候補id → 入れる見どころidの配列（未設定なら全部オン）／「これも入れて」
 
   function jstNow(){
     const p = new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
@@ -115,6 +131,43 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
   }
   function loadDraft(date){ try { const d = JSON.parse(localStorage.getItem("free-" + date) || "null"); if (d) free = Object.assign({use:false, mode:"normal", title:"", memo:""}, d); } catch (e) {} }
   function saveDraft(){ try { if (current) localStorage.setItem("free-" + current.date, JSON.stringify(free)); } catch (e) {} }
+  function loadHlDraft(date){ try { const d = JSON.parse(localStorage.getItem("hl-" + date) || "null"); if (d){ hl = d.hl || {}; ex = d.ex || {}; } } catch (e) {} }
+  function saveHlDraft(){ try { if (current) localStorage.setItem("hl-" + current.date, JSON.stringify({hl, ex})); } catch (e) {} }
+  function hlOf(c){ return Array.isArray(c.highlights) ? c.highlights.filter(h => h && h.id) : []; }
+  function chosenHl(c){ const all = hlOf(c).map(h => h.id); return Array.isArray(hl[c.id]) ? hl[c.id].filter(id => all.includes(id)) : all; }
+  function hlStatus(){ return current ? current.highlights_status : null; }
+
+  function hlBox(c){
+    const box = el("div","hl"), open = isOpen(current), items = hlOf(c), st = hlStatus();
+    if (items.length){
+      const on = chosenHl(c);
+      box.appendChild(el("div","hl-head",`見どころ（${on.length}/${items.length} を記事に入れる）`));
+      const ul = el("ul","hl-list");
+      items.forEach(h => {
+        const li = el("li"); const lab = el("label","hl-item" + (on.includes(h.id) ? "" : " off"));
+        const cb = el("input"); cb.type = "checkbox"; cb.id = `hl-${c.id}-${h.id}`; cb.checked = on.includes(h.id); cb.disabled = !open;
+        cb.addEventListener("change", () => {
+          const cur = chosenHl(c);
+          hl[c.id] = cb.checked ? items.map(x => x.id).filter(id => cur.includes(id) || id === h.id) : cur.filter(id => id !== h.id);
+          saveHlDraft(); render();
+        });
+        const head = el("span","h"); if (h.type) head.appendChild(el("span","hl-type",h.type)); head.append(h.headline || "");
+        const ev = el("span","e", h.evidence || "");
+        if (h.source){ ev.append("（"); if (/^https?:\/\//.test(h.source)){ const a = el("a",null,"出典"); a.href = h.source; a.target = "_blank"; a.rel = "noopener"; ev.appendChild(a); } else ev.append(h.source); ev.append("）"); }
+        lab.append(cb, head, ev); li.appendChild(lab); ul.appendChild(li);
+      });
+      box.appendChild(ul);
+    } else if (st === "pending"){
+      box.appendChild(el("div","hl-wait",`見どころを調べています（${current.highlights_eta || "12:40"}ごろ）。先に選んでおいても大丈夫です。届いたら全部オンで入ります。`));
+    } else if (st){
+      box.appendChild(el("div","hl-wait","この候補の見どころは届きませんでした。執筆のときにチームが見どころを足します。"));
+    }
+    const lab = el("label","x","これも入れて（任意。入れてほしい数字・事例・切り口など）"); lab.htmlFor = `ex-${c.id}`;
+    const ta = el("textarea"); ta.id = `ex-${c.id}`; ta.value = ex[c.id] || ""; ta.disabled = !open; ta.placeholder = "例：2008年の似た局面と比べてほしい";
+    ta.addEventListener("input", () => { ex[c.id] = ta.value; saveHlDraft(); });
+    box.append(lab, ta);
+    return box;
+  }
 
   function renderDays(){
     const box = $("days"); box.textContent = "";
@@ -159,6 +212,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
     const meta = el("div","meta");
     meta.appendChild(el("span","chip", c.genre || (c.kind === "stock" ? "個別銘柄" : "話題")));
     if (c.kind === "stock"){ meta.appendChild(el("span","code", `${c.code || ""} ${c.name || ""}`.trim())); if (c.sector) meta.appendChild(el("span",null,c.sector)); }
+    const nh = hlOf(c).length; if (nh) meta.appendChild(el("span","hlcount",`見どころ ${nh}点`));
     const title = el("div","title", c.title || "（無題）");
     const sum = el("div","sum", c.summary || "");
     const modes = el("div","modes");
@@ -169,6 +223,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
     bl.addEventListener("click", () => setMode(c.id, "long"));
     modes.append(bn, bl);
     b.append(mark, meta, title, sum, modes);
+    if (mode) b.appendChild(hlBox(c));
     return b;
   }
 
@@ -211,10 +266,15 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
   }
 
   function render(){
+    const fa = document.activeElement, faId = fa && fa.id, faSel = fa && "selectionStart" in fa ? [fa.selectionStart, fa.selectionEnd] : null;
+    draw();
+    if (faId){ const n = document.getElementById(faId); if (n && n !== document.activeElement){ n.focus(); if (faSel && n.setSelectionRange) try { n.setSelectionRange(faSel[0], faSel[1]); } catch (e) {} } }
+  }
+  function draw(){
     renderDays(); renderStatus();
     const main = $("main"); main.textContent = "";
     if (!current){
-      main.appendChild(el("div","empty","まだ候補がありません。平日の11:50ごろに、その日の候補10本がここに届きます。"));
+      main.appendChild(el("div","empty","まだ候補がありません。平日の12:10ごろに、その日の候補10本がここに届きます。"));
       $("bar").hidden = true; return;
     }
     const cands = Array.isArray(current.candidates) ? current.candidates : [];
@@ -229,8 +289,9 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
       if (n + l){
         const ul = el("ul");
         const name = (id) => { const c = cands.find(x => x.id === id); return c ? c.title : id; };
-        (p.ids || []).forEach(id => { const li = el("li"); li.appendChild(el("span","tag","通常")); li.append(name(id)); ul.appendChild(li); });
-        if (p.long){ const li = el("li"); li.appendChild(el("span","tag l","長文")); li.append(name(p.long)); ul.appendChild(li); }
+        const note = (id) => { const k = p.highlights && Array.isArray(p.highlights[id]) ? p.highlights[id].length : null, e = p.extra && p.extra[id]; return (k != null ? `（見どころ${k}点` + (e ? "・追加の要望あり）" : "）") : (e ? "（追加の要望あり）" : "")); };
+        (p.ids || []).forEach(id => { const li = el("li"); li.appendChild(el("span","tag","通常")); li.append(name(id) + note(id)); ul.appendChild(li); });
+        if (p.long){ const li = el("li"); li.appendChild(el("span","tag l","長文")); li.append(name(p.long) + note(p.long)); ul.appendChild(li); }
         if (p.free){ const li = el("li"); li.appendChild(el("span", p.free.mode === "long" ? "tag l" : "tag", p.free.mode === "long" ? "長文・自由記述" : "通常・自由記述")); li.append(p.free.title || ""); ul.appendChild(li); }
         r.appendChild(ul);
       }
@@ -240,30 +301,45 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
     updateBar();
   }
 
+  function applyPick(p){
+    sel = p && Array.isArray(p.ids) ? p.ids.slice() : []; longId = p && p.long ? p.long : null;
+    free = {use:false, mode:"normal", title:"", memo:""}; hl = {}; ex = {};
+    if (current){ loadDraft(current.date); loadHlDraft(current.date); }
+    if (p && p.highlights && typeof p.highlights === "object") Object.assign(hl, p.highlights);
+    if (p && p.extra && typeof p.extra === "object") Object.assign(ex, p.extra);
+    if (p && p.free){ free = {use:true, mode:p.free.mode || "normal", title:p.free.title || "", memo:p.free.memo || ""}; }
+  }
   function select(date){
     current = days.find(d => d.date === date) || null;
-    const p = current ? picks[current.date] : null;
-    sel = p && Array.isArray(p.ids) ? p.ids.slice() : []; longId = p && p.long ? p.long : null;
-    free = {use:false, mode:"normal", title:"", memo:""};
-    if (current) loadDraft(current.date);
-    if (p && p.free){ free = {use:true, mode:p.free.mode || "normal", title:p.free.title || "", memo:p.free.memo || ""}; }
+    applyPick(current ? picks[current.date] : null);
     $("msg").textContent = "";
     if (unsubPick) unsubPick();
     if (current && db){
-      unsubPick = db.doc("picks/" + current.date).onSnapshot(s => {
-        if (s.exists) picks[current.date] = s.data(); else delete picks[current.date];
+      let first = true; const date0 = current.date;
+      unsubPick = db.doc("picks/" + date0).onSnapshot(s => {
+        if (s.exists) picks[date0] = s.data(); else delete picks[date0];
+        if (first){ first = false; if (current && current.date === date0) applyPick(picks[date0]); }  // 開き直したとき、確定済みの選択を画面に戻す
         render();
       }, () => {});
     }
     render();
   }
 
+
   async function save(clear){
     if (!db || !current || !isOpen(current)) return;
     const btns = [$("confirm"), $("skip")]; btns.forEach(b => b.disabled = true);
     $("msg").textContent = "保存しています…";
     const doc = clear ? {date: current.date, ids: [], long: null, free: null, confirmed_at: new Date().toISOString()}
-                      : {date: current.date, ids: sel.slice(), long: longId, free: free.use ? {title: free.title.trim(), memo: free.memo.trim(), mode: free.mode} : null, confirmed_at: new Date().toISOString()};
+                      : {date: current.date, ids: sel.slice(), long: longId, free: free.use ? {title: free.title.trim(), memo: free.memo.trim(), mode: free.mode} : null, highlights: {}, extra: {}, confirmed_at: new Date().toISOString()};
+    if (!clear){
+      const cands = Array.isArray(current.candidates) ? current.candidates : [];
+      sel.concat(longId ? [longId] : []).forEach(id => {
+        const c = cands.find(x => x.id === id); if (!c) return;
+        if (hlOf(c).length) doc.highlights[id] = chosenHl(c);
+        const e = (ex[id] || "").trim(); if (e) doc.extra[id] = e;
+      });
+    }
     try {
       await db.doc("picks/" + current.date).set(doc);
       const c = clear ? {n:0,l:0} : counts();
@@ -283,7 +359,8 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
       clearTimeout(timer);
       days = snap.docs.map(d => d.data()).filter(d => d && d.date);
       const keep = current && days.find(d => d.date === current.date);
-      select(keep ? keep.date : (days[0] ? days[0].date : null));
+      if (keep && db){ current = keep; render(); }  // 見どころの書き足しなどで同じ日が更新されたときは、選択中の状態を保つ
+      else select(days[0] ? days[0].date : null);
     }, () => { clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","候補を読み込めませんでした。ページを開き直してください。")); });
     setInterval(() => { if (current) render(); }, 60000);
   }
