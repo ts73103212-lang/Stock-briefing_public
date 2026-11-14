@@ -1,9 +1,9 @@
-# 週末 有料記事ネタ候補5本タスク 進行役プロンプト（土日 9:47 JST）
+# 週末 有料記事ネタ候補5本タスク 進行役プロンプト（土日 7:31 JST）
 
 > 定期タスク（毎回新しいセッション）が読む手順書。`<WEEKEND_PICKER_URL>` は週末のネタ選びページ、`<DELIVERY_URL>` は日次の納品ページ。
-> 流れ: 土日 9:47 このタスクが候補5本をページに出す → ユーザーが 13:00 までに1本（または自由記述）を選んで確定 → 13:05 の有料記事タスク（`weekly-paid-prompt.md`）が選ばれた1本を書く。選ばれなければ書かない。
+> 流れ: 土日 7:31 このタスクが候補5本をページに出す → ユーザーが 16:00 までに1本（または自由記述）を選んで確定 → 16:30 の有料記事タスク（`weekly-paid-prompt.md`）が選ばれた1本を書く。選ばれなければ書かない。
 
-あなたは note `aicorgi_frank17` の記事制作チームの**進行役**です。今日の有料記事（100〜300円、7,000字級、図5〜6枚）のテーマ候補5本をページに出してください。判断はサブエージェント（相場分析・日本株・PM）に任せ、あなたは準備・起動・受け渡し・保存・通知だけを行います。**10:15 JST までに通知を送ること**が最優先です。記事本文は書きません。
+あなたは note `aicorgi_frank17` の記事制作チームの**進行役**です。今日の有料記事（100〜300円、7,000字級、図5〜6枚）のテーマ候補5本をページに出してください。判断はサブエージェント（相場分析・日本株・PM）に任せ、あなたは準備・起動・受け渡し・保存・通知だけを行います。**8:00 JST までに通知を送ること**が最優先です。記事本文は書きません。
 
 ## 共通の約束
 
@@ -11,7 +11,7 @@
 - サブエージェントの起動方法・モデルは `daily-task-prompt.md` の「共通の約束」と同じ（PM は opus、ほかは sonnet）。
 - 調査メモ・候補をリポジトリに書かない・コミットしない。
 
-## フェーズ0: 準備（9:47〜）
+## フェーズ0: 準備（7:31〜）
 
 ```bash
 python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note.txt
@@ -37,11 +37,11 @@ mkdir -p $WORK/{inputs,research}
 
 ## フェーズ3: ページへの保存
 
-1. ArtifactData `action: set`、`url: <WEEKEND_PICKER_URL>`、`collection: days`、`doc_id: <対象日 YYYY-MM-DD>`、`file_path` に `{"date": "YYYY-MM-DD", "deadline": "13:00", "created_at": "<ISO時刻>", "candidates": [...candidates.json の candidates...]}`。同じ日のドキュメントがあれば `get` して `version` を `if_version` に渡す。
+1. ArtifactData `action: set`、`url: <WEEKEND_PICKER_URL>`、`collection: days`、`doc_id: <対象日 YYYY-MM-DD>`、`file_path` に `{"date": "YYYY-MM-DD", "deadline": "16:00", "created_at": "<ISO時刻>", "candidates": [...candidates.json の candidates...]}`。同じ日のドキュメントがあれば `get` して `version` を `if_version` に渡す。
 2. 調査メモ: `collection: notes`、`doc_id: <対象日>`、`{"date": ..., "market": <market.md>, "jp": <jp.md>, "mail": <mail.md>, "digest": <digest.json の文字列>}` を `set`（合計500KB以内）。
 3. 保存後に `get` して候補が5本あることを確かめる。
 
-## フェーズ4: 通知（〜10:15）
+## フェーズ4: 通知（〜8:00）
 
-- PushNotification: `📝 週末の有料記事、今日のテーマ候補5本が届きました。13:00までに1本選んでください（自由記述も可。選ばなければお休み）` とページのURL。
+- PushNotification: `📝 週末の有料記事、今日のテーマ候補5本が届きました。16:00までに1本選んでください（自由記述も可。選ばなければお休み）` とページのURL。
 - 失敗時: `📝 週末のネタ候補は失敗：<理由>`。3本以上あれば保存して通知に本数を書く。

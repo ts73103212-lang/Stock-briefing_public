@@ -65,7 +65,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
 <div class="wrap">
   <header>
     <h1>週末の有料記事 ネタ選び</h1>
-    <p class="sub">土曜・日曜の10:10ごろに、その日の候補5本が届きます。13:00までに1本を選んで確定すると、その日の有料記事（7,000字級・図5〜6枚）を書きます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
+    <p class="sub">土曜・日曜の8:00ごろに、その日の候補5本が届きます。16:00までに1本を選んで確定すると、その日の有料記事（7,000字級・図5〜6枚）を書きます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
     <div class="days" id="days" aria-label="日付"></div>
     <div class="status" id="status"></div>
   </header>
@@ -82,7 +82,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
 
 <script>
 (function(){
-  const DEADLINE = "13:00", MAX = 1;
+  const DEADLINE = "16:00", MAX = 1;
   const $ = (id) => document.getElementById(id);
   let db = null, days = [], current = null, picks = {}, unsubPick = null;
   let selId = null, free = {use:false, title:"", memo:""};
@@ -159,7 +159,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
   function render(){
     renderDays(); renderStatus();
     const main = $("main"); main.textContent = "";
-    if (!current){ main.appendChild(el("div","empty","まだ候補がありません。土曜・日曜の10:10ごろに、その日の候補5本がここに届きます。")); $("bar").hidden = true; return; }
+    if (!current){ main.appendChild(el("div","empty","まだ候補がありません。土曜・日曜の8:00ごろに、その日の候補5本がここに届きます。")); $("bar").hidden = true; return; }
     const cands = Array.isArray(current.candidates) ? current.candidates : [];
     main.appendChild(el("h2",null,`今日の候補（${cands.length}）`)); const g = el("div","grid"); cands.forEach(c => g.appendChild(card(c))); main.appendChild(g);
     main.appendChild(el("h2",null,"自由記述（1枠）")); main.appendChild(freeCard());
@@ -189,7 +189,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
     const btns = [$("confirm"), $("skip")]; btns.forEach(b => b.disabled = true); $("msg").textContent = "保存しています…";
     const doc = clear ? {date: current.date, id: null, free: null, confirmed_at: new Date().toISOString()}
                       : {date: current.date, id: selId, free: free.use ? {title: free.title.trim(), memo: free.memo.trim(), mode: "long"} : null, confirmed_at: new Date().toISOString()};
-    try { await db.doc("picks/" + current.date).set(doc); $("msg").textContent = clear ? "今日は書かない、で確定しました。" : "1本で確定しました。13:00過ぎから書き始めます。締切までは選び直せます。"; }
+    try { await db.doc("picks/" + current.date).set(doc); $("msg").textContent = clear ? "今日は書かない、で確定しました。" : "1本で確定しました。16:30から書き始めます。締切までは選び直せます。"; }
     catch (e) { $("msg").textContent = "保存できませんでした。通信を確認して、もう一度押してください。"; }
     finally { btns.forEach(b => b.disabled = false); render(); }
   }
