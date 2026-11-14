@@ -27,7 +27,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests tradingview-screener yfinance pytz -q
+        run: pip install requests tradingview-screener yfinance pytz matplotlib fonttools Pillow -q
 
       - name: Show trigger info
         run: |
@@ -46,11 +46,16 @@ jobs:
       - name: Run macro fetch
         run: python fetch_macro.py
 
+      - name: Render briefing charts (weekly/daily + volume, all screened)
+        continue-on-error: true   # チャート失敗でデータのコミットを止めない
+        run: python briefing_charts.py --from-json screening_result.json --top 20 --out charts --clean
+
       - name: Commit and push results
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add screening_result.json holdings_result.json macro_result.json
+          git add -A charts || true
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0

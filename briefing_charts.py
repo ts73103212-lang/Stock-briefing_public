@@ -4,6 +4,10 @@
     python briefing_charts.py 9048 1926 197A 4071            # → charts/<code>.png
     python briefing_charts.py --from-json screening_result.json --top 5
     python briefing_charts.py 9048 1926 --combined           # → charts/combined.png（1枚にまとめる）
+    python briefing_charts.py --from-json screening_result.json --top 10 --clean   # 朝の GitHub Actions 用
+
+charts/manifest.json に、銘柄ごとの「ファイル名・最終足の日付・sha256」を書き出す
+（ルーティンが Gmail のインライン添付に使う）。
 
 1銘柄 = 横並び2面（左: 週足 約1年＋13/26週EMA、右: 日足 約4か月＋EMA5/25）、下段に出来高。
 メール本文に cid 画像として貼る前提で、幅1200px・PNG（1枚 60〜90KB 程度）。
@@ -11,8 +15,10 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import matplotlib
@@ -95,7 +101,7 @@ def render(code: str, name: str, out: Path) -> Path:
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, format="png", facecolor="white")
     plt.close(fig)
-    return out
+    return out, d.index[-1].strftime("%Y-%m-%d")
 
 
 def combine(paths: list[Path], out: Path) -> Path:
@@ -118,19 +124,31 @@ def main() -> None:
     ap.add_argument("--names", default="", help="code=名前,code=名前 ...")
     ap.add_argument("--out", default="charts")
     ap.add_argument("--combined", action="store_true")
+    ap.add_argument("--clean", action="store_true", help="出力先の既存PNGを消してから作る")
     a = ap.parse_args()
     codes = list(a.codes)
     if a.from_json:
         codes += [s["ticker"] for s in json.load(open(a.from_json))["stocks"][: a.top]]
     names = dict(kv.split("=", 1) for kv in a.names.split(",") if "=" in kv)
     setup_font()
-    done = []
+    out_dir = Path(a.out)
+    if a.clean and out_dir.exists():
+        for old in out_dir.glob("*.png"):
+            old.unlink()
+    done, manifest = [], {}
     for c in codes:
         try:
-            done.append(render(c, names.get(c, ""), Path(a.out) / f"{c}.png"))
-            print(done[-1])
+            p, last = render(c, names.get(c, ""), out_dir / f"{c}.png")
+            done.append(p)
+            manifest[c] = {"file": p.name, "last_bar": last,
+                           "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+            print(p)
         except Exception as e:  # 1銘柄の失敗で全体を止めない
             print(f"SKIP {c}: {e}", file=sys.stderr)
+    if done:
+        jst = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M JST")
+        (out_dir / "manifest.json").write_text(json.dumps(
+            {"generated_at": jst, "charts": manifest}, ensure_ascii=False, indent=1))
     if a.combined and done:
         print(combine(done, Path(a.out) / "combined.png"))
 
