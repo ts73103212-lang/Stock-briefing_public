@@ -91,7 +91,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
 <div class="wrap">
   <header>
     <h1>noteネタ選び</h1>
-    <p class="sub">平日12:10ごろに候補10本、12:40ごろに各候補の「見どころ」（記事に入れると面白い要素）が届きます。16:15までに「通常記事」を1〜3本、「長文（有料）記事」を1本まで選んで確定すると、その分だけ書きます。選んだ候補の下で、入れたい見どころにチェックし、「これも入れて」を書けます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
+    <p class="sub">平日12:10ごろに候補10本、遅くとも12:30に各候補の「見どころ」（記事に入れると面白い要素）が届きます。16:15までに「通常記事」を1〜3本、「長文（有料）記事」を1本まで選んで確定すると、その分だけ書きます。選んだ候補の下で、入れたい見どころにチェックし、「これも入れて」を書けます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
     <div class="days" id="days" aria-label="日付"></div>
     <div class="status" id="status"></div>
   </header>
@@ -158,7 +158,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
       });
       box.appendChild(ul);
     } else if (st === "pending"){
-      box.appendChild(el("div","hl-wait",`見どころを調べています（${current.highlights_eta || "12:40"}ごろ）。先に選んでおいても大丈夫です。届いたら全部オンで入ります。`));
+      box.appendChild(el("div","hl-wait",`見どころを調べています（${current.highlights_eta || "12:30"}まで）。先に選んでおいても大丈夫です。届いたら全部オンで入ります。`));
     } else if (st){
       box.appendChild(el("div","hl-wait","この候補の見どころは届きませんでした。執筆のときにチームが見どころを足します。"));
     }

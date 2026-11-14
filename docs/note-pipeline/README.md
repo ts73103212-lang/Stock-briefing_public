@@ -4,7 +4,7 @@
 実装計画: `docs/superpowers/plans/2026-11-04-note-content-pipeline.md`
 
 体制（サブエージェント）: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
-- 進行役プロンプト: `candidates-task-prompt.md`（平日11:47、ネタ候補10本を12:10ごろ掲載 → 見どころを12:40ごろ書き足し）、`daily-task-prompt.md`（平日16:15、選ばれた分だけ執筆）、`weekend-candidates-prompt.md`（土日8:05、有料記事のテーマ候補5本を8:35ごろ掲載 → 見どころを9:30までに書き足し）、`weekly-paid-prompt.md`（土日16:30、選ばれた1本を執筆）
+- 進行役プロンプト: `candidates-task-prompt.md`（平日11:47、ネタ候補10本を12:10ごろ掲載 → 見どころを遅くとも12:30に書き足して通知（昼休みに選ぶ前提））、`daily-task-prompt.md`（平日16:15、選ばれた分だけ執筆）、`weekend-candidates-prompt.md`（土日8:05、有料記事のテーマ候補5本を8:35ごろ掲載 → 見どころを9:30までに書き足し）、`weekly-paid-prompt.md`（土日16:30、選ばれた1本を執筆）
 - ネタ選びページ: `picker.html`（公開先 https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir 。データベース `days/<日付>`＝候補、`picks/<日付>`＝選択、`notes/<日付>`＝12時の調査メモ。本人だけが読み書きできる）
 - 週末のネタ選びページ: `weekend-picker.html`（公開先 https://claude.ai/artifact/CFwy1xxH6MQMp5V64fHHP1 。`days`・`picks`・`notes` の構造は平日と同じ。土日とも 16:00 締切、1日1本）
 - 見どころ下調べ（`highlights-plan.md`）: 各候補に `highlights`（出典付きの見どころ。平日3〜5点、週末5〜10点）を書き足し、ユーザーがページのチェックボックスで入れるものを選び、「これも入れて」を書く。`picks` に `highlights`・`extra` として保存され、執筆チームは選ばれた見どころの裏取りと肉付けから始める
