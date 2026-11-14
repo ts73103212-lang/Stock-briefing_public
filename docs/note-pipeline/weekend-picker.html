@@ -65,7 +65,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
 <div class="wrap">
   <header>
     <h1>週末の有料記事 ネタ選び</h1>
-    <p class="sub">土曜・日曜の8:00ごろに、その日の候補5本が届きます。16:00までに1本を選んで確定すると、その日の有料記事（7,000字級・図5〜6枚）を書きます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
+    <p class="sub">土曜・日曜の9:00ごろに、その日の候補5本が届きます。16:00までに1本を選んで確定すると、その日の有料記事（7,000字級・図5〜6枚）を書きます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
     <div class="days" id="days" aria-label="日付"></div>
     <div class="status" id="status"></div>
   </header>
@@ -159,7 +159,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
   function render(){
     renderDays(); renderStatus();
     const main = $("main"); main.textContent = "";
-    if (!current){ main.appendChild(el("div","empty","まだ候補がありません。土曜・日曜の8:00ごろに、その日の候補5本がここに届きます。")); $("bar").hidden = true; return; }
+    if (!current){ main.appendChild(el("div","empty","まだ候補がありません。土曜・日曜の9:00ごろに、その日の候補5本がここに届きます。")); $("bar").hidden = true; return; }
     const cands = Array.isArray(current.candidates) ? current.candidates : [];
     main.appendChild(el("h2",null,`今日の候補（${cands.length}）`)); const g = el("div","grid"); cands.forEach(c => g.appendChild(card(c))); main.appendChild(g);
     main.appendChild(el("h2",null,"自由記述（1枠）")); main.appendChild(freeCard());

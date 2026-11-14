@@ -80,7 +80,7 @@ model: opus
 - 個別銘柄が中心なら `kind: "stock"`（`code`・`name` を確かめる）、それ以外は `kind: "theme"`。長文は `kind: "paid"` で、`facts_needed` を相場分析・日本株・米国株・個別株分析に割り振る（`assignee` は配列でよい）。
 - 候補10本のうちの1本を長文にする場合は、その候補の `angle`・`facts_needed` を土台に、7,000字級に足りるよう観点を広げる（歴史の事例、関連銘柄、強気と弱気の両面）。
 
-## モード6: 候補5本・週末（土日 7:31 の候補出しタスク）
+## モード6: 候補5本・週末（土日 8:05 の候補出しタスク）
 
 入力: `WORK/inputs/`（status.json＝週末, mail.md, digest.json＝今週の日次記事一覧, recent_candidates.txt）、`WORK/research/market.md`, `jp.md`
 出力: `WORK/candidates.json`（ユーザーがこの中から1本を選び、16:30 に有料記事になる）
