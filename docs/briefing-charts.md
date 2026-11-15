@@ -1,11 +1,15 @@
 # 朝ブリーフィング：チャート画像の貼り方
 
 朝の GitHub Actions（Fetch_morning_r2.yml）が、スクリーニング通過銘柄の週足/日足チャート（出来高付き）を
-`charts/<証券コード>.png` に作り、`charts/manifest.json` に一覧（generated_at と、銘柄ごとの file / last_bar / sha256）を書いている。
+`charts/<証券コード>.png` に作り、専用ブランチ `charts`（毎朝、履歴1コミットに上書き）へ公開している。`charts/manifest.json` に一覧（generated_at と、銘柄ごとの file / last_bar / sha256）を書いている。
 
 ## 手順
 
-1. 作業前に `git pull -q origin main` で最新化し、`charts/manifest.json` を読む。
+1. 作業前に `git pull -q origin main` で最新化し、続けて次でチャートを取得して `charts/manifest.json` を読む。
+   ```bash
+   rm -rf charts && mkdir charts && git fetch -q origin charts && git archive origin/charts | tar -x -C charts
+   ```
+   取得に失敗した、または manifest の `last_bar` が直近営業日でない場合は、全銘柄「チャート取得不可」として進める。
 2. STEP 3 で選んだ各銘柄が manifest に載っていれば、その画像を使う。
    載っていない銘柄は画像なしでよい（その銘柄の欄に「チャート取得不可」と1行書く）。
    チャートのために自分でライブラリを入れたり、画像を作り直したりしない。
