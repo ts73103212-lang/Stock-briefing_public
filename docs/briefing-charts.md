@@ -7,7 +7,7 @@
 
 1. 作業前に `git pull -q origin main` で最新化し、続けて次でチャートを取得して `charts/manifest.json` を読む。
    ```bash
-   rm -rf charts && mkdir charts && git fetch -q origin charts && git archive origin/charts | tar -x -C charts
+   rm -rf charts && mkdir charts && git fetch -q --depth 1 origin charts && git archive FETCH_HEAD | tar -x -C charts
    ```
    取得に失敗した、または manifest の `last_bar` が直近営業日でない場合は、全銘柄「チャート取得不可」として進める。
 2. STEP 3 で選んだ各銘柄が manifest に載っていれば、その画像を使う。
