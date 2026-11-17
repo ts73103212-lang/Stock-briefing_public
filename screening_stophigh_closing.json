@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-17 14:07 JST",
+  "fetched_at": "2026-11-17 15:35 JST",
   "status": "OK",
   "note": "騰落率+15%以上・強気引け・高値引け(close/high≥0.97)の銘柄。stock_typeで寄らず/ザラ場を判別。ema5_above_ema25・close_above_ema25・change_1dはフィルタなし参考値。ルーティン側で3銘柄に絞ること。",
   "total_hits": 3,
@@ -43,26 +43,6 @@
       "ema5_above_ema25": false,
       "close_above_ema25": true,
       "change_1d": 2.03
-    },
-    {
-      "ticker": "4582",
-      "close": 75.0,
-      "change": 17.19,
-      "high": 78.0,
-      "close_to_high": 0.962,
-      "volume": 17627300,
-      "vol_ratio": 0.9,
-      "stock_type": "ストップ高（通常）",
-      "turnover_mil": 1322.0,
-      "market_cap_bil": 59.5,
-      "rsi": 67.3,
-      "vwap": 71.0,
-      "ema5": 64.2,
-      "ema25": 56.2,
-      "atr": 8.1,
-      "ema5_above_ema25": true,
-      "close_above_ema25": true,
-      "change_1d": null
     }
   ]
 }
