@@ -35,6 +35,8 @@ SIZES = {
     "card_label": 22, "card_value": 50, "card_sub": 22,
     "table_head": 21, "table": 20, "box": 24,
 }
+# 複数系列（型G・H）の色。1本目が主役（ネイビー）。緑・赤（上昇・下落）と金（強調）は使わない
+SERIES = ["#1E3A5F", "#E07B00", "#7A8794", "#7B5EA7"]
 TONE = {"up": PALETTE["up"], "down": PALETTE["down"], "navy": PALETTE["navy"], "gold": PALETTE["gold"]}
 
 WIDTH_IN, HEIGHT_IN, DPI = 12.8, 7.2, 150  # 1280×720 を 1.5 倍（1920×1080）で書き出す
