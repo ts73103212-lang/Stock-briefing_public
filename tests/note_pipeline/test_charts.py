@@ -182,3 +182,110 @@ def test_annotation_offset_rejects_unknown():
 def test_chart_b_series_labels(tmp_path):
     spec = {"type": "B", **COMMON, **SPECS["B"], "series_labels": ["売上収益", "営業利益"]}
     assert Image.open(charts.render(spec, tmp_path / "b.jpg", number=1)).size == (1920, 1080)
+
+
+# ---- 型G（折れ線の比較）・型H（レーダー）・型I（縦棒）・型A の指数対応 ----
+
+DATES_G = [f"2026-{m:02d}-{d:02d}" for m in range(6, 12) for d in (3, 17)]
+SPEC_G = {"type": "G", **COMMON, "normalize": True, "dates": DATES_G,
+          "series": [{"label": "アドバンテスト", "values": [100 + i * 6 for i in range(12)]},
+                     {"label": "東京エレクトロン", "values": [200 + i * 5 for i in range(12)]},
+                     {"label": "日経平均", "values": [40000 + i * 300 for i in range(11)] + [None]}],
+          "annotations": [{"date": "2026-08-03", "text": "8/3 決算"}, {"date": "2026-08-17", "text": "利下げ"}]}
+SPEC_H = {"type": "H", **COMMON,
+          "axes": [{"label": "割安さ", "raw": "PER 12倍"}, {"label": "成長", "raw": "増収率 +18%"},
+                   {"label": "収益力", "raw": "ROE 15%"}, {"label": "財務", "raw": "自己資本比率 60%"},
+                   {"label": "還元", "raw": "利回り 2.5%"}, {"label": "勢い", "raw": "3か月 +22%"}],
+          "series": [{"label": "A社", "scores": [80, 60, 75, 90, 40, 70]},
+                     {"label": "B社", "scores": [30, 90, 55, 50, 70, 35]}]}
+SPEC_I = {"type": "I", **COMMON, "labels": ["2020", "2021", "2022", "2023", "2024", "2025"],
+          "values": [3.2, -1.5, 0.8, 5.1, -2.4, 1.9], "highlight": "2023"}
+
+
+@pytest.mark.parametrize("spec", [SPEC_G, SPEC_H, SPEC_I], ids=["G", "H", "I"])
+def test_new_chart_types_render_1920x1080(spec, tmp_path):
+    im = Image.open(charts.render(spec, tmp_path / f"{spec['type']}.jpg", number=1))
+    assert im.format == "JPEG" and im.size == (1920, 1080)
+
+
+def test_line_compare_without_normalize_and_hlines(tmp_path):
+    spec = {**SPEC_G, "normalize": False, "unit": "円",
+            "series": [{"label": "日経平均", "values": [40000 + i * 300 for i in range(12)]},
+                       {"label": "TOPIX連動", "values": [39000 + i * 250 for i in range(12)]}],
+            "hlines": [{"y": 42000, "label": "前回高値"}]}
+    assert Image.open(charts.render(spec, tmp_path / "g.jpg", number=1)).size == (1920, 1080)
+
+
+@pytest.mark.parametrize("n", [1, 5])
+def test_line_compare_rejects_series_count(n, tmp_path):
+    spec = {**SPEC_G, "series": [{"label": f"s{k}", "values": list(range(1, 13))} for k in range(n)]}
+    with pytest.raises(ValueError):
+        charts.render(spec, tmp_path / "g.jpg", number=1)
+
+
+def test_rebase_100_uses_first_valid_value():
+    assert charts.rebase_100([None, 50, 75, None, 100]) == [None, 100.0, 150.0, None, 200.0]
+
+
+def test_spread_positions_keeps_gap_and_bounds():
+    ys = charts.spread_positions([0.50, 0.52, 0.51, 0.99], gap=0.15)
+    assert all(0 <= y <= 1 for y in ys)
+    s = sorted(ys)
+    assert all(b - a >= 0.15 - 1e-9 for a, b in zip(s, s[1:]))
+    assert ys[3] == max(ys)  # 元の並び順を保つ
+
+
+@pytest.mark.parametrize("patch", [
+    {"series": [{"label": "A社", "scores": [101, 60, 75, 90, 40, 70]}, {"label": "B社", "scores": [1] * 6}]},
+    {"series": [{"label": "A社", "scores": [50] * 5}, {"label": "B社", "scores": [50] * 6}]},
+    {"axes": [{"label": f"項目{k}"} for k in range(4)],
+     "series": [{"label": "A社", "scores": [50] * 4}, {"label": "B社", "scores": [50] * 4}]},
+    {"series": [{"label": f"S{k}", "scores": [50] * 6} for k in range(4)]}])
+def test_radar_rejects_bad_spec(patch, tmp_path):
+    with pytest.raises(ValueError):
+        charts.render({**SPEC_H, **patch}, tmp_path / "h.jpg", number=1)
+
+
+def test_radar_scores_percentile_and_direction():
+    raw = {"A社": [10.0, 5.0], "B社": [20.0, 15.0], "C社": [30.0, 10.0]}
+    s = charts.radar_scores(raw, higher_is_better=[False, True])
+    assert s["A社"] == [100, 0] and s["B社"] == [50, 100] and s["C社"] == [0, 50]
+
+
+def test_radar_scores_ties_share_score():
+    s = charts.radar_scores({"A": [1.0], "B": [1.0], "C": [3.0]}, higher_is_better=[True])
+    assert s["A"] == s["B"] == [25] and s["C"] == [100]
+
+
+def test_vertical_bars_many_with_missing_and_no_sign_color(tmp_path):
+    spec = {"type": "I", **COMMON, "labels": [f"{m}月" for m in range(1, 13)],
+            "values": [120, 135, None, 150, 160, 158, 170, 180, 175, 190, 205, 210], "unit": "億円",
+            "color_by_sign": False, "highlight": "12月", "hlines": [{"y": 160, "label": "平均"}]}
+    assert Image.open(charts.render(spec, tmp_path / "i.jpg", number=1)).size == (1920, 1080)
+
+
+def test_value_label_format():
+    assert charts.bar_value_label(3.21, "%", signed=True, decimals=1) == "+3.2%"
+    assert charts.bar_value_label(-2.0, "%", signed=True, decimals=1) == "−2.0%"
+    assert charts.bar_value_label(1500, "億円", signed=False, decimals=0) == "1,500億円"
+
+
+def test_price_chart_for_index_without_volume(tmp_path):
+    spec = {"type": "A", **COMMON, "dates": DATES_G, "close": [148.2 + i * 0.4 for i in range(12)],
+            "volume": [None] * 12, "annotations": [{"date": "2026-09-17", "text": "日銀会合"}]}
+    assert not charts.has_volume(spec)
+    assert not charts.has_volume({k: v for k, v in spec.items() if k != "volume"})
+    assert charts.has_volume(SPECS["A"])
+    assert Image.open(charts.render(spec, tmp_path / "a.jpg", number=1)).size == (1920, 1080)
+
+
+def test_tick_decimals_follow_span():
+    assert charts.tick_decimals(5000) == 0
+    assert charts.tick_decimals(12) == 0
+    assert charts.tick_decimals(3) == 1
+    assert charts.tick_decimals(0.3) == 2
+
+
+def test_graph_and_text_type_groups():
+    assert charts.GRAPH_TYPES == {"A", "B", "E", "G", "H", "I"}
+    assert charts.TEXT_TYPES == {"C", "D", "F"}

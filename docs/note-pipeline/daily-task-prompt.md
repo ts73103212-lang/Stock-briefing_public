@@ -47,7 +47,7 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 ```
 
 - `True` なら何もせず終了（通知もしない）。
-- `mkdir -p $WORK/{inputs,research,deep,drafts,figs,review,out}`、引けJSON3つを `$WORK/inputs/` にコピー。
+- `mkdir -p $WORK/{inputs,research,deep,drafts,figs,review,out,quant}`、引けJSON3つを `$WORK/inputs/` にコピー。
 - 鮮度: `.venv/bin/python -c "import json,sys; from datetime import date; from pathlib import Path; from note_pipeline.market import check_closing_freshness as c; json.dump(c(Path('.'), date.today()), sys.stdout)" > $WORK/inputs/status.json`
 - 前回ページ: Artifact ツールで `<DELIVERY_URL>` を `action: read`。保存された HTML を `$WORK/inputs/prev.html` にコピー。
   - `.venv/bin/python -c "import sys; from datetime import date; from note_pipeline.history import parse_history, recent_codes; print('\n'.join(sorted(recent_codes(parse_history(open(sys.argv[1]).read()), date.today()))))" $WORK/inputs/prev.html > $WORK/inputs/recent_codes.txt`
@@ -94,6 +94,7 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 ## フェーズ5: 図（並列、記事ごと）
 
 - `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。
+- `drafts/a{id}.json` の `figure_requests` に型H（レーダー）がある記事だけは、先に `note-quant`（モード: レーダーの点数化、記事id）を起動し、`quant/radar_a{id}.json` ができてからその記事の `note-viz` を起動する（ほかの記事の図は待たずに進める）。
 - **同じメッセージで** `note-quant`（モード: 統計チェック）を1体だけ起動し、全記事の下書きの数字の使い方を確かめさせる → `$WORK/review/quant.md`（図と並行なので待ち時間は増えない。失敗・時間切れならファイルなしで先へ進む）。
 - 両方が終わったら仮ビルド:
 
@@ -130,7 +131,7 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 
 通常記事の納品（フェーズ8）が終わってから始める。通常が0本の日はフェーズ0の準備の直後に始める。目安は **19:30 JST までに通知**（2時間以内）。手順は `weekly-paid-prompt.md` と同じで、違いは次の点だけ:
 
-- 作業ディレクトリ `WORK2=$WORK/paid`（`mkdir -p $WORK2/{inputs,research,deep,drafts,figs,review,out}`）。`$WORK/inputs/*` と `$WORK/research/*.md` をコピーして使い回す（`digest.json` は不要）。
+- 作業ディレクトリ `WORK2=$WORK/paid`（`mkdir -p $WORK2/{inputs,research,deep,drafts,figs,review,out,quant}`）。`$WORK/inputs/*` と `$WORK/research/*.md` をコピーして使い回す（`digest.json` は不要）。
 - ネタ決定の代わりに `note-pm`（モード: 自由記述、長文）を起動し、`long` の候補（または自由記述）から `$WORK2/plan.json`（記事1本、`kind: "paid"`、`price`、`meta`、`facts_needed` を担当に割り振り）を作る。候補の `angle`・`facts_needed`・選ばれた `highlights`・`extra`、自由記述の `memo` を尊重する。平日の候補の見どころは3〜5点なので、7,000字に足りない分は PM が `facts_needed` に見どころ探しを足す（執筆側で見どころを足す）。
 - 深掘り（並列）→ 執筆（週末モード）→ 図5〜6枚と統計チェック（並行、`$WORK2/review/quant.md`）→ レビュー（差戻し1回まで。時間がなければ「差戻し不可」）→ 納品。
 - 納品は `--mode paid` でビルドし、Artifact で**新規に** publish（`url` なし、`icon` は "article"）。

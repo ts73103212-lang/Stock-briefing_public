@@ -41,7 +41,7 @@ ArtifactData で `<WEEKEND_PICKER_URL>` を読む（今日 = JST の実行日）
 
 ## フェーズ3: 執筆 → 図
 
-- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える）→ `note-viz`（図5〜6枚）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
+- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える）→ `note-viz`（図5〜6枚。うちグラフ4枚以上。`figure_requests` に型H があれば、先に `note-quant`（モード: レーダーの点数化）で `quant/radar_a{id}.json` を作る）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
 
 ## フェーズ4: レビュー（差戻し2回まで）
 
