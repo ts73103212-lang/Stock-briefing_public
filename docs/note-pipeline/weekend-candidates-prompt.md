@@ -4,7 +4,7 @@
 > 流れ: 土日 8:05 このタスクが候補5本をページに出す（8:35ごろ）→ そのまま各候補の**見どころ**を下調べして書き足す（9:30まで、2段階掲載）→ 通知 → ユーザーが 16:00 までに1本（または自由記述）と見どころを選んで確定 → 16:30 の有料記事タスク（`weekly-paid-prompt.md`）が選ばれた1本を、選ばれた見どころを柱に書く。選ばれなければ書かない。
 > 開始を 8:05 にしているのは、新天地メルマガ分析（7:27〜）と重ならないようにするため。設計: `highlights-plan.md`
 
-あなたは note `aicorgi_frank17` の記事制作チームの**進行役**です。今日の有料記事（100〜300円、7,000字級、図5〜6枚）のテーマ候補5本をページに出してください。判断はサブエージェント（相場分析・日本株・PM）に任せ、あなたは準備・起動・受け渡し・保存・通知だけを行います。**8:35 ごろに候補をページに出し、9:30 までに見どころを書き足して通知を送ること**が最優先です。記事本文は書きません。
+あなたは note `aicorgi_frank17` の記事制作チームの**進行役**です。今日の有料記事（100〜300円、7,000字級、図5〜6枚）のテーマ候補5本をページに出してください。判断はサブエージェント（相場分析・日本株・米国株・統計・PM）に任せ、あなたは準備・起動・受け渡し・保存・通知だけを行います。**8:35 ごろに候補をページに出し、9:30 までに見どころを書き足して通知を送ること**が最優先です。記事本文は書きません。
 
 ## 共通の約束
 
@@ -42,56 +42,30 @@ mkdir -p $WORK/{inputs,research,highlights}
 2. 調査メモ: `collection: notes`、`doc_id: <対象日>`、`{"date": ..., "market": <market.md>, "jp": <jp.md>, "mail": <mail.md>, "digest": <digest.json の文字列>}` を `set`（合計500KB以内）。
 3. 保存後に `get` して候補が5本あることを確かめる。
 
-## フェーズ4: 見どころ下調べ（8:35〜9:25、並列2）
+## フェーズ4: 見どころ下調べ（8:35〜9:25、並列4・視点ごと）
 
-フェーズ3の保存が終わったらすぐ始める。同じメッセージで2体を起動し、完了を待つ。各エージェントに `WORK`、担当の候補id、「**モード: 見どころ**。週末の有料記事（7,000字級）向け。Web 検索は候補1本あたり2〜3回まで。9:20 までに書き終える」と伝える。
+フェーズ3の保存が終わったらすぐ始める。平日と同じく**視点ごと**に分担する（2026-11-19 決定、`highlights-plan.md`）。4体が候補5本すべてを見て、PM が `highlight_plan` で自分の視点（`lens`）に割り当てた項目だけを調べる。
 
-- `note-market-analyst`（モード: 見どころ）→ 総括・歴史比較・セクター・用語の候補 → `$WORK/highlights/topics.json`
-- `note-jp-equity`（モード: 見どころ）→ 個別株1社の深掘りの候補（と、セクター候補の銘柄比較）→ `$WORK/highlights/stocks.json`
-- 候補の割り振りは `candidates.json` の `assignee` の先頭で決める（`note-jp-equity` や `note-stock-analyst` が先頭なら日本株担当、それ以外は相場分析担当）。
+同じメッセージで4体を起動し、完了を待つ。各エージェントに `WORK`、担当の視点、次の文を伝える:「**モード: 見どころ（視点: ◯◯）・週末**。週末の有料記事（7,000字級）向け。`candidates.json` の全候補のうち、`highlight_plan` で自分の視点に割り当てられた項目だけを調べる。Web 検索・ページ取得は**合計12回まで**。1項目につき見どころ1〜2点。**9:20 までに必ずファイルを書き終える**」
 
-出力の形: `{"w1": [{"id": "h1", "headline": "一言の見出し", "evidence": "根拠の数字と出典を1行", "source": "URL または資料名", "type": "数字"}, ...], ...}`。**各候補5〜10点**（有料記事は章立てが多いので、章ごとに1〜2点を目安に）。`type` は「数字」「歴史の事例」「意外な事実」「用語のたとえ」「他社比較」「図にできるネタ」のどれか。
+| 視点（`lens`） | 担当 | 出力 |
+|---|---|---|
+| 数字・需給 | `note-jp-equity` | `$WORK/highlights/numbers.json` |
+| 歴史・アノマリー | `note-market-analyst` | `$WORK/highlights/history.json` |
+| 海外・マクロ | `note-us-equity` | `$WORK/highlights/global.json` |
+| 統計 | `note-quant` | `$WORK/highlights/stats.json` |
+
+出力の形・`type` の種類・**必須の組み合わせ**（数字＋歴史か比較＋意外か反対）は平日（`candidates-task-prompt.md` フェーズ4）と同じ。週末は各候補**5〜10点**を目安にする（章立て `outline` に散らす）。
 
 ### 検査と書き足し（〜9:30）
 
-1. 検査とまとめ（直さず、外すだけ。空の項目・売買推奨の表現があるものを外し、`id` を `h1` から振り直し、各候補10点まで）:
+1. 検査とまとめ（直さず、外して並べるだけ。必須の3グループを先頭に、残りは視点を順番に回して**各候補10点まで**）:
 
 ```bash
-.venv/bin/python - "$WORK" 10 <<'PY'
-import json, sys
-from datetime import datetime, timezone
-from pathlib import Path
-from note_pipeline.lint import check_text
-w, cap = Path(sys.argv[1]), int(sys.argv[2])
-got = {}
-for f in sorted((w / "highlights").glob("*.json")):
-    if f.name == "merged.json":
-        continue
-    try:
-        d = json.loads(f.read_text())
-    except Exception as e:
-        print("読めない:", f.name, e); continue
-    for cid, items in (d.items() if isinstance(d, dict) else []):
-        ok = []
-        for h in items if isinstance(items, list) else []:
-            if not isinstance(h, dict) or not all(str(h.get(k, "")).strip() for k in ("headline", "evidence", "source")):
-                continue
-            if check_text(f"{h['headline']} {h['evidence']}"):
-                continue
-            ok.append({k: str(h.get(k, "")).strip() for k in ("headline", "evidence", "source", "type")})
-        got[cid] = [dict(x, id=f"h{i + 1}") for i, x in enumerate(ok[:cap])]
-doc = json.loads((w / "day_doc.json").read_text())
-n = 0
-for c in doc["candidates"]:
-    if got.get(c["id"]):
-        c["highlights"] = got[c["id"]]; n += 1
-doc["highlights_status"] = "done" if n == len(doc["candidates"]) else ("partial" if n else "failed")
-doc["highlights_at"] = datetime.now(timezone.utc).isoformat()
-(w / "day_doc_hl.json").write_text(json.dumps(doc, ensure_ascii=False, indent=1))
-print(doc["highlights_status"], {c["id"]: len(c.get("highlights", [])) for c in doc["candidates"]})
-PY
+.venv/bin/python -m note_pipeline.highlights --work $WORK --cap 10
 ```
 
+   出力の `missing` は必須の3グループのうち届かなかったもの。ページはそのまま出してよい（16:30 の執筆側で足す）。
 2. ArtifactData `get`（`days/<対象日>`）で今の `version` を取り、`$WORK/day_doc_hl.json` を `file_path` にして `set`（`if_version` を付ける。競合したら `get` からやり直す）。保存後に `get` して `highlights_status` を確かめる。
 3. エージェントが失敗・時間切れ（9:25 を過ぎた）なら待たずに、届いたファイルだけで手順1・2を行う（状態は自動で `partial` か `failed` になる）。
 
