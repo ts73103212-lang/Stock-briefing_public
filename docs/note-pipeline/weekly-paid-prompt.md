@@ -42,10 +42,11 @@ ArtifactData で `<WEEKEND_PICKER_URL>` を読む（今日 = JST の実行日）
 ## フェーズ3: 執筆 → 図
 
 - `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える）→ `note-viz`（図5〜6枚。うちグラフ4枚以上。`figure_requests` に型H があれば、先に `note-quant`（モード: レーダーの点数化）で `quant/radar_a{id}.json` を作る）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
+- 図と**同じメッセージで** `note-quant`（モード: 統計チェック）を起動し、下書きの数字の使い方を確かめさせる → `$WORK/review/quant.md`（失敗・時間切れならファイルなしで先へ進む）。
 
 ## フェーズ4: レビュー（差戻し2回まで）
 
-- `note-pm`（レビュー n=1）→ 差戻しがあれば担当を起動 → `note-pm`（レビュー n=2）→ 必要ならもう1回 → `note-pm`（最終精査）。
+- `note-pm`（レビュー n=1。`review/quant.md` があれば「統計担当の指摘も読むこと」と伝える）→ 差戻しがあれば担当を起動 → `note-pm`（レビュー n=2）→ 必要ならもう1回 → `note-pm`（最終精査）。
 
 ## フェーズ5: 納品
 
