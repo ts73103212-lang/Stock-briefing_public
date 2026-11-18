@@ -93,7 +93,9 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 
 ## フェーズ5: 図（並列、記事ごと）
 
-- `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。続けて仮ビルド:
+- `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。
+- **同じメッセージで** `note-quant`（モード: 統計チェック）を1体だけ起動し、全記事の下書きの数字の使い方を確かめさせる → `$WORK/review/quant.md`（図と並行なので待ち時間は増えない。失敗・時間切れならファイルなしで先へ進む）。
+- 両方が終わったら仮ビルド:
 
 ```bash
 .venv/bin/python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
@@ -103,6 +105,7 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 ## フェーズ6: レビュー
 
 - `note-pm`（モード: レビュー、n=1）。17:20 を過ぎていたら「差戻し不可（時間切れ）」と伝える。
+- `review/quant.md` があれば「統計担当の指摘も読むこと」と伝える。
 
 ## フェーズ7: 差戻し（1回まで、並列）
 
@@ -129,7 +132,7 @@ PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` �
 
 - 作業ディレクトリ `WORK2=$WORK/paid`（`mkdir -p $WORK2/{inputs,research,deep,drafts,figs,review,out}`）。`$WORK/inputs/*` と `$WORK/research/*.md` をコピーして使い回す（`digest.json` は不要）。
 - ネタ決定の代わりに `note-pm`（モード: 自由記述、長文）を起動し、`long` の候補（または自由記述）から `$WORK2/plan.json`（記事1本、`kind: "paid"`、`price`、`meta`、`facts_needed` を担当に割り振り）を作る。候補の `angle`・`facts_needed`・選ばれた `highlights`・`extra`、自由記述の `memo` を尊重する。平日の候補の見どころは3〜5点なので、7,000字に足りない分は PM が `facts_needed` に見どころ探しを足す（執筆側で見どころを足す）。
-- 深掘り（並列）→ 執筆（週末モード）→ 図5〜6枚 → レビュー（差戻し1回まで。時間がなければ「差戻し不可」）→ 納品。
+- 深掘り（並列）→ 執筆（週末モード）→ 図5〜6枚と統計チェック（並行、`$WORK2/review/quant.md`）→ レビュー（差戻し1回まで。時間がなければ「差戻し不可」）→ 納品。
 - 納品は `--mode paid` でビルドし、Artifact で**新規に** publish（`url` なし、`icon` は "article"）。
 - PushNotification: `🐾 長文記事ができました：<タイトル> <URL>`（失敗時は `🐾 長文記事は失敗：<理由>`）。通常記事の通知（フェーズ8）とは別に送る。
 

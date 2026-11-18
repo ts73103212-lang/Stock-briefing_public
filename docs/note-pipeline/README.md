@@ -8,6 +8,7 @@
 - ネタ選びページ: `picker.html`（公開先 https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir 。データベース `days/<日付>`＝候補、`picks/<日付>`＝選択、`notes/<日付>`＝12時の調査メモ。本人だけが読み書きできる）
 - 週末のネタ選びページ: `weekend-picker.html`（公開先 https://claude.ai/artifact/CFwy1xxH6MQMp5V64fHHP1 。`days`・`picks`・`notes` の構造は平日と同じ。土日とも 16:00 締切、1日1本）
 - 見どころ下調べ（`highlights-plan.md`）: 各候補に `highlights`（出典付きの見どころ。平日3〜5点、週末5〜10点）を書き足し、ユーザーがページのチェックボックスで入れるものを選び、「これも入れて」を書く。`picks` に `highlights`・`extra` として保存され、執筆チームは選ばれた見どころの裏取りと肉付けから始める
+- 見どころの視点分担（2026-11-19〜、平日）: 数字・需給（note-jp-equity）／歴史・アノマリー（note-market-analyst）／海外・マクロ（note-us-equity）／統計（note-quant）の4体が、PM の `highlight_plan` で割り当てられた項目だけを調べる。各候補に「数字＋歴史か比較＋意外か反対」をそろえ、`python -m note_pipeline.highlights --work WORK --cap 6` で検査・並べ替えして6点まで。note-quant は16:15の日次タスクで統計チェック（`review/quant.md`）も行う。
 - 平日の流れ: 11:47 候補10本（話題・用語・トリッキー4＋個別銘柄6）＋見どころ → 16:15 までにユーザーが「通常1〜3本・長文（有料）1本まで・自由記述1枠」と見どころを選ぶ → 16:15 選ばれた分だけ書く（通常は17:30まで、長文は19:30までに通知。選ばれなければお休み）
 - 役割定義: `.claude/agents/note-*.md`（PM・相場分析・日本株・米国株・個別株分析・証券アナリスト・視覚化）
 - 全員が読む編集ルール: `editorial-rules.md`

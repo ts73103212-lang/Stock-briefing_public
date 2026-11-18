@@ -2,9 +2,9 @@
 
 > 定期タスク（毎回新しいセッション）が読む手順書。`<PICKER_URL>` はネタ選びページ（https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir ）、`<DELIVERY_URL>` は日次の納品ページ。
 > 流れ: 11:47 このタスクが候補10本をネタ選びページに出す（12:10ごろ）→ そのまま各候補の**見どころ**（記事に入れると面白い・目を引く要素）を下調べして書き足す（**遅くとも12:30**、2段階掲載）→ 通知 → ユーザーが 16:15 までに1〜3本と見どころを選んで確定 → 16:15 の日次タスク（`daily-task-prompt.md`）が選ばれた分だけ、選ばれた見どころを柱に書く。選ばれなければ書かない。
-> 設計: `highlights-plan.md`（見どころ下調べ）
+> 設計: `highlights-plan.md`（見どころ下調べ。2026-11-19 から視点ごとの4体分担）
 
-あなたは note `aicorgi_frank17` の記事制作チームの**進行役**です。今日のネタ候補10本をネタ選びページに出してください。判断はサブエージェント（相場分析・日本株・米国株・PM）に任せ、あなたは準備・起動・受け渡し・保存・通知だけを行います。**12:10 JST までに候補をページに出し、12:30 JST までに見どころを書き足して通知を送ること**が最優先です。ユーザーは仕事の昼休みに選ぶので、**12:30 は動かせない締切**です。間に合わない分は待たずに切り捨てます。記事本文は書きません（深掘り・執筆・図は 16:15 の日次タスクの仕事）。前場データ（11:35取得）を使うので、開始時刻は早めません。
+あなたは note `aicorgi_frank17` の記事制作チームの**進行役**です。今日のネタ候補10本をネタ選びページに出してください。判断はサブエージェント（相場分析・日本株・米国株・統計・PM）に任せ、あなたは準備・起動・受け渡し・保存・通知だけを行います。**12:10 JST までに候補をページに出し、12:30 JST までに見どころを書き足して通知を送ること**が最優先です。ユーザーは仕事の昼休みに選ぶので、**12:30 は動かせない締切**です。間に合わない分は待たずに切り捨てます。記事本文は書きません（深掘り・執筆・図は 16:15 の日次タスクの仕事）。前場データ（11:35取得）を使うので、開始時刻は早めません。
 
 ## 共通の約束
 
@@ -51,56 +51,35 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 2. 調査メモ（16:15 の日次タスクが使い回す）: `collection: notes`、`doc_id: <対象日>`、`{"date": ..., "market": <market.md の全文>, "jp": <jp.md>, "us": <us.md>, "mail": <mail.md>}` を `file_path` で `set`。合計が 500KB を超えるなら各メモの末尾を削って収める。
 3. 保存後に `days` を `get` して、候補が10本あることを確かめる。
 
-## フェーズ4: 見どころ下調べ（12:10〜12:22、並列2）
+## フェーズ4: 見どころ下調べ（12:10〜12:22、並列4・視点ごと）
 
-フェーズ3の保存が終わったらすぐ始める。`date '+%H:%M フェーズ4' >> $WORK/timeline.txt`。同じメッセージで2体を起動し、完了を待つ。各エージェントに `WORK`、担当の候補id、「**モード: 見どころ**。前場時点。Web 検索は候補1本あたり2回まで（`research/` にある数字を優先して使う）。各候補3〜4点。**12:22 までに必ずファイルを書き終える**（途中でも、その時点までに確かめた分を書き出す）」と伝える。
-- 時間の目安: 12:10 開始 → 12:22 エージェント締切 → 12:26 検査と書き足し → 12:30 通知。フェーズ3が遅れて 12:15 を過ぎて始まる場合も、締切は 12:22 のまま（調べる本数を減らしてよい）。
+フェーズ3の保存が終わったらすぐ始める。`date '+%H:%M フェーズ4' >> $WORK/timeline.txt`。
 
-- `note-market-analyst`（モード: 見どころ）→ 話題・用語・トリッキーの候補（c1〜c4）→ `$WORK/highlights/topics.json`
-- `note-jp-equity`（モード: 見どころ）→ 個別銘柄の候補（c5〜c10）→ `$WORK/highlights/stocks.json`
+候補ごとではなく**視点ごと**に分担する（2026-11-19 決定）。4体が候補10本すべてを見て、PM が `highlight_plan` で自分の視点に割り当てた項目（`lens` が自分のもの）だけを調べる。割り当てのない候補は飛ばす。同じ候補に違う視点の見どころが集まるので、幅が出る。
 
-出力の形（両方とも）: `{"c1": [{"id": "h1", "headline": "一言の見出し", "evidence": "根拠の数字と出典を1行", "source": "URL または資料名", "type": "数字"}, ...], ...}`。各候補3〜4点（平日は時間優先。足りない分は16:15の執筆側で足す）。`type` は「数字」「歴史の事例」「意外な事実」「用語のたとえ」「他社比較」「図にできるネタ」のどれか。
+同じメッセージで4体を起動し、完了を待つ。各エージェントに `WORK`、担当の視点、次の文を伝える:「**モード: 見どころ（視点: ◯◯）**。前場時点。`candidates.json` の全候補のうち、`highlight_plan` で自分の視点（`lens`）に割り当てられた項目だけを調べる。Web 検索・ページ取得は**合計7回まで**（`research/` にある数字を優先して使う）。1項目につき見どころ1点（よいものが2点あれば2点まで）。**12:22 までに必ずファイルを書き終える**（途中でも、その時点までに確かめた分を書き出す）」
+- 時間の目安: 12:10 開始 → 12:22 エージェント締切 → 12:26 検査と書き足し → 12:30 通知。フェーズ3が遅れて 12:15 を過ぎて始まる場合も、締切は 12:22 のまま（調べる項目を減らしてよい）。
+
+| 視点（`lens`） | 担当 | 主に読む資料 | 出力 |
+|---|---|---|---|
+| 数字・需給 | `note-jp-equity` | `research/jp.md`、前場・前日のスクリーニング JSON | `$WORK/highlights/numbers.json` |
+| 歴史・アノマリー | `note-market-analyst` | `research/market.md`、`inputs/mail.md` | `$WORK/highlights/history.json` |
+| 海外・マクロ | `note-us-equity` | `research/us.md`、`inputs/macro_result*.json` | `$WORK/highlights/global.json` |
+| 統計 | `note-quant` | スクリーニング・マクロの JSON、Yahoo!ファイナンスの時系列 | `$WORK/highlights/stats.json` |
+
+出力の形（4つとも）: `{"c1": [{"headline": "一言の見出し", "evidence": "根拠の数字と出典を1行", "source": "URL または資料名", "type": "数字", "lens": "数字・需給"}, ...], ...}`。`type` は「数字」「統計」「歴史の事例」「他社比較」「意外な事実」「反対の見方」「用語のたとえ」「図にできるネタ」のどれか。
+
+**必須の組み合わせ**: 各候補の見どころに「**数字**（数字・統計）＋**歴史か比較**（歴史の事例・他社比較）＋**意外か反対**（意外な事実・反対の見方）」がそろうようにする。PM が `highlight_plan` でこの3つを視点に割り振っているので、担当は割り当てられた `type` どおりに出す。
 
 ### 検査と書き足し（12:22〜12:27）
 
-1. 検査とまとめ（直さず、外すだけ。空の項目・売買推奨の表現があるものを外し、`id` を `h1` から振り直し、各候補5点まで）。フェーズ3で `set` に使った JSON を `$WORK/day_doc.json` として残しておき、それに見どころを足す:
+1. 検査とまとめ（直さず、外して並べるだけ）。空の項目・売買推奨の表現・見出しの重複を外し、必須の3グループを先頭に1点ずつ、残りは視点を順番に回して**各候補6点まで**選び、`id` を `h1` から振り直す。フェーズ3で `set` に使った `$WORK/day_doc.json` に見どころを足して `$WORK/day_doc_hl.json` に書く:
 
 ```bash
-.venv/bin/python - "$WORK" 5 <<'PY'
-import json, sys
-from datetime import datetime, timezone
-from pathlib import Path
-from note_pipeline.lint import check_text
-w, cap = Path(sys.argv[1]), int(sys.argv[2])
-got = {}
-for f in sorted((w / "highlights").glob("*.json")):
-    if f.name == "merged.json":
-        continue
-    try:
-        d = json.loads(f.read_text())
-    except Exception as e:
-        print("読めない:", f.name, e); continue
-    for cid, items in (d.items() if isinstance(d, dict) else []):
-        ok = []
-        for h in items if isinstance(items, list) else []:
-            if not isinstance(h, dict) or not all(str(h.get(k, "")).strip() for k in ("headline", "evidence", "source")):
-                continue
-            if check_text(f"{h['headline']} {h['evidence']}"):
-                continue
-            ok.append({k: str(h.get(k, "")).strip() for k in ("headline", "evidence", "source", "type")})
-        got[cid] = [dict(x, id=f"h{i + 1}") for i, x in enumerate(ok[:cap])]
-doc = json.loads((w / "day_doc.json").read_text())
-n = 0
-for c in doc["candidates"]:
-    if got.get(c["id"]):
-        c["highlights"] = got[c["id"]]; n += 1
-doc["highlights_status"] = "done" if n == len(doc["candidates"]) else ("partial" if n else "failed")
-doc["highlights_at"] = datetime.now(timezone.utc).isoformat()
-(w / "day_doc_hl.json").write_text(json.dumps(doc, ensure_ascii=False, indent=1))
-print(doc["highlights_status"], {c["id"]: len(c.get("highlights", [])) for c in doc["candidates"]})
-PY
+.venv/bin/python -m note_pipeline.highlights --work $WORK --cap 6
 ```
 
+   出力の `missing` は、必須の3グループのうち届かなかったもの（候補ごと）。ページはそのまま出してよい（16:15 の執筆側で足す）。`unreadable` は読めなかったファイル。
 2. ArtifactData `get`（`days/<対象日>`）で今の `version` を取り、`$WORK/day_doc_hl.json` を `file_path` にして `set`（`if_version` を付ける。競合したら `get` からやり直す）。保存後に `get` して `highlights_status` を確かめる。
 3. **12:24 を過ぎてもエージェントが終わらない、または失敗した**ら待たずに、届いたファイルだけで手順1・2を行う（状態は自動で `partial` か `failed` になる）。`failed` のときもページには「見どころは届きませんでした」と出て、16:15 の日次タスクが執筆側で見どころを足す。
 
