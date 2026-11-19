@@ -40,11 +40,50 @@ def setup_font() -> None:
     matplotlib.rcParams["axes.unicode_minus"] = False
 
 
-def fetch(code: str) -> pd.DataFrame:
-    df = yf.download(f"{code}.T", period="14mo", interval="1d", progress=False, auto_adjust=False)
+OHLCV = ["Open", "High", "Low", "Close", "Volume"]
+
+
+def _download(code: str, period: str, interval: str) -> pd.DataFrame:
+    df = yf.download(f"{code}.T", period=period, interval=interval, progress=False, auto_adjust=False)
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
-    return df[["Open", "High", "Low", "Close", "Volume"]].dropna()
+    return df[OHLCV].dropna()
+
+
+def fetch(code: str, latest: dict | None = None) -> tuple[pd.DataFrame, list[str]]:
+    """日足（約14か月）を返す。
+
+    早朝（6時台）は Yahoo の日足に前営業日の足がまだ載っていないことがある（2026-11-19 に発生）。
+    そのときは 60分足から欠けた日の足を組み立てて補う。60分足には引けの板寄せが入らないので、
+    最新足の終値・出来高は latest（スクリーニング JSON の close / volume）があればそちらを使う。
+    戻り値: (日足, 補完した日付のリスト)
+    """
+    d = _download(code, "14mo", "1d")
+    try:
+        h = _download(code, "5d", "60m")
+    except Exception as e:  # 補完できなくても日足だけで描く
+        print(f"WARN {code}: 60分足取得失敗 {e}", file=sys.stderr)
+        return d, []
+    if h.empty:
+        return d, []
+    if h.index.tz is not None:
+        h.index = h.index.tz_convert("Asia/Tokyo").tz_localize(None)
+    last_daily = d.index[-1].normalize() if len(d) else pd.Timestamp.min
+    h = h[h.index.normalize() > last_daily]
+    if h.empty:
+        return d, []
+    bars = h.groupby(h.index.normalize()).agg(
+        {"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"})
+    if latest and latest.get("close"):
+        i = bars.index[-1]
+        c = float(latest["close"])
+        bars.loc[i, "Close"] = c
+        bars.loc[i, "High"] = max(bars.loc[i, "High"], c)
+        bars.loc[i, "Low"] = min(bars.loc[i, "Low"], c)
+        if latest.get("volume"):
+            bars.loc[i, "Volume"] = float(latest["volume"])
+    bars.index.name = d.index.name
+    return pd.concat([d, bars[OHLCV]]), [t.strftime("%Y-%m-%d") for t in bars.index]
 
 
 def to_weekly(d: pd.DataFrame) -> pd.DataFrame:
@@ -83,8 +122,8 @@ def draw(ax, axv, df: pd.DataFrame, emas: tuple[int, int], title: str, date_fmt:
     ax.tick_params(labelbottom=False)
 
 
-def render(code: str, name: str, out: Path) -> Path:
-    d = fetch(code)
+def render(code: str, name: str, out: Path, latest: dict | None = None):
+    d, patched = fetch(code, latest)
     if d.empty:
         raise RuntimeError(f"{code}: データ取得失敗")
     w = to_weekly(d).tail(52)
@@ -101,7 +140,7 @@ def render(code: str, name: str, out: Path) -> Path:
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, format="png", facecolor="white")
     plt.close(fig)
-    return out, d.index[-1].strftime("%Y-%m-%d")
+    return out, d.index[-1].strftime("%Y-%m-%d"), patched
 
 
 def combine(paths: list[Path], out: Path) -> Path:
@@ -127,8 +166,11 @@ def main() -> None:
     ap.add_argument("--clean", action="store_true", help="出力先の既存PNGを消してから作る")
     a = ap.parse_args()
     codes = list(a.codes)
+    latest: dict[str, dict] = {}  # スクリーニング JSON の終値・出来高（最新足の補完用）
     if a.from_json:
-        codes += [s["ticker"] for s in json.load(open(a.from_json))["stocks"][: a.top]]
+        stocks = json.load(open(a.from_json))["stocks"][: a.top]
+        codes += [s["ticker"] for s in stocks]
+        latest = {s["ticker"]: s for s in stocks}
     names = dict(kv.split("=", 1) for kv in a.names.split(",") if "=" in kv)
     setup_font()
     out_dir = Path(a.out)
@@ -138,11 +180,13 @@ def main() -> None:
     done, manifest = [], {}
     for c in codes:
         try:
-            p, last = render(c, names.get(c, ""), out_dir / f"{c}.png")
+            p, last, patched = render(c, names.get(c, ""), out_dir / f"{c}.png", latest.get(c))
             done.append(p)
             manifest[c] = {"file": p.name, "last_bar": last,
                            "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
-            print(p)
+            if patched:  # Yahoo 日足に無かった日を60分足（＋スクリーニング終値）で補った
+                manifest[c]["patched_bars"] = patched
+            print(f"{p}  last_bar={last}" + (f"  patched={patched}" if patched else ""))
         except Exception as e:  # 1銘柄の失敗で全体を止めない
             print(f"SKIP {c}: {e}", file=sys.stderr)
     if done:

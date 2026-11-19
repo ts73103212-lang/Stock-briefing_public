@@ -10,6 +10,10 @@
    rm -rf charts && mkdir charts && git fetch -q origin charts && git archive origin/charts | tar -x -C charts
    ```
    取得に失敗した、または manifest の `last_bar` が直近営業日でない場合は、全銘柄「チャート取得不可」として進める。
+   - 早朝は Yahoo の日足に前営業日の足がまだ載っていないことがあるため、Actions が60分足とスクリーニング終値・出来高で
+     その日の足を補っている。補った銘柄には manifest に `"patched_bars": ["YYYY-MM-DD"]` が付く。
+     `last_bar` が直近営業日なら、`patched_bars` が付いていても通常どおり使ってよい（始値だけ60分足由来の概算）。
+   - X投稿ネタなど、同じチャートを使う他のルーティンも同じ `last_bar` チェックをする。
 2. STEP 3 で選んだ各銘柄が manifest に載っていれば、その画像を使う。
    載っていない銘柄は画像なしでよい（その銘柄の欄に「チャート取得不可」と1行書く）。
    チャートのために自分でライブラリを入れたり、画像を作り直したりしない。
