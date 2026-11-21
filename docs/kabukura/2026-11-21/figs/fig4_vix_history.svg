@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="224.94pt" height="180.903502pt" viewBox="0 0 224.94 180.903502" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 180.903502 
+L 224.94 180.903502 
+L 224.94 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 35.13 150.763502 
+L 222.06 150.763502 
+L 222.06 6.619502 
+L 35.13 6.619502 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(55.614956 160.955002)">2008/11</text>
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(53.814956 168.706252)">リーマン</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(90.499912 160.955002)">2020/3</text>
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(90.499912 168.827189)">コロナ</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(123.584867 160.955002)">2024/8</text>
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(116.384867 168.785564)">円キャリー</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(156.669823 160.955002)">2025/4</text>
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(160.269823 168.823814)">関税</text>
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(153.069823 176.761814)">ショック</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(182.554779 160.955002)">2026/11/20</text>
+      <text style="font-size: 7.2px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #444444" transform="translate(193.354779 168.776564)">今回</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_6">
+      <path d="M 35.13 150.763502 
+L 222.06 150.763502 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_7">
+      <defs>
+       <path id="m1b2e1ba247" d="M 0 0 
+L -3.5 0 
+" style="stroke: #444444; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="150.763502" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="154.503004" transform="rotate(-0 28.13 154.503004)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8">
+      <path d="M 35.13 121.934702 
+L 222.06 121.934702 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="121.934702" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="125.674204" transform="rotate(-0 28.13 125.674204)">20</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_10">
+      <path d="M 35.13 93.105902 
+L 222.06 93.105902 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="93.105902" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="96.845404" transform="rotate(-0 28.13 96.845404)">40</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_12">
+      <path d="M 35.13 64.277102 
+L 222.06 64.277102 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_13">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="64.277102" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="68.016604" transform="rotate(-0 28.13 68.016604)">60</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_14">
+      <path d="M 35.13 35.448302 
+L 222.06 35.448302 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_15">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="35.448302" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="39.187804" transform="rotate(-0 28.13 39.187804)">80</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_16">
+      <path d="M 35.13 6.619502 
+L 222.06 6.619502 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_17">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="6.619502" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="10.359004" transform="rotate(-0 28.13 10.359004)">100</text>
+     </g>
+    </g>
+    <g id="text_12">
+     <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="10.359004" y="78.691502" transform="rotate(-90 10.359004 78.691502)">VIX（ピーク値）</text>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 58.289469 150.763502 
+L 78.140442 150.763502 
+L 78.140442 34.208664 
+L 58.289469 34.208664 
+z
+" clip-path="url(#p5cf8f879f4)" style="fill: #8a94a6"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 91.374425 150.763502 
+L 111.225398 150.763502 
+L 111.225398 31.570828 
+L 91.374425 31.570828 
+z
+" clip-path="url(#p5cf8f879f4)" style="fill: #8a94a6"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 124.459381 150.763502 
+L 144.310354 150.763502 
+L 144.310354 56.017651 
+L 124.459381 56.017651 
+z
+" clip-path="url(#p5cf8f879f4)" style="fill: #8a94a6"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 157.544336 150.763502 
+L 177.39531 150.763502 
+L 177.39531 75.332947 
+L 157.544336 75.332947 
+z
+" clip-path="url(#p5cf8f879f4)" style="fill: #8a94a6"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 190.629292 150.763502 
+L 210.480265 150.763502 
+L 210.480265 99.03022 
+L 190.629292 99.03022 
+z
+" clip-path="url(#p5cf8f879f4)" style="fill: #1f3a5f"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 35.13 150.763502 
+L 35.13 6.619502 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 35.13 150.763502 
+L 222.06 150.763502 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 190.629292 93.105902 
+L 210.480265 93.105902 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke-dasharray: 2.4,1.8; stroke-dashoffset: 0; stroke: #1f3a5f; stroke-width: 1.2"/>
+   </g>
+   <g id="line2d_19">
+    <path d="M 35.13 78.691502 
+L 222.06 78.691502 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c0392b; stroke-width: 1.1"/>
+   </g>
+   <g id="line2d_20">
+    <path d="M 35.13 121.934702 
+L 222.06 121.934702 
+" clip-path="url(#p5cf8f879f4)" style="fill: none; stroke-dasharray: 4,2; stroke-dashoffset: 0; stroke: #2e8b57; stroke-opacity: 0.75"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 217.097257 18.137605 
+L 217.097257 77.188158 
+" style="fill: none; stroke: #c0392b; stroke-width: 0.7; stroke-linecap: round"/>
+    <path d="M 218.497257 74.388158 
+L 217.097257 77.188158 
+L 215.697257 74.388158 
+z
+" style="fill: #c0392b; stroke: #c0392b; stroke-width: 0.7; stroke-linecap: round"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #c0392b" x="221.067451" y="15.234383" transform="rotate(-0 221.067451 15.234383)">VIX50＝セリングクライマックスの目安</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #222222" x="68.214956" y="31.347061" transform="rotate(-0 68.214956 31.347061)">80.86</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #222222" x="101.299912" y="28.709225" transform="rotate(-0 101.299912 28.709225)">82.69</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #222222" transform="translate(124.384867 44.756048)">65.73</text>
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #222222" transform="translate(122.384867 53.084173)">(場中)</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #222222" x="167.469823" y="72.471344" transform="rotate(-0 167.469823 72.471344)">52.33</text>
+   </g>
+   <g id="text_18">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #ffffff" x="200.554779" y="108.231443" transform="rotate(-0 200.554779 108.231443)">35.89</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #1f3a5f" x="210.480265" y="90.763583" transform="rotate(-0 210.480265 90.763583)">場中一時40</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #2e8b57" transform="translate(36.122549 111.528418)">平常時</text>
+    <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; fill: #2e8b57" transform="translate(36.122549 119.562207)">〜20</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p5cf8f879f4">
+   <rect x="35.13" y="6.619502" width="186.93" height="144.144"/>
+  </clipPath>
+ </defs>
+</svg>

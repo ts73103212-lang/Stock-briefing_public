@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="437.187567pt" height="188.486pt" viewBox="0 0 437.187567 188.486" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 188.486 
+L 437.187567 188.486 
+L 437.187567 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 35.13 157.606 
+L 208.893158 157.606 
+L 208.893158 30.094 
+L 35.13 30.094 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m681b1e1626" d="M 0 0 
+L 0 3.5 
+" style="stroke: #444444; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m681b1e1626" x="39.510584" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="39.510584" y="172.085004" transform="rotate(-0 39.510584 172.085004)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m681b1e1626" x="68.714476" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="68.714476" y="172.085004" transform="rotate(-0 68.714476 172.085004)">2</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m681b1e1626" x="97.918368" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="97.918368" y="172.085004" transform="rotate(-0 97.918368 172.085004)">4</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m681b1e1626" x="127.12226" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="127.12226" y="172.085004" transform="rotate(-0 127.12226 172.085004)">6</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m681b1e1626" x="156.326152" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="156.326152" y="172.085004" transform="rotate(-0 156.326152 172.085004)">8</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m681b1e1626" x="185.530044" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="185.530044" y="172.085004" transform="rotate(-0 185.530044 172.085004)">10</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="122.011579" y="184.585004" transform="rotate(-0 122.011579 184.585004)">営業日</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7">
+      <path d="M 35.13 143.438 
+L 208.893158 143.438 
+" clip-path="url(#p0622810497)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <defs>
+       <path id="m1b2e1ba247" d="M 0 0 
+L -3.5 0 
+" style="stroke: #444444; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="143.438" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="147.177502" transform="rotate(-0 28.13 147.177502)">80</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_9">
+      <path d="M 35.13 115.102 
+L 208.893158 115.102 
+" clip-path="url(#p0622810497)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="115.102" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="118.841502" transform="rotate(-0 28.13 118.841502)">100</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_11">
+      <path d="M 35.13 86.766 
+L 208.893158 86.766 
+" clip-path="url(#p0622810497)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="86.766" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="90.505502" transform="rotate(-0 28.13 90.505502)">120</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_13">
+      <path d="M 35.13 58.43 
+L 208.893158 58.43 
+" clip-path="url(#p0622810497)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="58.43" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="62.169502" transform="rotate(-0 28.13 62.169502)">140</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_15">
+      <path d="M 35.13 30.094 
+L 208.893158 30.094 
+" clip-path="url(#p0622810497)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="35.13" y="30.094" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="28.13" y="33.833502" transform="rotate(-0 28.13 33.833502)">160</text>
+     </g>
+    </g>
+    <g id="text_13">
+     <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="10.359004" y="93.85" transform="rotate(-90 10.359004 93.85)">基準=100</text>
+    </g>
+   </g>
+   <g id="line2d_17">
+    <path d="M 39.510584 115.102 
+L 185.530044 115.102 
+" clip-path="url(#p0622810497)" style="fill: none; stroke-dasharray: 2.4,1.6; stroke-dashoffset: 0; stroke: #8a94a6; stroke-width: 0.8"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 35.13 157.606 
+L 35.13 30.094 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 35.13 157.606 
+L 208.893158 157.606 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 39.510584 115.102 
+L 54.11253 117.9356 
+L 68.714476 120.712528 
+L 83.316422 123.433917 
+L 97.918368 126.100879 
+L 112.520314 128.714502 
+L 127.12226 131.275851 
+L 141.724206 133.785974 
+L 156.326152 136.245895 
+L 170.928098 138.656617 
+L 185.530044 141.019125 
+" clip-path="url(#p0622810497)" style="fill: none; stroke: #1f3a5f; stroke-width: 1.8; stroke-linecap: square"/>
+    <defs>
+     <path id="mf4d08f9c18" d="M 0 1.4 
+C 0.371284 1.4 0.727412 1.252487 0.989949 0.989949 
+C 1.252487 0.727412 1.4 0.371284 1.4 0 
+C 1.4 -0.371284 1.252487 -0.727412 0.989949 -0.989949 
+C 0.727412 -1.252487 0.371284 -1.4 0 -1.4 
+C -0.371284 -1.4 -0.727412 -1.252487 -0.989949 -0.989949 
+C -1.252487 -0.727412 -1.4 -0.371284 -1.4 0 
+C -1.4 0.371284 -1.252487 0.727412 -0.989949 0.989949 
+C -0.727412 1.252487 -0.371284 1.4 0 1.4 
+z
+" style="stroke: #1f3a5f"/>
+    </defs>
+    <g clip-path="url(#p0622810497)">
+     <use xlink:href="#mf4d08f9c18" x="39.510584" y="115.102" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="54.11253" y="117.9356" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="68.714476" y="120.712528" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="83.316422" y="123.433917" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="97.918368" y="126.100879" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="112.520314" y="128.714502" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="127.12226" y="131.275851" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="141.724206" y="133.785974" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="156.326152" y="136.245895" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="170.928098" y="138.656617" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="185.530044" y="141.019125" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+    </g>
+   </g>
+   <g id="line2d_19">
+    <path d="M 39.510584 115.102 
+L 54.11253 109.4348 
+L 68.714476 103.540912 
+L 83.316422 97.411268 
+L 97.918368 91.036439 
+L 112.520314 84.406617 
+L 127.12226 77.511601 
+L 141.724206 70.340786 
+L 156.326152 62.883137 
+L 170.928098 55.127182 
+L 185.530044 47.06099 
+" clip-path="url(#p0622810497)" style="fill: none; stroke: #c0392b; stroke-width: 1.8; stroke-linecap: square"/>
+    <defs>
+     <path id="m22a7da189b" d="M 0 1.4 
+C 0.371284 1.4 0.727412 1.252487 0.989949 0.989949 
+C 1.252487 0.727412 1.4 0.371284 1.4 0 
+C 1.4 -0.371284 1.252487 -0.727412 0.989949 -0.989949 
+C 0.727412 -1.252487 0.371284 -1.4 0 -1.4 
+C -0.371284 -1.4 -0.727412 -1.252487 -0.989949 -0.989949 
+C -1.252487 -0.727412 -1.4 -0.371284 -1.4 0 
+C -1.4 0.371284 -1.252487 0.727412 -0.989949 0.989949 
+C -0.727412 1.252487 -0.371284 1.4 0 1.4 
+z
+" style="stroke: #c0392b"/>
+    </defs>
+    <g clip-path="url(#p0622810497)">
+     <use xlink:href="#m22a7da189b" x="39.510584" y="115.102" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="54.11253" y="109.4348" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="68.714476" y="103.540912" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="83.316422" y="97.411268" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="97.918368" y="91.036439" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="112.520314" y="84.406617" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="127.12226" y="77.511601" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="141.724206" y="70.340786" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="156.326152" y="62.883137" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="170.928098" y="55.127182" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="185.530044" y="47.06099" style="fill: #c0392b; stroke: #c0392b"/>
+    </g>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #1f3a5f" x="190.640725" y="144.248129" transform="rotate(-0 190.640725 144.248129)">81.7</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #c0392b" x="190.640725" y="50.289994" transform="rotate(-0 190.640725 50.289994)">148.0</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #1f3a5f" x="35.13" y="26.094" transform="rotate(-0 35.13 26.094)">下落トレンド（指数が毎日−2%）</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_5">
+    <path d="M 257.546842 157.606 
+L 431.31 157.606 
+L 431.31 30.094 
+L 257.546842 30.094 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_7">
+     <g id="line2d_20">
+      <g>
+       <use xlink:href="#m681b1e1626" x="261.927426" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_17">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="261.927426" y="172.085004" transform="rotate(-0 261.927426 172.085004)">0</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_21">
+      <g>
+       <use xlink:href="#m681b1e1626" x="291.131318" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_18">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="291.131318" y="172.085004" transform="rotate(-0 291.131318 172.085004)">2</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_22">
+      <g>
+       <use xlink:href="#m681b1e1626" x="320.33521" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_19">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="320.33521" y="172.085004" transform="rotate(-0 320.33521 172.085004)">4</text>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_23">
+      <g>
+       <use xlink:href="#m681b1e1626" x="349.539102" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_20">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="349.539102" y="172.085004" transform="rotate(-0 349.539102 172.085004)">6</text>
+     </g>
+    </g>
+    <g id="xtick_11">
+     <g id="line2d_24">
+      <g>
+       <use xlink:href="#m681b1e1626" x="378.742994" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_21">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="378.742994" y="172.085004" transform="rotate(-0 378.742994 172.085004)">8</text>
+     </g>
+    </g>
+    <g id="xtick_12">
+     <g id="line2d_25">
+      <g>
+       <use xlink:href="#m681b1e1626" x="407.946886" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_22">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="407.946886" y="172.085004" transform="rotate(-0 407.946886 172.085004)">10</text>
+     </g>
+    </g>
+    <g id="text_23">
+     <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="344.428421" y="184.585004" transform="rotate(-0 344.428421 184.585004)">営業日</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4">
+    <g id="ytick_6">
+     <g id="line2d_26">
+      <path d="M 257.546842 157.606 
+L 431.31 157.606 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_27">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="157.606" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_24">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="161.345502" transform="rotate(-0 250.546842 161.345502)">80</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_28">
+      <path d="M 257.546842 139.39 
+L 431.31 139.39 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_29">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="139.39" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_25">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="143.129502" transform="rotate(-0 250.546842 143.129502)">85</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_30">
+      <path d="M 257.546842 121.174 
+L 431.31 121.174 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_31">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="121.174" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_26">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="124.913502" transform="rotate(-0 250.546842 124.913502)">90</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_32">
+      <path d="M 257.546842 102.958 
+L 431.31 102.958 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_33">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="102.958" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_27">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="106.697502" transform="rotate(-0 250.546842 106.697502)">95</text>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_34">
+      <path d="M 257.546842 84.742 
+L 431.31 84.742 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_35">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="84.742" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_28">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="88.481502" transform="rotate(-0 250.546842 88.481502)">100</text>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_36">
+      <path d="M 257.546842 66.526 
+L 431.31 66.526 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_37">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="66.526" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_29">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="70.265502" transform="rotate(-0 250.546842 70.265502)">105</text>
+     </g>
+    </g>
+    <g id="ytick_12">
+     <g id="line2d_38">
+      <path d="M 257.546842 48.31 
+L 431.31 48.31 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_39">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="48.31" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_30">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="52.049502" transform="rotate(-0 250.546842 52.049502)">110</text>
+     </g>
+    </g>
+    <g id="ytick_13">
+     <g id="line2d_40">
+      <path d="M 257.546842 30.094 
+L 431.31 30.094 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_41">
+      <g>
+       <use xlink:href="#m1b2e1ba247" x="257.546842" y="30.094" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_31">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="250.546842" y="33.833502" transform="rotate(-0 250.546842 33.833502)">115</text>
+     </g>
+    </g>
+    <g id="text_32">
+     <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="232.775846" y="93.85" transform="rotate(-90 232.775846 93.85)">基準=100</text>
+    </g>
+   </g>
+   <g id="line2d_42">
+    <path d="M 261.927426 84.742 
+L 407.946886 84.742 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke-dasharray: 2.4,1.6; stroke-dashoffset: 0; stroke: #8a94a6; stroke-width: 0.8"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 257.546842 157.606 
+L 257.546842 30.094 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 257.546842 157.606 
+L 431.31 157.606 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_43">
+    <path d="M 261.927426 84.742 
+L 276.529372 66.526 
+L 291.131318 84.734714 
+L 305.733264 66.518349 
+L 320.33521 84.727427 
+L 334.937156 66.510698 
+L 349.539102 84.72014 
+L 364.141048 66.503047 
+L 378.742994 84.712854 
+L 393.34494 66.495396 
+L 407.946886 84.705567 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #1f3a5f; stroke-width: 1.8; stroke-linecap: square"/>
+    <g clip-path="url(#p7433c842f6)">
+     <use xlink:href="#mf4d08f9c18" x="261.927426" y="84.742" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="276.529372" y="66.526" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="291.131318" y="84.734714" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="305.733264" y="66.518349" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="320.33521" y="84.727427" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="334.937156" y="66.510698" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="349.539102" y="84.72014" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="364.141048" y="66.503047" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="378.742994" y="84.712854" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="393.34494" y="66.495396" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+     <use xlink:href="#mf4d08f9c18" x="407.946886" y="84.705567" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+    </g>
+   </g>
+   <g id="line2d_44">
+    <path d="M 261.927426 84.742 
+L 276.529372 121.174 
+L 291.131318 89.959062 
+L 305.733264 125.869356 
+L 320.33521 95.101416 
+L 334.937156 130.497475 
+L 349.539102 100.170132 
+L 364.141048 135.059319 
+L 378.742994 105.166264 
+L 393.34494 139.555837 
+L 407.946886 110.090851 
+" clip-path="url(#p7433c842f6)" style="fill: none; stroke: #c0392b; stroke-width: 1.8; stroke-linecap: square"/>
+    <g clip-path="url(#p7433c842f6)">
+     <use xlink:href="#m22a7da189b" x="261.927426" y="84.742" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="276.529372" y="121.174" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="291.131318" y="89.959062" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="305.733264" y="125.869356" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="320.33521" y="95.101416" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="334.937156" y="130.497475" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="349.539102" y="100.170132" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="364.141048" y="135.059319" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="378.742994" y="105.166264" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="393.34494" y="139.555837" style="fill: #c0392b; stroke: #c0392b"/>
+     <use xlink:href="#m22a7da189b" x="407.946886" y="110.090851" style="fill: #c0392b; stroke: #c0392b"/>
+    </g>
+   </g>
+   <g id="text_33">
+    <text style="font-weight: 700; font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #1f3a5f" x="413.057567" y="87.93457" transform="rotate(-0 413.057567 87.93457)">100.0</text>
+   </g>
+   <g id="text_34">
+    <text style="font-weight: 700; font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #c0392b" x="413.057567" y="113.319854" transform="rotate(-0 413.057567 113.319854)">93.0</text>
+   </g>
+   <g id="text_35">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #1f3a5f" x="257.546842" y="26.094" transform="rotate(-0 257.546842 26.094)">往復・ヨコヨコ（+5%と−4.76%を交互）</text>
+   </g>
+  </g>
+  <g id="legend_1">
+   <g id="line2d_45">
+    <path d="M 135.03 10.784004 
+L 143.53 10.784004 
+L 152.03 10.784004 
+" style="fill: none; stroke: #1f3a5f; stroke-width: 1.8; stroke-linecap: square"/>
+    <g>
+     <use xlink:href="#mf4d08f9c18" x="143.53" y="10.784004" style="fill: #1f3a5f; stroke: #1f3a5f"/>
+    </g>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="158.83" y="13.759004" transform="rotate(-0 158.83 13.759004)">指数</text>
+   </g>
+   <g id="line2d_46">
+    <path d="M 192.83 10.784004 
+L 201.33 10.784004 
+L 209.83 10.784004 
+" style="fill: none; stroke: #c0392b; stroke-width: 1.8; stroke-linecap: square"/>
+    <g>
+     <use xlink:href="#m22a7da189b" x="201.33" y="10.784004" style="fill: #c0392b; stroke: #c0392b"/>
+    </g>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="216.63" y="13.759004" transform="rotate(-0 216.63 13.759004)">ダブルインバース（−2倍）</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p0622810497">
+   <rect x="35.13" y="30.094" width="173.763158" height="127.512"/>
+  </clipPath>
+  <clipPath id="p7433c842f6">
+   <rect x="257.546842" y="30.094" width="173.763158" height="127.512"/>
+  </clipPath>
+ </defs>
+</svg>

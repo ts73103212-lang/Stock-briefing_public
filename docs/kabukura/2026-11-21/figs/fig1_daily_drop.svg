@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="257.815pt" height="186.132pt" viewBox="0 0 257.815 186.132" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 186.132 
+L 257.815 186.132 
+L 257.815 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 65.88 138.708 
+L 252.81 138.708 
+L 252.81 2.88 
+L 65.88 2.88 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 92.584286 138.708 
+L 92.584286 2.88 
+" clip-path="url(#p910e94e9bf)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m681b1e1626" d="M 0 0 
+L 0 3.5 
+" style="stroke: #444444; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m681b1e1626" x="92.584286" y="138.708" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="92.584286" y="153.187004" transform="rotate(-0 92.584286 153.187004)">-15</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 145.992857 138.708 
+L 145.992857 2.88 
+" clip-path="url(#p910e94e9bf)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m681b1e1626" x="145.992857" y="138.708" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="145.992857" y="153.187004" transform="rotate(-0 145.992857 153.187004)">-10</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 199.401429 138.708 
+L 199.401429 2.88 
+" clip-path="url(#p910e94e9bf)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m681b1e1626" x="199.401429" y="138.708" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="199.401429" y="153.187004" transform="rotate(-0 199.401429 153.187004)">-5</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 252.81 138.708 
+L 252.81 2.88 
+" clip-path="url(#p910e94e9bf)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m681b1e1626" x="252.81" y="138.708" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="252.81" y="153.187004" transform="rotate(-0 252.81 153.187004)">0</text>
+     </g>
+    </g>
+    <g id="text_5">
+     <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="159.345" y="165.687004" transform="rotate(-0 159.345 165.687004)">騰落率（%）</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_9"/>
+     <g id="text_6">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="62.38" y="18.575798" transform="rotate(-0 62.38 18.575798)">NYダウ</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_10"/>
+     <g id="text_7">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="62.38" y="37.228366" transform="rotate(-0 62.38 37.228366)">S&amp;P500</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_11"/>
+     <g id="text_8">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="62.38" y="55.880934" transform="rotate(-0 62.38 55.880934)">TOPIX</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_12"/>
+     <g id="text_9">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="62.38" y="74.533502" transform="rotate(-0 62.38 74.533502)">日経平均</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_13"/>
+     <g id="text_10">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="62.38" y="93.18607" transform="rotate(-0 62.38 93.18607)">ナスダック総合</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_14"/>
+     <g id="text_11">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="62.38" y="111.838638" transform="rotate(-0 62.38 111.838638)">SOX指数</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_15"/>
+     <g id="text_12">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="62.38" y="130.491206" transform="rotate(-0 62.38 130.491206)">エヌビディア</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 252.81 9.054 
+L 232.194291 9.054 
+L 232.194291 20.618592 
+L 252.81 20.618592 
+z
+" clip-path="url(#p910e94e9bf)" style="fill: #c0392b"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 252.81 27.706568 
+L 213.287657 27.706568 
+L 213.287657 39.27116 
+L 252.81 39.27116 
+z
+" clip-path="url(#p910e94e9bf)" style="fill: #c0392b"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 252.81 46.359136 
+L 211.364949 46.359136 
+L 211.364949 57.923728 
+L 252.81 57.923728 
+z
+" clip-path="url(#p910e94e9bf)" style="fill: #c0392b"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 252.81 65.011704 
+L 198.760526 65.011704 
+L 198.760526 76.576296 
+L 252.81 76.576296 
+z
+" clip-path="url(#p910e94e9bf)" style="fill: #c0392b"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 252.81 83.664272 
+L 196.410549 83.664272 
+L 196.410549 95.228864 
+L 252.81 95.228864 
+z
+" clip-path="url(#p910e94e9bf)" style="fill: #c0392b"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 252.81 102.31684 
+L 138.515657 102.31684 
+L 138.515657 113.881432 
+L 252.81 113.881432 
+z
+" clip-path="url(#p910e94e9bf)" style="fill: #c0392b"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 252.81 120.969408 
+L 103.266 120.969408 
+L 103.266 132.534 
+L 252.81 132.534 
+z
+" clip-path="url(#p910e94e9bf)" style="fill: #c0392b"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 65.88 138.708 
+L 252.81 138.708 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="229.523863" y="18.0653" transform="rotate(-0 229.523863 18.0653)">-1.93%</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="210.617229" y="36.717868" transform="rotate(-0 210.617229 36.717868)">-3.70%</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="208.69452" y="55.370436" transform="rotate(-0 208.69452 55.370436)">-3.88%</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="196.090097" y="74.023004" transform="rotate(-0 196.090097 74.023004)">-5.06%</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="193.74012" y="92.675572" transform="rotate(-0 193.74012 92.675572)">-5.28%</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="135.845229" y="111.32814" transform="rotate(-0 135.845229 111.32814)">-10.7%</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="100.595571" y="129.980708" transform="rotate(-0 100.595571 129.980708)">-14.0%</text>
+   </g>
+   <g id="line2d_16">
+    <path d="M 252.81 138.708 
+L 252.81 2.88 
+" clip-path="url(#p910e94e9bf)" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+  </g>
+  <g id="text_20">
+   <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #555555" x="35.73" y="182.351121" transform="rotate(-0 35.73 182.351121)">※日本株は11/20東京終値、米国株は11/20NY終値</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p910e94e9bf">
+   <rect x="65.88" y="2.88" width="186.93" height="135.828"/>
+  </clipPath>
+ </defs>
+</svg>

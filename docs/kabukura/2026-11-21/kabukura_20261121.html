@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>急落相場の底と守り方</title>
+<style>
+:root{
+  --navy:#1F3A5F; --red:#C0392B; --orange:#E67E22; --green:#2E8B57;
+  --gray:#5B6472; --line:#C9D1DC; --fill:#EEF2F7; --lred:#FBEAEA; --lgreen:#E8F5EE;
+  --ink:#1b1f27; --bg:#ffffff;
+}
+@page{ size:A4; margin:13mm 14mm 13mm 14mm; }
+*{ box-sizing:border-box; }
+html,body{ background:var(--bg); color:var(--ink); }
+body{
+  font-family:"Meiryo UI","Meiryo","IPAGothic","IPAPGothic",sans-serif;
+  font-size:9.4pt; line-height:1.62; margin:0;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+.sheet{ max-width:182mm; margin:0 auto; padding:0 16px; }
+@media print{ .sheet{ padding:0; } }
+
+/* ---- 表紙ヘッダ ---- */
+.masthead{ display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:3px solid var(--navy); padding-bottom:4px; font-size:8.4pt; color:var(--gray); }
+.masthead b{ color:var(--navy); font-size:9.5pt; letter-spacing:.08em; }
+h1{ font-size:17.5pt; line-height:1.35; margin:10px 0 4px; color:var(--navy); letter-spacing:.01em; }
+.subtitle{ font-size:10.5pt; color:var(--ink); margin:0 0 6px; font-weight:bold; }
+.byline{ font-size:8.4pt; color:var(--gray); margin-bottom:8px; }
+.byline span{ display:inline-block; margin-right:12px; }
+
+.abstract{ background:var(--fill); border-left:5px solid var(--navy); padding:8px 12px; margin:8px 0 10px; }
+.abstract h2{ all:unset; display:block; font-weight:bold; color:var(--navy); font-size:9.6pt; margin-bottom:3px; }
+.abstract ol{ margin:0; padding-left:1.4em; }
+.abstract li{ margin:1px 0; }
+
+.kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:6px 0 10px; }
+.kpi{ border:1px solid var(--line); border-radius:6px; padding:5px 8px; }
+.kpi .l{ font-size:7.8pt; color:var(--gray); }
+.kpi .v{ font-size:13pt; font-weight:bold; color:var(--red); line-height:1.25; }
+.kpi .s{ font-size:7.6pt; color:var(--gray); }
+.kpi.n .v{ color:var(--navy); }
+
+/* ---- 見出し ---- */
+h2{ font-size:12pt; color:#fff; background:var(--navy); padding:3px 10px; margin:14px 0 6px;
+  border-radius:3px; break-after:avoid; }
+h2 .no{ display:inline-block; margin-right:8px; opacity:.85; }
+h3{ font-size:10pt; color:var(--navy); margin:9px 0 3px; border-bottom:1px solid var(--line); padding-bottom:1px; break-after:avoid; }
+p{ margin:0 0 5px; text-align:justify; }
+.em{ color:var(--red); font-weight:bold; }
+.mk{ background:linear-gradient(transparent 60%, #FFE7B3 60%); font-weight:bold; }
+
+/* ---- 図表 ---- */
+figure{ margin:6px 0 8px; break-inside:avoid; }
+figure img{ width:100%; display:block; }
+figcaption{ font-size:8pt; color:var(--gray); margin-top:2px; }
+figcaption b{ color:var(--navy); }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start; }
+.grid2 > *{ min-width:0; }
+
+table{ width:100%; border-collapse:collapse; font-size:8.3pt; margin:4px 0 6px; break-inside:avoid; }
+th,td{ border:1px solid var(--line); padding:3px 5px; vertical-align:top; }
+th{ background:var(--navy); color:#fff; font-weight:bold; text-align:left; }
+tbody tr:nth-child(even) td{ background:#F7F9FC; }
+td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
+
+.box{ border-radius:6px; padding:7px 11px; margin:7px 0; break-inside:avoid; }
+.box .t{ font-weight:bold; margin-bottom:2px; }
+.box.warn{ background:var(--lred); border:2px solid var(--red); }
+.box.warn .t{ color:var(--red); font-size:10.2pt; }
+.box.good{ background:var(--lgreen); border:1px solid var(--green); }
+.box.good .t{ color:var(--green); }
+.box.info{ background:var(--fill); border:1px solid var(--line); }
+.box.info .t{ color:var(--navy); }
+.box ul{ margin:2px 0 0; padding-left:1.3em; }
+.box li{ margin:1px 0; }
+
+.verdict{ border:2px solid var(--navy); border-radius:6px; padding:7px 12px; margin:8px 0; break-inside:avoid; }
+.verdict .t{ font-weight:bold; color:var(--navy); font-size:10.4pt; }
+.verdict .big{ font-size:11pt; font-weight:bold; color:var(--red); }
+
+.pb{ break-before:page; }
+.refs{ font-size:7.4pt; color:var(--gray); line-height:1.45; border-top:1px solid var(--line); margin-top:10px; padding-top:4px; }
+.refs ol{ margin:0; padding-left:1.6em; }
+.disclaimer{ font-size:7.4pt; color:var(--gray); margin-top:4px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<div class="masthead"><b>株クラ会議 ｜ 勉強会資料</b><span>2026年11月21日（土）作成 ／ 対象：新人メンバー向け</span></div>
+
+<h1>急落相場の「底」と「守り方」<br>日経225・S&amp;P500はどこまで下がるのか</h1>
+<p class="subtitle">― 下げ相場は「指をくわえて見ている」しかないのか？ インバースETF・空売り・VIXで読み解く ―</p>
+<div class="byline"><span>作成：櫻庭</span><span>基準データ：2026年11月20日 東京・NY終値</span></div>
+
+<div class="kpis">
+  <div class="kpi"><div class="l">日経平均（11/20）</div><div class="v">−3,007円</div><div class="s">56,436円（−5.06%）下げ幅は歴代5位</div></div>
+  <div class="kpi"><div class="l">S&amp;P500（11/20）</div><div class="v">−3.70%</div><div class="s">6,910 ／ 高値から−11.6%で調整入り</div></div>
+  <div class="kpi"><div class="l">SOX指数（11/20）</div><div class="v">−10.7%</div><div class="s">エヌビディア −14%</div></div>
+  <div class="kpi n"><div class="l">VIX（恐怖指数）</div><div class="v">35.89</div><div class="s">前日比 +26%（場中に一時40）</div></div>
+</div>
+
+<div class="abstract">
+  <h2>要旨（3分で読むまとめ）</h2>
+  <ol>
+    <li>今回の急落は<b>AI・半導体株の巻き戻し</b>が震源。S&amp;P500は高値から1割超下げて「調整局面」入り、日経平均は高値から22%下げてすでに「弱気相場」の水準にある。</li>
+    <li>下値の目安は<b>日経平均 54,000円前後（メイン）〜50,500円（リスク）</b>、<b>S&amp;P500 6,650前後（メイン）〜6,250（リスク）</b>。</li>
+    <li>エヌビディアには従来の<b>「循環取引」疑惑</b>に加え、<b>米SEC（証券取引委員会）が会計処理を調べている</b>との報道が出た。SOXはもう一段下がりうる。</li>
+    <li>下げ相場にも打つ手はある。<b>1357・1360（日経ダブルインバース）、2249（S&amp;P500ダブルインバース）、SOXS（半導体ベア3倍）</b>は下落で値上がりするため、ヘッジ（保険）になる。</li>
+    <li>空売りは<b>損失が青天井</b>。信用取引は<span class="em">新人は手を出さない</span>。</li>
+    <li>底を探る節目は<b>感謝祭（11/26）→ブラックフライデー（11/27）→FOMC（12/9）→クリスマス</b>。反転を狙うなら<b>VIXが50を超えて、ピークを打った局面</b>。</li>
+  </ol>
+</div>
+
+<h2><span class="no">1</span>昨日、何が起きたのか</h2>
+<div class="grid2">
+  <div>
+    <p>11月20日、東京市場では日経平均が<b>3,007円安の56,436円</b>（−5.06%）と、下げ幅で歴代5位の急落となった。前日の米国株安が波及し、アドバンテストやソフトバンクグループなどAI・半導体関連が集中的に売られた。プライム市場の<b>93%の銘柄が下落</b>する全面安である<sup>[1][2]</sup>。</p>
+    <p>同じ日の夜のNYでも売りは止まらなかった。S&amp;P500は−3.70%、ナスダックは−5.28%、半導体株指数（SOX）は<b>−10.7%</b>と、2008年の金融危機を思わせる下げになった。エヌビディアは決算が市場予想を上回り、見通しも引き上げたにもかかわらず、<b>米SECが同社の会計を調べている</b>との報道を受けて約14%下げた<sup>[3][4]</sup>。S&amp;P500は週間で−8.6%、7日続落である。</p>
+    <p>背景には、①AI投資の「回収可能性」への疑念、②アンソロピックのナスダック上場に伴う換金売り（AI株を売って新規上場株を買う資金の移動）、③12月FOMCで<b>利上げ</b>が有力視される金利高、という3つの重しがある<sup>[1][7]</sup>。</p>
+  </div>
+  <figure>
+    <img src="figs/fig1_daily_drop.svg" alt="11月20日の主要指数と銘柄の騰落率">
+    <figcaption><b>図1</b>　11月20日の騰落率。震源は半導体（SOX −10.7%）。日経平均の下げ幅は米国株の主要指数を上回った。</figcaption>
+  </figure>
+</div>
+
+<h2><span class="no">2</span>日経225・S&amp;P500はどこまで下がるのか</h2>
+<p>下値を考えるときは、<b>「高値から何%下げたか」</b>と<b>「過去に止まった価格（節目）」</b>の2つを重ねて見る。一般に高値から−10%で「調整」、−20%で「弱気相場（ベアマーケット）」と呼ぶ。</p>
+<figure>
+  <img src="figs/fig2_levels.svg" alt="日経平均とS&P500の下値目途">
+  <figcaption><b>図2</b>　下値の目安。日経平均は高値72,366円（6/25終値）から−22%で、すでに弱気相場の水準。S&amp;P500は高値7,818（10/6）から−11.6%。</figcaption>
+</figure>
+<table>
+  <thead><tr><th style="width:15%">指数</th><th style="width:28%">メインシナリオ（年内の下値）</th><th style="width:28%">リスクシナリオ（悪材料が続く場合）</th><th>根拠</th></tr></thead>
+  <tbody>
+    <tr><td class="c">日経平均</td><td><b>54,000円前後</b>（高値から−25%）</td><td><b>50,500円前後</b>（年初来安値・高値から−30%）</td><td>11/6安値56,745円を割り込み、次の支えが薄い。50,558円（3/31安値）と高値から−30%（50,656円）が重なる</td></tr>
+    <tr><td class="c">S&amp;P500</td><td><b>6,650前後</b>（高値から−15%）</td><td><b>6,250前後</b>（高値から−20%＝弱気相場入り）</td><td>景気後退を伴わない調整は−10〜15%で止まることが多い。AI投資の縮小が実体経済まで波及すれば−20%台に入る</td></tr>
+  </tbody>
+</table>
+<p>日経平均は米国より下げがきつい。指数に占める<b>値がさの半導体株（アドバンテスト、東京エレクトロンなど）とソフトバンクグループの比重が大きい</b>ためで、SOXが下げると日経平均はその分大きく下げやすい。<span class="mk">日経平均の底はSOXの底と同時に来る</span>、と覚えておきたい。</p>
+
+<h2><span class="no">3</span>トピック：エヌビディアの「循環取引」と会計問題 ― SOXはもう一段下がるか</h2>
+<div class="grid2">
+  <figure>
+    <img src="figs/diag3_circular.svg" alt="AIの循環取引の構図">
+    <figcaption><b>図3</b>　「循環取引」と疑われている構図。エヌビディアが出資したお金が、GPUの購入代金として同社の売上に戻ってくる。</figcaption>
+  </figure>
+  <div>
+    <h3>① 以前から指摘されていた「循環取引」</h3>
+    <p>エヌビディアはOpenAIなどのAI開発企業や、GPUを貸し出すネオクラウド企業に<b>出資や買い取り保証</b>をしている。その相手先がエヌビディアのGPUを大量に買う。<b>お金が一周して自社の売上に戻る</b>この構図は、本当の需要より売上を大きく見せているのではないか、と以前から疑われてきた<sup>[6]</sup>。</p>
+    <h3>② 新たに会計処理が調べられている</h3>
+    <p>ロイターによると、米SECの調査は<b>会計処理</b>に焦点を当てている。市場では、売上の大部分を占めていたシンガポール向け売上の<b>地域別開示の方法を変えた件</b>や、<b>一部の取引先への売上の扱い</b>が問題視されているとの見方が出ている<sup>[4][5]</sup>。ただし、<b>調査が始まったことは不正の証明ではない</b>。何も処分されずに終わる調査も多い点は区別しておくこと。</p>
+  </div>
+</div>
+<div class="verdict">
+  <div class="t">櫻庭の見立て：SOXの「もう一段安」に警戒</div>
+  <p style="margin:0">決算が良くても株価が下がるのは、市場の関心が<b>「売上の大きさ」から「売上の中身」へ移った</b>ためだ。調査の結果が出るまでには時間がかかり、その間は思惑で何度も売られやすい。売上が連動するTSMC、メモリ、製造装置（アドバンテスト、東京エレクトロンなど）、ネオクラウド各社にも疑いが広がる可能性があり、<span class="big">SOXは11/20安値を下回るもう一段安</span>を想定しておく。</p>
+</div>
+
+<h2><span class="no">4</span>下げ相場は「指をくわえて見ている」しかないのか？ ― インバースETFという選択肢</h2>
+<p>前回の会議で井筒さんから「下がる時は何もできないのでは？」という質問があった。答えは<b>NO</b>。株式市場には<b>指数が下がると値上がりするETF</b>（ベア型＝インバース型）があり、普通の株と同じように<b>現物（自分のお金の範囲）で買える</b>。保有株の値下がりを埋め合わせる「保険（ヘッジ）」として使えるのが最大の利点だ。</p>
+<table>
+  <thead><tr><th style="width:9%">コード</th><th style="width:33%">名称（運用会社）</th><th style="width:21%">連動対象</th><th style="width:9%">倍率</th><th>取引のポイント</th></tr></thead>
+  <tbody>
+    <tr><td class="c">1357</td><td>NEXT FUNDS 日経平均ダブルインバース（野村AM）</td><td>日経平均</td><td class="c">−2倍</td><td>円建て・東証。出来高が多く、日経平均を下落ヘッジする定番</td></tr>
+    <tr><td class="c">1360</td><td>日経平均ベア2倍上場投信（楽天投信投資顧問）</td><td>日経平均</td><td class="c">−2倍</td><td>円建て・東証。1357と同じ性格で、価格帯が異なる</td></tr>
+    <tr><td class="c">2249</td><td>iFreeETF S&amp;P500ダブルインバース（大和AM）</td><td>S&amp;P500先物</td><td class="c">−2倍</td><td><b>日本株と同じ口座・円で米国株の下落をヘッジ</b>できる。信託報酬は年0.803%</td></tr>
+    <tr><td class="c">SOXS</td><td>Direxion Daily Semiconductor Bear 3X</td><td>米国の半導体株指数（SOXとほぼ同じ動き）</td><td class="c">−3倍</td><td>ドル建て・米国市場。<b>SOXが1日10%下がれば約30%上がる</b>。値動きは非常に激しい</td></tr>
+  </tbody>
+</table>
+<p>11/20の値動きにあてはめると、日経平均が−5.06%なので1357・1360は<b>約+10%</b>、SOXが−10.7%なのでSOXSは<b>約+30%</b>になる計算だ（実際の値はETFの基準価額と市場価格の差で多少ずれる）。</p>
+
+<h3>なぜ「下がっているのに」利益が出るのか ― ETFの仕組み</h3>
+<figure>
+  <img src="figs/diag1_inverse_mechanism.svg" alt="インバースETFの仕組み">
+  <figcaption><b>図4</b>　インバースETFの資金の流れ。投資家から集めたお金を担保にして先物を「売る」。指数が下がると、先物を安く買い戻した差額が利益になる。</figcaption>
+</figure>
+<p>運用会社は投資家から集めたお金を担保にして、<b>株価指数の先物を純資産の2倍（3倍）分「売り」</b>（先物の売り建てやスワップ契約という取引を使う）。指数が下がれば先物を<b>安く買い戻せる</b>ので、その差額がETFの資産に加わり、基準価額が上がる。つまり<b>運用会社が代わりに「空売り」をしてくれている</b>のと同じである。投資家にとっての違いは、<span class="mk">損失が自分で払ったお金（投資額）までに限られる</span>こと。ここが個人の空売りとの決定的な差になる。</p>
+<div class="grid2">
+  <figure>
+    <img src="figs/fig3_inverse_decay.svg" alt="ダブルインバースの目減り">
+    <figcaption><b>図5</b>　シミュレーション。下落トレンドでは指数の下げ以上に利益が出るが、上下を往復するだけの相場では<b>指数が元に戻ってもETFは目減りする</b>（日次リバランスの影響）。</figcaption>
+  </figure>
+  <div class="box info">
+    <div class="t">使う前に必ず知っておく3つの注意</div>
+    <ul>
+      <li><b>長く持たない：</b>毎日「前日比の−2倍」になるよう調整されるため、上下を往復する相場では目減りする（図5）。保有は<b>数日〜数週間の短期</b>に限る。</li>
+      <li><b>上がれば2倍・3倍で損：</b>相場が反発すると、上昇率の2倍（3倍）の速さで値下がりする。損切りラインを先に決めておく。</li>
+      <li><b>ヘッジの量：</b>保有株の評価額の<b>1/4〜1/2程度</b>を目安にする（−2倍なので、半分の金額で全体をほぼ相殺できる）。全額を注ぎ込むのは「逆張りの博打」になる。</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="no">5</span>下落で儲けているのは誰か ― 空売りの仕組みと危険性</h2>
+<p>相場が急落した日、大きく儲けているのは<b>高値で「空売り」をして、安値で「買い戻す」人たち</b>だ。空売りとは、<b>持っていない株を証券会社から借りて先に売り、後で買い戻して返す</b>取引のことで、<b>信用取引</b>の口座が必要になる。</p>
+<figure>
+  <img src="figs/diag2_short_selling.svg" alt="空売りの仕組みと損失の青天井">
+  <figcaption><b>図6</b>　空売りの流れ（上）と、思惑が外れたときの損失（下）。株価に上限はないので、空売りの損失にも上限がない。</figcaption>
+</figure>
+<div class="grid2">
+  <div>
+    <h3>買いと空売りのリスクの違い</h3>
+    <p><b>現物の買い</b>：1,000円で買った株が0円になっても、損失は1,000円まで（−100%が上限）。<br>
+    <b>空売り</b>：1,000円で売った株が3,000円になれば損失は2,000円、10,000円になれば9,000円。<span class="em">株価に上限がないので、損失も青天井</span>である。さらに、急落の後には売り方が慌てて買い戻すことで株価が急騰する<b>「踏み上げ（ショートスクイーズ）」</b>が起きやすく、まさに今のような局面が一番危ない。</p>
+  </div>
+  <div class="box warn">
+    <div class="t">⚠ 櫻庭からの警鐘：新人は信用取引に手を出さないこと</div>
+    <ul>
+      <li>信用取引は担保の<b>約3.3倍</b>まで取引できる。損失も3.3倍の速さで膨らむ。</li>
+      <li>損失で担保が足りなくなると<b>追証（追加の保証金）</b>を求められ、期限までに払えなければ<b>強制的に決済</b>される。<b>入金した額を超える借金が残る</b>こともある。</li>
+      <li>貸株料・金利・逆日歩（株の借り賃の上乗せ）などのコストが毎日かかる。</li>
+      <li><b>下落に備えたいなら、現物で買えるインバースETFを少額で。</b>損失は投資額までに限られる。まずはここから経験を積む。</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="no">6</span>底はいつか ― 節目のカレンダーとVIXという「温度計」</h2>
+<figure>
+  <img src="figs/diag4_timeline.svg" alt="年末までの節目カレンダー">
+  <figcaption><b>図7</b>　年末までの節目。大きなイベントの前後で「反発→再下落」を繰り返しながら底を探る展開を想定。</figcaption>
+</figure>
+<p><b>ズバリ、今回の下げは米国の感謝祭（11/26）・ブラックフライデー（11/27）、FOMC（12/9）、クリスマス（12/25）といった節目まで続く可能性がある</b>と見ている。ブラックフライデーは年末商戦の売れ行きで<b>米国の消費の強さ</b>を確かめる場。FOMCは<b>利上げか据え置き（利下げ）か</b>の分かれ目で、市場は25bp（0.25%）の利上げをほぼ織り込んでいる。0.5%の大幅利上げを主張する理事もいる<sup>[7][8]</sup>。仮に「利上げ見送り」や「今回の利上げで打ち止め」といったメッセージが出れば、反転のきっかけになりうる。逆に大幅利上げなら下げは年末まで長引く。</p>
+<div class="grid2">
+  <div>
+    <h3>VIX（恐怖指数）とは</h3>
+    <p>VIXは、S&amp;P500のオプション価格から計算される<b>「今後30日間に市場がどれだけ揺れると予想されているか」</b>の指標で、恐怖指数とも呼ばれる。平常時は<b>10〜20</b>。株価が急落して投資家が保険（プットオプション）を買いに走るほど上がる。目安として<b>VIX÷16が「1日に動くと予想される幅（%）」</b>で、今の36なら1日±2.2%、50なら±3.1%の揺れを市場が見込んでいる。</p>
+    <p>VIXが50を超えるのは、多くの投資家が<b>投げ売り（セリングクライマックス）</b>している時だ。2020年3月はVIXのピーク（3/16）から1週間後に株価が底を打ち、2025年4月はVIXのピーク（4/8）と株価の底が同じ日だった<sup>[9]</sup>。</p>
+  </div>
+  <figure>
+    <img src="figs/fig4_vix_history.svg" alt="過去のVIXのピークと今回">
+    <figcaption><b>図8</b>　過去の急落時のVIXのピーク。今回の35.89は過去の危機に比べるとまだ途中段階。</figcaption>
+  </figure>
+</div>
+<div class="box good">
+  <div class="t">反転の狙い目：「VIX 50超え → ピークアウト」を合図に分割で買う</div>
+  <ul>
+    <li><b>VIXが50を超えたら準備</b>する。ただし、超えた瞬間に飛びつかない。2008年はVIXのピーク（11月）から株価の底（翌年3月）まで4か月かかった。</li>
+    <li>VIXが<b>前日の高値から下がり始めた日</b>（長い上ヒゲが出た日など）を起点に、<b>3〜4回に分けて</b>買い下がる。</li>
+    <li>買いを始めると同時に、持っているインバースETFは<b>利益確定</b>する（上昇局面では2倍・3倍で損をするため）。</li>
+  </ul>
+</div>
+
+<h2><span class="no">7</span>まとめ ― 新人のための「急落相場の行動指針」</h2>
+<table>
+  <thead><tr><th style="width:22%">局面</th><th style="width:30%">サイン</th><th>やること</th></tr></thead>
+  <tbody>
+    <tr><td><b>いま（下げの途中）</b></td><td>VIX 30〜40、SOXが安値を更新</td><td>慌てて買わない。保有株が多い人は、<b>1357／1360／2249を保有額の1/4〜1/2</b>だけ買ってヘッジする。SOXSは値動きが激しいので少額に限る</td></tr>
+    <tr><td><b>節目（11/27・12/9）</b></td><td>ブラックフライデーの売上、FOMCの結果と声明の内容</td><td>イベントの前にヘッジの量を見直す。結果を確認してから動く</td></tr>
+    <tr><td><b>投げ売り</b></td><td><b>VIXが50を超える</b>、日経平均54,000〜50,500円、S&amp;P500 6,650〜6,250</td><td>買う銘柄の候補リストを用意しておく。インバースETFの利益確定を始める</td></tr>
+    <tr><td><b>反転</b></td><td>VIXのピークアウト、SOXが前の安値を割らずに反発</td><td>3〜4回に分けて買い出動する。<span class="em">信用取引・空売りは使わない</span></td></tr>
+  </tbody>
+</table>
+<p>下げ相場は「何もできない時間」ではない。<b>守る手段（インバースETF）を知り、反転の合図（VIX）を待ち、次の上昇相場に備えて資金を残しておく時間</b>である。一番やってはいけないのは、焦って信用取引で取り返そうとすること。<b>相場から退場しなければ、チャンスは必ずまた来る。</b></p>
+
+<div class="refs">
+  <b>出典（いずれも2026年11月20〜21日時点の報道・公表資料）</b>
+  <ol>
+    <li>OANDA証券「日経平均が1日で3,008円安、AI・半導体株に何が起きている？」（2026/11/20）／日テレNEWS「日経平均株価 終値約7か月ぶり5万6000円台」</li>
+    <li>株探ニュース「日経平均 大引け｜3日ぶり急反落、ハイテク株中心に全面安」（11/20）／東京報道新聞「歴代5位の急落、3007円安の5万6436円」</li>
+    <li>Motley Fool "Stock Market Today, Nov. 20: Stocks Plunge as AI Trade Unwinds"／investingLive "Nasdaq plunges 5.28%"／StockTitan "US Stocks Close Sharply Lower"</li>
+    <li>Reuters（Investing.com掲載）"Exclusive: Nvidia's accounting is a focus of US SEC investigation, sources say"（11/20）</li>
+    <li>Seoul Economic Daily "SEC probes Nvidia accounting"／BigGo Finance（地域別売上開示の変更に関する報道）</li>
+    <li>The Register "AI's trillion dollar deal wheel bubbling around Nvidia, OpenAI"（2025/11/4）</li>
+    <li>CNBC "Fed's Waller says central bank may need to 'shock people' with half-point rate hike"（11/18）／rateprobability.com（OIS織り込み、11/20）</li>
+    <li>外為どっとコム「来週の日経平均見通し（11/23〜11/27）」（11/20）／やまのらぼ（note）日経平均の節目に関する考察（11/20）</li>
+    <li>Cboe VIX終値（Ad-hoc News、Cappnotes 11/20）。過去のピークはCboeの公表値（2008/11/20 終値80.86、2020/3/16 終値82.69、2024/8/5 場中65.73、2025/4/8 終値52.33）</li>
+    <li>大和アセットマネジメント iFreeETF S&amp;P500ダブルインバース（2249）商品ページ／JPX レバレッジ型・インバース型ETF資料</li>
+  </ol>
+  <div class="disclaimer">※本資料は株クラ会議の勉強用に作成したもので、特定の銘柄の売買を勧めるものではない。下値の目安・節目の想定は作成者（櫻庭）の見解であり、将来を保証するものではない。レバレッジ型・インバース型ETFは長期保有に向かず、元本を割り込むおそれがある。投資は自己責任で、目論見書を確認したうえで行うこと。</div>
+</div>
+
+</div>
+</body>
+</html>
