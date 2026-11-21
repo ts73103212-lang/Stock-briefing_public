@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" width="100%" font-family="'Meiryo UI','IPAGothic',sans-serif" font-size="11" role="img" aria-label="2026年11月20日から12月25日までの日程">
+  <defs>
+    <marker id="d4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1F3A5F"/>
+    </marker>
+  </defs>
+  <!-- scale: x = 30 + day*16.3 (day 0 = 11/20) -->
+
+  <!-- band -->
+  <rect x="30" y="6" width="570" height="20" rx="6" fill="#EEF2F7" stroke="#8A94A6" stroke-width="0.8"/>
+  <text x="315" y="20" text-anchor="middle" font-size="12" fill="#1F3A5F">底打ち探り期間：節目ごとに反発／再下落</text>
+
+  <!-- axis -->
+  <line x1="20" y1="110" x2="672" y2="110" stroke="#1F3A5F" stroke-width="2" marker-end="url(#d4-arr)"/>
+  <!-- week ticks (Mondays-ish) -->
+  <g stroke="#8A94A6" stroke-width="1">
+    <line x1="193" y1="106" x2="193" y2="114"/>
+    <line x1="307" y1="106" x2="307" y2="114"/>
+    <line x1="421" y1="106" x2="421" y2="114"/>
+    <line x1="535" y1="106" x2="535" y2="114"/>
+  </g>
+  <g font-size="10" fill="#8A94A6" text-anchor="middle">
+    <text x="193" y="124">11/30</text>
+    <text x="307" y="124">12/7</text>
+    <text x="421" y="124">12/14</text>
+    <text x="535" y="124">12/21</text>
+  </g>
+
+  <!-- 11/20 (above, tier A) -->
+  <line x1="30" y1="110" x2="30" y2="62" stroke="#C0392B" stroke-width="1.2"/>
+  <circle cx="30" cy="110" r="5" fill="#C0392B"/>
+  <text x="8" y="44" fill="#C0392B" font-weight="bold" font-size="12">11/20(金) 急落</text>
+  <text x="8" y="58" fill="#C0392B">S&amp;P調整入り・VIX35.9</text>
+
+  <!-- 11/23 (below, tier C) -->
+  <line x1="79" y1="110" x2="79" y2="132" stroke="#8A94A6" stroke-width="1"/>
+  <circle cx="79" cy="110" r="4" fill="#8A94A6"/>
+  <text x="79" y="144" text-anchor="middle" fill="#1F3A5F" font-weight="bold">11/23(月祝)</text>
+  <text x="79" y="157" text-anchor="middle" fill="#1F3A5F">東京 勤労感謝の日</text>
+
+  <!-- 11/26 (above, tier B) -->
+  <line x1="128" y1="110" x2="128" y2="90" stroke="#8A94A6" stroke-width="1"/>
+  <circle cx="128" cy="110" r="4" fill="#8A94A6"/>
+  <text x="122" y="86" fill="#1F3A5F"><tspan font-weight="bold">11/26(木)</tspan> 米 感謝祭 休場</text>
+
+  <!-- 11/27 (below, tier D) -->
+  <line x1="144" y1="110" x2="144" y2="164" stroke="#8A94A6" stroke-width="1"/>
+  <circle cx="144" cy="110" r="4" fill="#8A94A6"/>
+  <text x="150" y="162" fill="#1F3A5F" font-weight="bold">11/27(金) ブラックフライデー</text>
+  <text x="150" y="175" fill="#1F3A5F">短縮取引・年末商戦</text>
+
+  <!-- 12/9 FOMC (above, emphasized) -->
+  <line x1="340" y1="110" x2="340" y2="72" stroke="#E67E22" stroke-width="2"/>
+  <circle cx="340" cy="110" r="6" fill="#E67E22"/>
+  <rect x="270" y="34" width="140" height="38" rx="6" fill="#E67E22"/>
+  <text x="340" y="50" text-anchor="middle" fill="#FFFFFF" font-weight="bold" font-size="12">12/9(水) FOMC結果発表</text>
+  <text x="340" y="65" text-anchor="middle" fill="#FFFFFF">利上げ観測が優勢</text>
+
+  <!-- 12/25 (below, tier C) -->
+  <line x1="600" y1="110" x2="600" y2="132" stroke="#8A94A6" stroke-width="1"/>
+  <circle cx="600" cy="110" r="4" fill="#8A94A6"/>
+  <text x="600" y="144" text-anchor="middle" fill="#1F3A5F" font-weight="bold">12/25(金)</text>
+  <text x="600" y="157" text-anchor="middle" fill="#1F3A5F">クリスマス 休場</text>
+
+  <!-- beyond -->
+  <text x="672" y="84" text-anchor="end" fill="#8A94A6">その先 →</text>
+  <text x="672" y="98" text-anchor="end" fill="#1F3A5F" font-weight="bold">年末・ドレッシング</text>
+
+  <!-- reversal note -->
+  <rect x="340" y="176" width="300" height="20" rx="6" fill="#E8F5EE" stroke="#2E8B57" stroke-width="1"/>
+  <text x="490" y="190" text-anchor="middle" fill="#2E8B57" font-weight="bold" font-size="12">反転サイン：VIX 50超えからのピークアウト</text>
+</svg>

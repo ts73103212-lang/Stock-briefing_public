@@ -10,12 +10,12 @@
   --gray:#5B6472; --line:#C9D1DC; --fill:#EEF2F7; --lred:#FBEAEA; --lgreen:#E8F5EE;
   --ink:#1b1f27; --bg:#ffffff;
 }
-@page{ size:A4; margin:13mm 14mm 13mm 14mm; }
+@page{ size:A4; margin:10mm 12mm 10mm 12mm; }
 *{ box-sizing:border-box; }
 html,body{ background:var(--bg); color:var(--ink); }
 body{
   font-family:"Meiryo UI","Meiryo","IPAGothic","IPAPGothic",sans-serif;
-  font-size:9.4pt; line-height:1.62; margin:0;
+  font-size:8.4pt; line-height:1.4; margin:0;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;
 }
 .sheet{ max-width:182mm; margin:0 auto; padding:0 16px; }
@@ -25,17 +25,17 @@ body{
 .masthead{ display:flex; justify-content:space-between; align-items:flex-end;
   border-bottom:3px solid var(--navy); padding-bottom:4px; font-size:8.4pt; color:var(--gray); }
 .masthead b{ color:var(--navy); font-size:9.5pt; letter-spacing:.08em; }
-h1{ font-size:17.5pt; line-height:1.35; margin:10px 0 4px; color:var(--navy); letter-spacing:.01em; }
+h1{ font-size:16pt; line-height:1.3; margin:6px 0 3px; color:var(--navy); letter-spacing:.01em; }
 .subtitle{ font-size:10.5pt; color:var(--ink); margin:0 0 6px; font-weight:bold; }
 .byline{ font-size:8.4pt; color:var(--gray); margin-bottom:8px; }
 .byline span{ display:inline-block; margin-right:12px; }
 
-.abstract{ background:var(--fill); border-left:5px solid var(--navy); padding:8px 12px; margin:8px 0 10px; }
+.abstract{ background:var(--fill); border-left:5px solid var(--navy); padding:6px 12px; margin:6px 0 6px; }
 .abstract h2{ all:unset; display:block; font-weight:bold; color:var(--navy); font-size:9.6pt; margin-bottom:3px; }
 .abstract ol{ margin:0; padding-left:1.4em; }
 .abstract li{ margin:1px 0; }
 
-.kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:6px 0 10px; }
+.kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:4px 0 6px; }
 .kpi{ border:1px solid var(--line); border-radius:6px; padding:5px 8px; }
 .kpi .l{ font-size:7.8pt; color:var(--gray); }
 .kpi .v{ font-size:13pt; font-weight:bold; color:var(--red); line-height:1.25; }
@@ -43,7 +43,7 @@ h1{ font-size:17.5pt; line-height:1.35; margin:10px 0 4px; color:var(--navy); le
 .kpi.n .v{ color:var(--navy); }
 
 /* ---- 見出し ---- */
-h2{ font-size:12pt; color:#fff; background:var(--navy); padding:3px 10px; margin:14px 0 6px;
+h2{ font-size:10.8pt; color:#fff; background:var(--navy); padding:1px 10px; margin:7px 0 4px;
   border-radius:3px; break-after:avoid; }
 h2 .no{ display:inline-block; margin-right:8px; opacity:.85; }
 h3{ font-size:10pt; color:var(--navy); margin:9px 0 3px; border-bottom:1px solid var(--line); padding-bottom:1px; break-after:avoid; }
@@ -52,7 +52,8 @@ p{ margin:0 0 5px; text-align:justify; }
 .mk{ background:linear-gradient(transparent 60%, #FFE7B3 60%); font-weight:bold; }
 
 /* ---- 図表 ---- */
-figure{ margin:6px 0 8px; break-inside:avoid; }
+figure{ margin:4px 0 5px; break-inside:avoid; }
+figure.w80 img{ width:62%; margin:0 auto; } figure.w88 img{ width:70%; margin:0 auto; } figure.w72 img{ width:64%; margin:0 auto; }
 figure img{ width:100%; display:block; }
 figcaption{ font-size:8pt; color:var(--gray); margin-top:2px; }
 figcaption b{ color:var(--navy); }
@@ -65,7 +66,7 @@ th{ background:var(--navy); color:#fff; font-weight:bold; text-align:left; }
 tbody tr:nth-child(even) td{ background:#F7F9FC; }
 td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 
-.box{ border-radius:6px; padding:7px 11px; margin:7px 0; break-inside:avoid; }
+.box{ border-radius:6px; padding:5px 10px; margin:5px 0; break-inside:avoid; }
 .box .t{ font-weight:bold; margin-bottom:2px; }
 .box.warn{ background:var(--lred); border:2px solid var(--red); }
 .box.warn .t{ color:var(--red); font-size:10.2pt; }
@@ -74,6 +75,7 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 .box.info{ background:var(--fill); border:1px solid var(--line); }
 .box.info .t{ color:var(--navy); }
 .box ul{ margin:2px 0 0; padding-left:1.3em; }
+.box.warn ul{ columns:2; column-gap:18px; } .box.warn li{ break-inside:avoid; }
 .box li{ margin:1px 0; }
 
 .verdict{ border:2px solid var(--navy); border-radius:6px; padding:7px 12px; margin:8px 0; break-inside:avoid; }
@@ -81,8 +83,8 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 .verdict .big{ font-size:11pt; font-weight:bold; color:var(--red); }
 
 .pb{ break-before:page; }
-.refs{ font-size:7.4pt; color:var(--gray); line-height:1.45; border-top:1px solid var(--line); margin-top:10px; padding-top:4px; }
-.refs ol{ margin:0; padding-left:1.6em; }
+.refs{ font-size:6.9pt; color:var(--gray); line-height:1.45; border-top:1px solid var(--line); margin-top:10px; padding-top:4px; }
+.refs ol{ margin:0; padding-left:1.6em; columns:2; column-gap:14px; } .refs li{ break-inside:avoid; }
 .disclaimer{ font-size:7.4pt; color:var(--gray); margin-top:4px; }
 </style>
 </head>
@@ -123,13 +125,13 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
   </div>
   <figure>
     <img src="figs/fig1_daily_drop.svg" alt="11月20日の主要指数と銘柄の騰落率">
-    <figcaption><b>図1</b>　11月20日の騰落率。震源は半導体（SOX −10.7%）。日経平均の下げ幅は米国株の主要指数を上回った。</figcaption>
+    <figcaption><b>図1</b>　11月20日の騰落率。震源は半導体（SOX −10.7%）。日経平均の下げはS&amp;P500を上回った。</figcaption>
   </figure>
 </div>
 
 <h2><span class="no">2</span>日経225・S&amp;P500はどこまで下がるのか</h2>
 <p>下値を考えるときは、<b>「高値から何%下げたか」</b>と<b>「過去に止まった価格（節目）」</b>の2つを重ねて見る。一般に高値から−10%で「調整」、−20%で「弱気相場（ベアマーケット）」と呼ぶ。</p>
-<figure>
+<figure class="w80">
   <img src="figs/fig2_levels.svg" alt="日経平均とS&P500の下値目途">
   <figcaption><b>図2</b>　下値の目安。日経平均は高値72,366円（6/25終値）から−22%で、すでに弱気相場の水準。S&amp;P500は高値7,818（10/6）から−11.6%。</figcaption>
 </figure>
@@ -174,7 +176,7 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 <p>11/20の値動きにあてはめると、日経平均が−5.06%なので1357・1360は<b>約+10%</b>、SOXが−10.7%なのでSOXSは<b>約+30%</b>になる計算だ（実際の値はETFの基準価額と市場価格の差で多少ずれる）。</p>
 
 <h3>なぜ「下がっているのに」利益が出るのか ― ETFの仕組み</h3>
-<figure>
+<figure class="w88">
   <img src="figs/diag1_inverse_mechanism.svg" alt="インバースETFの仕組み">
   <figcaption><b>図4</b>　インバースETFの資金の流れ。投資家から集めたお金を担保にして先物を「売る」。指数が下がると、先物を安く買い戻した差額が利益になる。</figcaption>
 </figure>
@@ -196,17 +198,17 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 
 <h2><span class="no">5</span>下落で儲けているのは誰か ― 空売りの仕組みと危険性</h2>
 <p>相場が急落した日、大きく儲けているのは<b>高値で「空売り」をして、安値で「買い戻す」人たち</b>だ。空売りとは、<b>持っていない株を証券会社から借りて先に売り、後で買い戻して返す</b>取引のことで、<b>信用取引</b>の口座が必要になる。</p>
-<figure>
+<div class="grid2">
+<figure >
   <img src="figs/diag2_short_selling.svg" alt="空売りの仕組みと損失の青天井">
   <figcaption><b>図6</b>　空売りの流れ（上）と、思惑が外れたときの損失（下）。株価に上限はないので、空売りの損失にも上限がない。</figcaption>
 </figure>
-<div class="grid2">
-  <div>
-    <h3>買いと空売りのリスクの違い</h3>
+<div><h3>買いと空売りのリスクの違い</h3>
     <p><b>現物の買い</b>：1,000円で買った株が0円になっても、損失は1,000円まで（−100%が上限）。<br>
     <b>空売り</b>：1,000円で売った株が3,000円になれば損失は2,000円、10,000円になれば9,000円。<span class="em">株価に上限がないので、損失も青天井</span>である。さらに、急落の後には売り方が慌てて買い戻すことで株価が急騰する<b>「踏み上げ（ショートスクイーズ）」</b>が起きやすく、まさに今のような局面が一番危ない。</p>
   </div>
-  <div class="box warn">
+</div>
+<div class="box warn">
     <div class="t">⚠ 櫻庭からの警鐘：新人は信用取引に手を出さないこと</div>
     <ul>
       <li>信用取引は担保の<b>約3.3倍</b>まで取引できる。損失も3.3倍の速さで膨らむ。</li>
@@ -215,15 +217,14 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
       <li><b>下落に備えたいなら、現物で買えるインバースETFを少額で。</b>損失は投資額までに限られる。まずはここから経験を積む。</li>
     </ul>
   </div>
-</div>
 
 <h2><span class="no">6</span>底はいつか ― 節目のカレンダーとVIXという「温度計」</h2>
-<figure>
+<figure class="w88">
   <img src="figs/diag4_timeline.svg" alt="年末までの節目カレンダー">
   <figcaption><b>図7</b>　年末までの節目。大きなイベントの前後で「反発→再下落」を繰り返しながら底を探る展開を想定。</figcaption>
 </figure>
 <p><b>ズバリ、今回の下げは米国の感謝祭（11/26）・ブラックフライデー（11/27）、FOMC（12/9）、クリスマス（12/25）といった節目まで続く可能性がある</b>と見ている。ブラックフライデーは年末商戦の売れ行きで<b>米国の消費の強さ</b>を確かめる場。FOMCは<b>利上げか据え置き（利下げ）か</b>の分かれ目で、市場は25bp（0.25%）の利上げをほぼ織り込んでいる。0.5%の大幅利上げを主張する理事もいる<sup>[7][8]</sup>。仮に「利上げ見送り」や「今回の利上げで打ち止め」といったメッセージが出れば、反転のきっかけになりうる。逆に大幅利上げなら下げは年末まで長引く。</p>
-<div class="grid2">
+<div class="grid2" style="grid-template-columns:1.5fr 1fr">
   <div>
     <h3>VIX（恐怖指数）とは</h3>
     <p>VIXは、S&amp;P500のオプション価格から計算される<b>「今後30日間に市場がどれだけ揺れると予想されているか」</b>の指標で、恐怖指数とも呼ばれる。平常時は<b>10〜20</b>。株価が急落して投資家が保険（プットオプション）を買いに走るほど上がる。目安として<b>VIX÷16が「1日に動くと予想される幅（%）」</b>で、今の36なら1日±2.2%、50なら±3.1%の揺れを市場が見込んでいる。</p>
@@ -256,20 +257,20 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 <p>下げ相場は「何もできない時間」ではない。<b>守る手段（インバースETF）を知り、反転の合図（VIX）を待ち、次の上昇相場に備えて資金を残しておく時間</b>である。一番やってはいけないのは、焦って信用取引で取り返そうとすること。<b>相場から退場しなければ、チャンスは必ずまた来る。</b></p>
 
 <div class="refs">
-  <b>出典（いずれも2026年11月20〜21日時点の報道・公表資料）</b>
+  <b>出典</b>（2026年11月20〜21日時点の報道・公表資料）
   <ol>
-    <li>OANDA証券「日経平均が1日で3,008円安、AI・半導体株に何が起きている？」（2026/11/20）／日テレNEWS「日経平均株価 終値約7か月ぶり5万6000円台」</li>
-    <li>株探ニュース「日経平均 大引け｜3日ぶり急反落、ハイテク株中心に全面安」（11/20）／東京報道新聞「歴代5位の急落、3007円安の5万6436円」</li>
-    <li>Motley Fool "Stock Market Today, Nov. 20: Stocks Plunge as AI Trade Unwinds"／investingLive "Nasdaq plunges 5.28%"／StockTitan "US Stocks Close Sharply Lower"</li>
-    <li>Reuters（Investing.com掲載）"Exclusive: Nvidia's accounting is a focus of US SEC investigation, sources say"（11/20）</li>
-    <li>Seoul Economic Daily "SEC probes Nvidia accounting"／BigGo Finance（地域別売上開示の変更に関する報道）</li>
-    <li>The Register "AI's trillion dollar deal wheel bubbling around Nvidia, OpenAI"（2025/11/4）</li>
-    <li>CNBC "Fed's Waller says central bank may need to 'shock people' with half-point rate hike"（11/18）／rateprobability.com（OIS織り込み、11/20）</li>
-    <li>外為どっとコム「来週の日経平均見通し（11/23〜11/27）」（11/20）／やまのらぼ（note）日経平均の節目に関する考察（11/20）</li>
-    <li>Cboe VIX終値（Ad-hoc News、Cappnotes 11/20）。過去のピークはCboeの公表値（2008/11/20 終値80.86、2020/3/16 終値82.69、2024/8/5 場中65.73、2025/4/8 終値52.33）</li>
-    <li>大和アセットマネジメント iFreeETF S&amp;P500ダブルインバース（2249）商品ページ／JPX レバレッジ型・インバース型ETF資料</li>
+    <li>OANDA証券「日経平均が1日で3,008円安」(11/20)、日テレNEWS</li>
+    <li>株探「日経平均 大引け 3日ぶり急反落」(11/20)、東京報道新聞</li>
+    <li>Motley Fool／investingLive／StockTitan（11/20 米国市況）</li>
+    <li>Reuters（SECのエヌビディア会計調査 11/20）</li>
+    <li>Seoul Economic Daily／BigGo Finance（SEC調査の論点）</li>
+    <li>The Register "AI's trillion dollar deal wheel"(2025/11/4)</li>
+    <li>CNBC（ウォラー理事発言 11/18）、rateprobability.com（11/20）</li>
+    <li>外為どっとコム 来週の日経平均見通し(11/20)、note やまのらぼ</li>
+    <li>Cboe VIX（11/20終値35.89、過去ピークはCboe公表値）</li>
+    <li>大和AM 2249商品ページ、JPX レバレッジ・インバースETF資料</li>
   </ol>
-  <div class="disclaimer">※本資料は株クラ会議の勉強用に作成したもので、特定の銘柄の売買を勧めるものではない。下値の目安・節目の想定は作成者（櫻庭）の見解であり、将来を保証するものではない。レバレッジ型・インバース型ETFは長期保有に向かず、元本を割り込むおそれがある。投資は自己責任で、目論見書を確認したうえで行うこと。</div>
+  <div class="disclaimer">※勉強会用資料であり売買を勧めるものではない。下値目途・節目の想定は櫻庭の見解で将来を保証しない。レバレッジ型・インバース型ETFは長期保有に向かず元本割れのおそれがある。投資は目論見書を確認のうえ自己責任で。</div>
 </div>
 
 </div>
