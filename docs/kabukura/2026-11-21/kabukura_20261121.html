@@ -10,54 +10,52 @@
   --gray:#5B6472; --line:#C9D1DC; --fill:#EEF2F7; --lred:#FBEAEA; --lgreen:#E8F5EE;
   --ink:#1b1f27; --bg:#ffffff;
 }
-@page{ size:A4; margin:10mm 12mm 10mm 12mm; }
+@page{ size:A4; margin:12mm 13mm 12mm 13mm; }
 *{ box-sizing:border-box; }
 html,body{ background:var(--bg); color:var(--ink); }
 body{
   font-family:"Meiryo UI","Meiryo","IPAGothic","IPAPGothic",sans-serif;
-  font-size:8.4pt; line-height:1.4; margin:0;
+  font-size:9pt; line-height:1.55; margin:0;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;
 }
-.sheet{ max-width:182mm; margin:0 auto; padding:0 16px; }
+.sheet{ max-width:184mm; margin:0 auto; padding:0 16px; }
 @media print{ .sheet{ padding:0; } }
 
-/* ---- 表紙ヘッダ ---- */
 .masthead{ display:flex; justify-content:space-between; align-items:flex-end;
   border-bottom:3px solid var(--navy); padding-bottom:4px; font-size:8.4pt; color:var(--gray); }
 .masthead b{ color:var(--navy); font-size:9.5pt; letter-spacing:.08em; }
-h1{ font-size:16pt; line-height:1.3; margin:6px 0 3px; color:var(--navy); letter-spacing:.01em; }
-.subtitle{ font-size:10.5pt; color:var(--ink); margin:0 0 6px; font-weight:bold; }
-.byline{ font-size:8.4pt; color:var(--gray); margin-bottom:8px; }
+h1{ font-size:17pt; line-height:1.3; margin:8px 0 3px; color:var(--navy); }
+.subtitle{ font-size:10.3pt; margin:0 0 5px; font-weight:bold; }
+.byline{ font-size:8.4pt; color:var(--gray); margin-bottom:6px; }
 .byline span{ display:inline-block; margin-right:12px; }
 
-.abstract{ background:var(--fill); border-left:5px solid var(--navy); padding:6px 12px; margin:6px 0 6px; }
-.abstract h2{ all:unset; display:block; font-weight:bold; color:var(--navy); font-size:9.6pt; margin-bottom:3px; }
+.abstract{ background:var(--fill); border-left:5px solid var(--navy); padding:7px 12px; margin:6px 0 8px; }
+.abstract .h{ font-weight:bold; color:var(--navy); font-size:9.8pt; margin-bottom:2px; }
 .abstract ol{ margin:0; padding-left:1.4em; }
 .abstract li{ margin:1px 0; }
 
-.kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:4px 0 6px; }
-.kpi{ border:1px solid var(--line); border-radius:6px; padding:5px 8px; }
+.kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:5px 0 7px; }
+.kpi{ border:1px solid var(--line); border-radius:6px; padding:4px 8px; }
 .kpi .l{ font-size:7.8pt; color:var(--gray); }
 .kpi .v{ font-size:13pt; font-weight:bold; color:var(--red); line-height:1.25; }
 .kpi .s{ font-size:7.6pt; color:var(--gray); }
 .kpi.n .v{ color:var(--navy); }
 
-/* ---- 見出し ---- */
-h2{ font-size:10.8pt; color:#fff; background:var(--navy); padding:1px 10px; margin:7px 0 4px;
+h2{ font-size:11.5pt; color:#fff; background:var(--navy); padding:2px 10px; margin:12px 0 6px;
   border-radius:3px; break-after:avoid; }
 h2 .no{ display:inline-block; margin-right:8px; opacity:.85; }
 h3{ font-size:10pt; color:var(--navy); margin:9px 0 3px; border-bottom:1px solid var(--line); padding-bottom:1px; break-after:avoid; }
 p{ margin:0 0 5px; text-align:justify; }
 .em{ color:var(--red); font-weight:bold; }
+.up{ color:var(--green); font-weight:bold; }
 .mk{ background:linear-gradient(transparent 60%, #FFE7B3 60%); font-weight:bold; }
 
-/* ---- 図表 ---- */
-figure{ margin:4px 0 5px; break-inside:avoid; }
-figure.w80 img{ width:62%; margin:0 auto; } figure.w88 img{ width:70%; margin:0 auto; } figure.w72 img{ width:64%; margin:0 auto; }
-figure img{ width:100%; display:block; }
+figure{ margin:5px 0 7px; break-inside:avoid; }
+figure img{ width:100%; display:block; margin:0 auto; }
+figure.w60 img{ width:62%; } figure.w70 img{ width:70%; } figure.w75 img{ width:76%; } figure.w85 img{ width:86%; }
 figcaption{ font-size:8pt; color:var(--gray); margin-top:2px; }
 figcaption b{ color:var(--navy); }
-.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start; }
 .grid2 > *{ min-width:0; }
 
 table{ width:100%; border-collapse:collapse; font-size:8.3pt; margin:4px 0 6px; break-inside:avoid; }
@@ -65,8 +63,9 @@ th,td{ border:1px solid var(--line); padding:3px 5px; vertical-align:top; }
 th{ background:var(--navy); color:#fff; font-weight:bold; text-align:left; }
 tbody tr:nth-child(even) td{ background:#F7F9FC; }
 td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
+td.bull{ color:var(--navy); font-weight:bold; } td.bear{ color:var(--green); font-weight:bold; }
 
-.box{ border-radius:6px; padding:5px 10px; margin:5px 0; break-inside:avoid; }
+.box{ border-radius:6px; padding:6px 11px; margin:6px 0; break-inside:avoid; }
 .box .t{ font-weight:bold; margin-bottom:2px; }
 .box.warn{ background:var(--lred); border:2px solid var(--red); }
 .box.warn .t{ color:var(--red); font-size:10.2pt; }
@@ -74,28 +73,41 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 .box.good .t{ color:var(--green); }
 .box.info{ background:var(--fill); border:1px solid var(--line); }
 .box.info .t{ color:var(--navy); }
-.box ul{ margin:2px 0 0; padding-left:1.3em; }
-.box.warn ul{ columns:2; column-gap:18px; } .box.warn li{ break-inside:avoid; }
+.box ul, .box ol{ margin:2px 0 0; padding-left:1.3em; }
 .box li{ margin:1px 0; }
+.box.warn ul{ columns:2; column-gap:18px; } .box.warn li{ break-inside:avoid; }
 
 .verdict{ border:2px solid var(--navy); border-radius:6px; padding:7px 12px; margin:8px 0; break-inside:avoid; }
 .verdict .t{ font-weight:bold; color:var(--navy); font-size:10.4pt; }
 .verdict .big{ font-size:11pt; font-weight:bold; color:var(--red); }
 
-.pb{ break-before:page; }
-.refs{ font-size:6.9pt; color:var(--gray); line-height:1.45; border-top:1px solid var(--line); margin-top:10px; padding-top:4px; }
-.refs ol{ margin:0; padding-left:1.6em; columns:2; column-gap:14px; } .refs li{ break-inside:avoid; }
+/* ステップ（ストーリー） */
+.steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:6px 0; break-inside:avoid; }
+.step{ border:1px solid var(--line); border-top:4px solid var(--navy); border-radius:4px; padding:5px 7px; font-size:8.2pt; background:#fff; }
+.step .n{ font-weight:bold; color:var(--navy); font-size:8.6pt; }
+.step.g{ border-top-color:var(--green); } .step.g .n{ color:var(--green); }
+.step.r{ border-top-color:var(--red); } .step.r .n{ color:var(--red); }
+
+/* 連鎖フロー */
+.chain{ display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:6px 0; break-inside:avoid; }
+.chain span{ background:var(--fill); border:1px solid var(--line); border-radius:4px; padding:3px 7px; font-size:8.3pt; }
+.chain span.r{ background:var(--lred); border-color:var(--red); color:var(--red); font-weight:bold; }
+.chain i{ font-style:normal; color:var(--gray); font-weight:bold; }
+
+.refs{ font-size:7.2pt; color:var(--gray); line-height:1.45; border-top:1px solid var(--line); margin-top:10px; padding-top:4px; }
+.refs ol{ margin:0; padding-left:1.8em; columns:2; column-gap:16px; }
+.refs li{ break-inside:avoid; }
 .disclaimer{ font-size:7.4pt; color:var(--gray); margin-top:4px; }
 </style>
 </head>
 <body>
 <div class="sheet">
 
-<div class="masthead"><b>株クラ会議 ｜ 勉強会資料</b><span>2026年11月21日（土）作成 ／ 対象：新人メンバー向け</span></div>
+<div class="masthead"><b>株クラ会議 ｜ 勉強会資料</b><span>2026年11月21日（土）作成</span></div>
 
 <h1>急落相場の「底」と「守り方」<br>日経225・S&amp;P500はどこまで下がるのか</h1>
-<p class="subtitle">― 下げ相場は「指をくわえて見ている」しかないのか？ インバースETF・空売り・VIXで読み解く ―</p>
-<div class="byline"><span>作成：櫻庭</span><span>基準データ：2026年11月20日 東京・NY終値</span></div>
+<p class="subtitle">― 下げ相場は「指をくわえて見ている」しかないのか？ ブル・ベアETF、空売り、信用買い残、VIXで読み解く ―</p>
+<div class="byline"><span>作成：櫻庭</span><span>基準データ：2026年11月20日 東京・NY終値（信用残は11月13日申込分まで）</span></div>
 
 <div class="kpis">
   <div class="kpi"><div class="l">日経平均（11/20）</div><div class="v">−3,007円</div><div class="s">56,436円（−5.06%）下げ幅は歴代5位</div></div>
@@ -105,17 +117,19 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 </div>
 
 <div class="abstract">
-  <h2>要旨（3分で読むまとめ）</h2>
+  <div class="h">要旨（3分で読むまとめ）</div>
   <ol>
-    <li>今回の急落は<b>AI・半導体株の巻き戻し</b>が震源。S&amp;P500は高値から1割超下げて「調整局面」入り、日経平均は高値から22%下げてすでに「弱気相場」の水準にある。</li>
+    <li>今回の急落の震源は<b>AI・半導体株の巻き戻し</b>。S&amp;P500は高値から1割超下げて「調整局面」入り、日経平均は高値から22%下げて「弱気相場」の水準にある。</li>
     <li>下値の目安は<b>日経平均 54,000円前後（メイン）〜50,500円（リスク）</b>、<b>S&amp;P500 6,650前後（メイン）〜6,250（リスク）</b>。</li>
-    <li>エヌビディアには従来の<b>「循環取引」疑惑</b>に加え、<b>米SEC（証券取引委員会）が会計処理を調べている</b>との報道が出た。SOXはもう一段下がりうる。</li>
-    <li>下げ相場にも打つ手はある。<b>1357・1360（日経ダブルインバース）、2249（S&amp;P500ダブルインバース）、SOXS（半導体ベア3倍）</b>は下落で値上がりするため、ヘッジ（保険）になる。</li>
-    <li>空売りは<b>損失が青天井</b>。信用取引は<span class="em">新人は手を出さない</span>。</li>
-    <li>底を探る節目は<b>感謝祭（11/26）→ブラックフライデー（11/27）→FOMC（12/9）→クリスマス</b>。反転を狙うなら<b>VIXが50を超えて、ピークを打った局面</b>。</li>
+    <li>エヌビディアには従来の<b>「循環取引」疑惑</b>に加え、<b>米SECが会計処理を調べている</b>との報道が出た。SOXはもう一段下がりうる。</li>
+    <li>相場には<b>上昇で儲かる「ブル型」</b>と<b>下落で儲かる「ベア型」</b>のETFがある。1357・1360・2249・SOXSは指数と<b>ほぼ鏡写しの逆の動き</b>をする（日次の相関は−0.998）。<b>10月半ばに25日移動平均線割れを合図にベアETFを買っていれば、11/20までに1357は+29.8%、SOXSは+122%</b>になっていた。</li>
+    <li>空売りは<b>損失が青天井</b>。信用取引は<span class="em">仕組みとリスクを十分に理解するまで手を出さない</span>。</li>
+    <li>キオクシアなどの人気半導体株では、<b>株価が8割下がっても信用買い残（株数）が増え続けている</b>。これが「将来の売り」として上値を重くし、追証による投げ売りの連鎖を生む。</li>
+    <li>信用買い残が過去最高を記録した<b>2026年6月がバイイング・クライマックス</b>なら、制度信用の<b>6か月の返済期限が来る12月</b>に投げ売りが出尽くして需給が良くなる。<b>感謝祭→FOMC（12/9）→信用期日→クリスマス</b>を経て、<b>年末に反転</b>と櫻庭は読む。合図は<b>VIXが50を超えてピークを打つこと</b>。</li>
   </ol>
 </div>
 
+<!-- ===================== 1 ===================== -->
 <h2><span class="no">1</span>昨日、何が起きたのか</h2>
 <div class="grid2">
   <div>
@@ -129,21 +143,23 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
   </figure>
 </div>
 
+<!-- ===================== 2 ===================== -->
 <h2><span class="no">2</span>日経225・S&amp;P500はどこまで下がるのか</h2>
 <p>下値を考えるときは、<b>「高値から何%下げたか」</b>と<b>「過去に止まった価格（節目）」</b>の2つを重ねて見る。一般に高値から−10%で「調整」、−20%で「弱気相場（ベアマーケット）」と呼ぶ。</p>
-<figure class="w80">
+<figure class="w70">
   <img src="figs/fig2_levels.svg" alt="日経平均とS&P500の下値目途">
-  <figcaption><b>図2</b>　下値の目安。日経平均は高値72,366円（6/25終値）から−22%で、すでに弱気相場の水準。S&amp;P500は高値7,818（10/6）から−11.6%。</figcaption>
+  <figcaption><b>図2</b>　下値の目安。日経平均は最高値72,366円（6/25終値）から−22%で、すでに弱気相場の水準。S&amp;P500は高値7,818（10/6）から−11.6%。</figcaption>
 </figure>
 <table>
-  <thead><tr><th style="width:15%">指数</th><th style="width:28%">メインシナリオ（年内の下値）</th><th style="width:28%">リスクシナリオ（悪材料が続く場合）</th><th>根拠</th></tr></thead>
+  <thead><tr><th style="width:13%">指数</th><th style="width:27%">メインシナリオ（年内の下値）</th><th style="width:27%">リスクシナリオ（悪材料が続く場合）</th><th>根拠</th></tr></thead>
   <tbody>
     <tr><td class="c">日経平均</td><td><b>54,000円前後</b>（高値から−25%）</td><td><b>50,500円前後</b>（年初来安値・高値から−30%）</td><td>11/6安値56,745円を割り込み、次の支えが薄い。50,558円（3/31安値）と高値から−30%（50,656円）が重なる</td></tr>
     <tr><td class="c">S&amp;P500</td><td><b>6,650前後</b>（高値から−15%）</td><td><b>6,250前後</b>（高値から−20%＝弱気相場入り）</td><td>景気後退を伴わない調整は−10〜15%で止まることが多い。AI投資の縮小が実体経済まで波及すれば−20%台に入る</td></tr>
   </tbody>
 </table>
-<p>日経平均は米国より下げがきつい。指数に占める<b>値がさの半導体株（アドバンテスト、東京エレクトロンなど）とソフトバンクグループの比重が大きい</b>ためで、SOXが下げると日経平均はその分大きく下げやすい。<span class="mk">日経平均の底はSOXの底と同時に来る</span>、と覚えておきたい。</p>
+<p>日経平均は米国より下げがきつい。指数に占める<b>値がさの半導体株（アドバンテスト、東京エレクトロンなど）とソフトバンクグループの比重が大きい</b>ためで、SOXが下げると日経平均はその分大きく下げやすい。なお日経平均は<b>6/25の最高値（72,366円）と10/6の戻り高値（70,684円）</b>で二度天井をつけた形になっている。<span class="mk">日経平均の底はSOXの底と同時に来る</span>、と覚えておきたい。</p>
 
+<!-- ===================== 3 ===================== -->
 <h2><span class="no">3</span>トピック：エヌビディアの「循環取引」と会計問題 ― SOXはもう一段下がるか</h2>
 <div class="grid2">
   <figure>
@@ -159,105 +175,215 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
 </div>
 <div class="verdict">
   <div class="t">櫻庭の見立て：SOXの「もう一段安」に警戒</div>
-  <p style="margin:0">決算が良くても株価が下がるのは、市場の関心が<b>「売上の大きさ」から「売上の中身」へ移った</b>ためだ。調査の結果が出るまでには時間がかかり、その間は思惑で何度も売られやすい。売上が連動するTSMC、メモリ、製造装置（アドバンテスト、東京エレクトロンなど）、ネオクラウド各社にも疑いが広がる可能性があり、<span class="big">SOXは11/20安値を下回るもう一段安</span>を想定しておく。</p>
+  <p style="margin:0">決算が良くても株価が下がるのは、市場の関心が<b>「売上の大きさ」から「売上の中身」へ移った</b>ためだ。調査の結果が出るまでには時間がかかり、その間は思惑で何度も売られやすい。売上が連動するTSMC、メモリ、製造装置（アドバンテスト、東京エレクトロンなど）、ネオクラウド各社にも疑いが広がる可能性があり、<span class="big">SOXは11/20安値を下回るもう一段安</span>を想定しておく。SOXはすでに6/22の高値から約43%下げている。</p>
 </div>
 
-<h2><span class="no">4</span>下げ相場は「指をくわえて見ている」しかないのか？ ― インバースETFという選択肢</h2>
-<p>前回の会議で井筒さんから「下がる時は何もできないのでは？」という質問があった。答えは<b>NO</b>。株式市場には<b>指数が下がると値上がりするETF</b>（ベア型＝インバース型）があり、普通の株と同じように<b>現物（自分のお金の範囲）で買える</b>。保有株の値下がりを埋め合わせる「保険（ヘッジ）」として使えるのが最大の利点だ。</p>
+<!-- ===================== 4 ===================== -->
+<h2><span class="no">4</span>下げ相場は「指をくわえて見ている」しかないのか？ ― ブルとベア</h2>
+<p>答えは<b>NO</b>。株式市場には<b>指数が下がると値上がりするETF</b>があり、普通の株と同じように<b>現物（自分のお金の範囲）で買える</b>。まずは、相場の世界でよく使う「ブル」と「ベア」という言葉から整理しよう。</p>
+
+<h3>4-1　ブル（雄牛）とベア（熊）とは</h3>
+<div class="grid2">
+  <div>
+    <p><b>ブル（Bull＝雄牛）</b>は、角を<b>下から上へ突き上げて</b>攻撃する。そこから<b>上昇相場・強気</b>を表す。<b>ベア（Bear＝熊）</b>は、前足の爪を<b>上から下へ振り下ろして</b>攻撃する。そこから<b>下落相場・弱気</b>を表す。</p>
+    <p>ETFの名前もこれに対応している。</p>
+    <ul style="margin:0 0 5px; padding-left:1.3em">
+      <li><b>ブル型（レバレッジ型）</b>：指数が上がると、その<b>2倍・3倍</b>上がる。下がると2倍・3倍下がる。</li>
+      <li><b>ベア型（インバース型）</b>：指数が<b>下がると上がる</b>。「ダブルインバース」は−2倍、「ベア3倍」は−3倍の値動き。</li>
+    </ul>
+    <p>図4のとおり、11/20は同じ日経平均を対象にしたETFでも、<b>ブル型の1570は−10.1%、ベア型の1357は+9.9%</b>と正反対になった。半導体では<b>SOXLが−31.8%、SOXSが+31.7%</b>である。</p>
+  </div>
+  <figure>
+    <img src="figs/fig6_bull_bear_1day.svg" alt="11月20日のブル型・ベア型ETFの騰落率">
+    <figcaption><b>図4</b>　11月20日の1日の騰落率。同じ指数でも、ブル型（紺）とベア型（緑）は正反対に動く。2249は東京の11/20の取引で、前日（11/19）のNYの下げを反映した値。</figcaption>
+  </figure>
+</div>
 <table>
-  <thead><tr><th style="width:9%">コード</th><th style="width:33%">名称（運用会社）</th><th style="width:21%">連動対象</th><th style="width:9%">倍率</th><th>取引のポイント</th></tr></thead>
+  <thead><tr><th style="width:15%">対象</th><th style="width:30%">ブル型（上昇で儲かる）</th><th style="width:30%">ベア型（下落で儲かる）</th><th>取引のポイント</th></tr></thead>
   <tbody>
-    <tr><td class="c">1357</td><td>NEXT FUNDS 日経平均ダブルインバース（野村AM）</td><td>日経平均</td><td class="c">−2倍</td><td>円建て・東証。出来高が多く、日経平均を下落ヘッジする定番</td></tr>
-    <tr><td class="c">1360</td><td>日経平均ベア2倍上場投信（楽天投信投資顧問）</td><td>日経平均</td><td class="c">−2倍</td><td>円建て・東証。1357と同じ性格で、価格帯が異なる</td></tr>
-    <tr><td class="c">2249</td><td>iFreeETF S&amp;P500ダブルインバース（大和AM）</td><td>S&amp;P500先物</td><td class="c">−2倍</td><td><b>日本株と同じ口座・円で米国株の下落をヘッジ</b>できる。信託報酬は年0.803%</td></tr>
-    <tr><td class="c">SOXS</td><td>Direxion Daily Semiconductor Bear 3X</td><td>米国の半導体株指数（SOXとほぼ同じ動き）</td><td class="c">−3倍</td><td>ドル建て・米国市場。<b>SOXが1日10%下がれば約30%上がる</b>。値動きは非常に激しい</td></tr>
+    <tr><td class="c">日経平均</td><td class="bull">1570 日経平均レバレッジ（2倍）</td><td class="bear">1357 日経ダブルインバース（−2倍）<br>1360 日経平均ベア2倍（−2倍）</td><td>円建て・東証。1357は出来高が多い定番。1360は価格帯が数十円と低く、少額から買える</td></tr>
+    <tr><td class="c">S&amp;P500</td><td class="bull">2237 S&amp;P500レバレッジ（2倍）</td><td class="bear">2249 S&amp;P500ダブルインバース（−2倍）</td><td><b>日本株と同じ口座・円で米国株の下落をヘッジ</b>できる。東京の取引時間に、前日のNYの動きを反映して動く</td></tr>
+    <tr><td class="c">SOX（半導体）</td><td class="bull">SOXL 半導体ブル3倍</td><td class="bear">SOXS 半導体ベア3倍（−3倍）</td><td>ドル建て・米国市場。<b>SOXが1日10%下がれば約30%上がる</b>。値動きは非常に激しい</td></tr>
   </tbody>
 </table>
-<p>11/20の値動きにあてはめると、日経平均が−5.06%なので1357・1360は<b>約+10%</b>、SOXが−10.7%なのでSOXSは<b>約+30%</b>になる計算だ（実際の値はETFの基準価額と市場価格の差で多少ずれる）。</p>
 
-<h3>なぜ「下がっているのに」利益が出るのか ― ETFの仕組み</h3>
-<figure class="w88">
+<h3>4-2　なぜ「下がっているのに」利益が出るのか ― ベアETFの仕組み</h3>
+<figure class="w75">
   <img src="figs/diag1_inverse_mechanism.svg" alt="インバースETFの仕組み">
-  <figcaption><b>図4</b>　インバースETFの資金の流れ。投資家から集めたお金を担保にして先物を「売る」。指数が下がると、先物を安く買い戻した差額が利益になる。</figcaption>
+  <figcaption><b>図5</b>　ベアETFの資金の流れ。投資家から集めたお金を担保にして先物を「売る」。指数が下がると、先物を安く買い戻した差額が利益になる。</figcaption>
 </figure>
 <p>運用会社は投資家から集めたお金を担保にして、<b>株価指数の先物を純資産の2倍（3倍）分「売り」</b>（先物の売り建てやスワップ契約という取引を使う）。指数が下がれば先物を<b>安く買い戻せる</b>ので、その差額がETFの資産に加わり、基準価額が上がる。つまり<b>運用会社が代わりに「空売り」をしてくれている</b>のと同じである。投資家にとっての違いは、<span class="mk">損失が自分で払ったお金（投資額）までに限られる</span>こと。ここが個人の空売りとの決定的な差になる。</p>
+
+<h3>4-3　チャートで確かめる ― ベアETFは指数の「鏡写し」</h3>
+<figure class="w85">
+  <img src="figs/fig5_inverse_compare.svg" alt="指数とベアETFの比較チャート">
+  <figcaption><b>図6</b>　2026年6月1日を100とした指数（紺）とベアETF（赤）の推移。指数が上がればETFは下がり、指数が下がればETFは上がる。左下の数値は日々の騰落率の相関係数（−1に近いほど完全な逆の動き）。</figcaption>
+</figure>
+<p>実際のチャートで見ると、<b>指数とベアETFはちょうど上下を反転させた形</b>で動いている。日々の値動きの相関は、日経平均と1357・1360、SOXとSOXSでいずれも<b>−0.998</b>と、ほぼ完全な逆相関だ。6/1から11/20までに日経平均は−15.7%、1357は<span class="up">+21.4%</span>。SOXは−35.1%、SOXSは<span class="up">+36.1%</span>となった。</p>
+<p>2249の相関が−0.812と低めなのは、東京で取引される2249が<b>前日のNYの値動きを翌日に反映する</b>ためで、時差によるずれである。仕組みが崩れているわけではない。また、6月〜10月のように<b>指数が上下を繰り返した期間はETFが少しずつ目減り</b>している点にも注目したい（4-5で解説）。</p>
+
+<h3>4-4　ストーリー：この下落相場で、ベアETFでうまく立ち回るには</h3>
+<p>では、今回の下落で実際にベアETFを使っていたらどうなったか。ここでは<b>「指数が25日移動平均線（過去25営業日の終値の平均）を終値で割り込んだら、翌営業日にベアETFを買う」</b>という単純なルールで検証した（結果を知ったうえでの事後検証である点には注意）。</p>
+<figure class="w85">
+  <img src="figs/fig7_bear_story.svg" alt="25日線割れでベアETFを買った場合の損益">
+  <figcaption><b>図7</b>　25日移動平均線割れを合図にベアETFを買った場合。日経平均は10/6の戻り高値の後、10/15に25日線を割り込んだ。SOXも10/6の高値の後、10/12に割り込んだ。</figcaption>
+</figure>
+<div class="steps">
+  <div class="step"><div class="n">① 高値をつける（10/6）</div>日経平均70,684円、SOX13,218。ここまでは上昇相場。</div>
+  <div class="step r"><div class="n">② 25日線割れ＝合図</div>日経平均は10/15、SOXは10/12に終値で25日線を割り込む。「上昇トレンドの終わり」のサイン。</div>
+  <div class="step g"><div class="n">③ ベアETFを買う</div>10/16に1357を2,719円で、10/13にSOXSを37.42ドルで購入。</div>
+  <div class="step g"><div class="n">④ 11/20時点の成果</div>1357は3,528円で<b>+29.8%</b>（日経平均は−13.6%）。SOXSは83.16ドルで<b>+122.2%</b>（SOXは−31.1%）。</div>
+</div>
+<div class="grid2">
+  <div class="box good">
+    <div class="t">「保険」として使った場合の例（概算）</div>
+    <p style="margin:0">日経平均と同じように動く日本株を<b>300万円</b>持っていた人が、10/16に<b>1357を75万円</b>（保有額の1/4）買っていたとする。11/20までに保有株は<b>約−41万円</b>、1357は<b>約+22万円</b>。<b>損失をほぼ半分に抑えられた</b>計算になる。下げ相場でも「何もできない」わけではない。</p>
+  </div>
+  <div class="box info">
+    <div class="t">利益を残すための3つのルール</div>
+    <ol>
+      <li><b>買う合図を決める：</b>25日線割れ、高値からの−5%など、感情ではなくルールで入る。</li>
+      <li><b>売る合図も先に決める：</b>指数が25日線を回復した時、またはVIXが50を超えてピークを打った時（6章）に利益を確定する。</li>
+      <li><b>量を決める：</b>保有株の1/4〜1/2まで。ベアETFに全財産を入れるのは「逆張りの博打」。</li>
+    </ol>
+  </div>
+</div>
+
+<h3>4-5　使う前に必ず知っておく注意点 ― 「持ちっぱなし」は目減りする</h3>
 <div class="grid2">
   <figure>
     <img src="figs/fig3_inverse_decay.svg" alt="ダブルインバースの目減り">
-    <figcaption><b>図5</b>　シミュレーション。下落トレンドでは指数の下げ以上に利益が出るが、上下を往復するだけの相場では<b>指数が元に戻ってもETFは目減りする</b>（日次リバランスの影響）。</figcaption>
+    <figcaption><b>図8</b>　シミュレーション。下落トレンドでは指数の下げ以上に利益が出るが、上下を往復するだけの相場では<b>指数が元に戻ってもETFは目減りする</b>（日次リバランスの影響）。</figcaption>
   </figure>
   <div class="box info">
-    <div class="t">使う前に必ず知っておく3つの注意</div>
+    <div class="t">ベアETFの3つの注意</div>
     <ul>
-      <li><b>長く持たない：</b>毎日「前日比の−2倍」になるよう調整されるため、上下を往復する相場では目減りする（図5）。保有は<b>数日〜数週間の短期</b>に限る。</li>
+      <li><b>長く持たない：</b>毎日「前日比の−2倍」になるよう調整されるため、上下を往復する相場では目減りする（図8）。保有は<b>数日〜数週間の短期</b>に限る。</li>
       <li><b>上がれば2倍・3倍で損：</b>相場が反発すると、上昇率の2倍（3倍）の速さで値下がりする。損切りラインを先に決めておく。</li>
-      <li><b>ヘッジの量：</b>保有株の評価額の<b>1/4〜1/2程度</b>を目安にする（−2倍なので、半分の金額で全体をほぼ相殺できる）。全額を注ぎ込むのは「逆張りの博打」になる。</li>
+      <li><b>ヘッジの量：</b>保有株の評価額の<b>1/4〜1/2程度</b>を目安にする（−2倍なので、半分の金額で全体をほぼ相殺できる）。</li>
     </ul>
   </div>
 </div>
 
+<!-- ===================== 5 ===================== -->
 <h2><span class="no">5</span>下落で儲けているのは誰か ― 空売りの仕組みと危険性</h2>
 <p>相場が急落した日、大きく儲けているのは<b>高値で「空売り」をして、安値で「買い戻す」人たち</b>だ。空売りとは、<b>持っていない株を証券会社から借りて先に売り、後で買い戻して返す</b>取引のことで、<b>信用取引</b>の口座が必要になる。</p>
 <div class="grid2">
-<figure >
-  <img src="figs/diag2_short_selling.svg" alt="空売りの仕組みと損失の青天井">
-  <figcaption><b>図6</b>　空売りの流れ（上）と、思惑が外れたときの損失（下）。株価に上限はないので、空売りの損失にも上限がない。</figcaption>
-</figure>
-<div><h3>買いと空売りのリスクの違い</h3>
+  <figure>
+    <img src="figs/diag2_short_selling.svg" alt="空売りの仕組みと損失の青天井">
+    <figcaption><b>図9</b>　空売りの流れ（上）と、思惑が外れたときの損失（下）。株価に上限はないので、空売りの損失にも上限がない。</figcaption>
+  </figure>
+  <div>
+    <h3>買いと空売りのリスクの違い</h3>
     <p><b>現物の買い</b>：1,000円で買った株が0円になっても、損失は1,000円まで（−100%が上限）。<br>
     <b>空売り</b>：1,000円で売った株が3,000円になれば損失は2,000円、10,000円になれば9,000円。<span class="em">株価に上限がないので、損失も青天井</span>である。さらに、急落の後には売り方が慌てて買い戻すことで株価が急騰する<b>「踏み上げ（ショートスクイーズ）」</b>が起きやすく、まさに今のような局面が一番危ない。</p>
   </div>
 </div>
-<div class="box warn">
-    <div class="t">⚠ 櫻庭からの警鐘：新人は信用取引に手を出さないこと</div>
-    <ul>
-      <li>信用取引は担保の<b>約3.3倍</b>まで取引できる。損失も3.3倍の速さで膨らむ。</li>
-      <li>損失で担保が足りなくなると<b>追証（追加の保証金）</b>を求められ、期限までに払えなければ<b>強制的に決済</b>される。<b>入金した額を超える借金が残る</b>こともある。</li>
-      <li>貸株料・金利・逆日歩（株の借り賃の上乗せ）などのコストが毎日かかる。</li>
-      <li><b>下落に備えたいなら、現物で買えるインバースETFを少額で。</b>損失は投資額までに限られる。まずはここから経験を積む。</li>
-    </ul>
-  </div>
 
-<h2><span class="no">6</span>底はいつか ― 節目のカレンダーとVIXという「温度計」</h2>
-<figure class="w88">
-  <img src="figs/diag4_timeline.svg" alt="年末までの節目カレンダー">
-  <figcaption><b>図7</b>　年末までの節目。大きなイベントの前後で「反発→再下落」を繰り返しながら底を探る展開を想定。</figcaption>
+<!-- ===================== 6 ===================== -->
+<h2><span class="no">6</span>信用買い残が下げを深くする ― 需給のメカニズム</h2>
+<p>信用取引には空売り（信用売り）だけでなく、<b>お金を借りて株を買う「信用買い」</b>もある。担保の約3.3倍まで買えるが、借りたお金で買った株は<b>いずれ売って返さなければならない</b>。証券取引所のルールで決まる<b>制度信用取引では、返済期限は最長6か月</b>である<sup>[11]</sup>。まだ返済されていない信用買いの残高を<b>「信用買い残」</b>と呼ぶ。</p>
+
+<h3>6-1　キオクシアで起きていること ― 株価が8割下がっても買い残は増え続ける</h3>
+<div class="grid2">
+  <figure>
+    <img src="figs/fig9_kioxia_margin.svg" alt="キオクシアの信用買い残と株価">
+    <figcaption><b>図10</b>　キオクシア（285A）の信用買い残（棒、万株）と株価（線）。9/29の1対3の株式分割を調整済み。株価が高値から約8割下がる間に、買い残は約1.5倍に増えた。</figcaption>
+  </figure>
+  <div>
+    <p>人気半導体株のキオクシアは、株価が<b>6/22の高値36,233円から11/20の7,307円へ約80%下落</b>した（分割調整後）。ところが信用買い残は<b>6/19の3,221万株から11/13の4,996万株へ約55%増え</b>、この期間で最も多い水準にある<sup>[12]</sup>。日経新聞によると、信用で買った人の<b>含み損率は26%</b>に達している<sup>[13]</sup>。</p>
+    <p>下がるたびに「安くなったから」と<b>買い増し（ナンピン）</b>している人が多いことを示している。同じ傾向は<b>ソフトバンクグループ</b>（買い残3,285万株→4,211万株、株価は半値以下）にも見られる。東京エレクトロンやレーザーテックも高値の後に買い残が膨らみ、ここにきてようやく減り始めた<sup>[12]</sup>。</p>
+  </div>
+</div>
+
+<h3>6-2　なぜ信用買い残が多いと下げが深くなるのか</h3>
+<p>信用買い残は、言い換えれば<b>「近いうちに必ず出てくる売り注文」の予約</b>である。これが需給を悪くする仕組みは次のとおりだ。</p>
+<div class="chain">
+  <span>株価が下がる</span><i>→</i><span>信用買いの含み損が拡大</span><i>→</i><span>担保が不足し<b>追証</b>が発生</span><i>→</i><span class="r">払えない人が投げ売り・強制決済</span><i>→</i><span>さらに株価が下がる</span><i>→</i><span>次の人の追証…（連鎖）</span>
+</div>
+<ul style="margin:0 0 5px; padding-left:1.3em">
+  <li><b>戻り売りの壁：</b>少し反発しても、高値で買った人が「買値に戻ったら売りたい」と待ち構えているため、上値が重くなる（「しこり」とも呼ぶ）。</li>
+  <li><b>期日売り：</b>6か月の返済期限が近づくと、損をしていても売らざるを得ない。</li>
+  <li><b>連鎖：</b>追証による投げ売りが次の追証を呼ぶため、下げが一気に加速する。11/6〜11/20の急落はこの典型だ。</li>
+</ul>
+<p>市場全体でも、二市場の信用買い残は<b>2026年6月26日に7兆167億円と、統計開始以来初めて7兆円を超えた</b><sup>[14]</sup>。その後、10月から減り始め、<b>11/13時点で5兆7,682億円と5週連続で減少</b>している。信用で買った人の評価損益率（含み損の割合）は11/6に<b>−21.08%</b>まで悪化し、11/13は−15.49%だった<sup>[15]</sup>。経験則では<b>−20%前後が「投げ売りの最終局面＝底値圏」の目安</b>とされる（必ず反転するわけではない）。</p>
+
+<h3>6-3　過去の事例と同じ流れか</h3>
+<table>
+  <thead><tr><th style="width:17%">局面</th><th style="width:38%">何が起きたか</th><th style="width:22%">信用買い残の動き</th><th>底までの期間</th></tr></thead>
+  <tbody>
+    <tr><td><b>2000年 ITバブル崩壊</b></td><td>ネット・通信株が急騰後に崩壊。光通信は20日連続ストップ安。日経平均は2000/4/12の20,833円から2001/9に9,504円へ</td><td>米国の信用買い（NYSE証拠金債務）はナスダックの天井と同じ2000年3月がピーク、2002年までに半分以下へ<sup>[16]</sup></td><td>約1年半（日経平均）。<b>業績の裏付けがない上昇の後は長い</b></td></tr>
+    <tr><td><b>2006年 ライブドア・ショック後</b></td><td>日経平均は2006/4/7の17,563円が天井、6/13に14,219円</td><td><b>天井の7週間後（5/26）に5兆6,977億円の高水準</b>まで買い残が増え続けた<sup>[17]</sup></td><td>約2か月。<b>買い残が減り始めてから底</b></td></tr>
+    <tr><td><b>2024年8月 円キャリー巻き戻し</b></td><td>日経平均は7/11の42,224円から8/5の31,458円へ急落</td><td>1週間で9,086億円減と過去最大の減少。追証による投げ売り。評価損益率は−14.16%<sup>[18]</sup></td><td>約1か月。<b>投げ売りが一気に出て、すぐ底</b></td></tr>
+    <tr><td><b>2026年 今回</b></td><td>6/25の最高値から−22%。人気半導体株は高値から半値〜8割安</td><td>6/26に過去最高の7兆167億円。<b>個別の人気株では下げても株数が増加</b></td><td>櫻庭の読み：<b>6か月後の12月末</b></td></tr>
+  </tbody>
+</table>
+<p>今回は<b>「高値の後も信用買い残が増え続ける」</b>という点で2006年型、<b>「AI・半導体という期待先行のテーマ株に資金が集中した」</b>という点で2000年のITバブルに似ている。2000年との違いは、エヌビディアをはじめ<b>実際の売上・利益が伴っている</b>こと。そのため、2000年のような1年半の下げではなく、<b>信用の整理が終われば反転できる</b>と見る。</p>
+
+<h3>6-4　櫻庭の読み：6か月の返済期限が来る12月が「需給の底」</h3>
+<figure class="w75">
+  <img src="figs/fig10_margin_cycle.svg" alt="信用買い残と返済期限の概念図">
+  <figcaption><b>図11</b>　概念図。高値（バイイング・クライマックス）の後も買い増しで信用買い残が積み上がり、6か月の返済期限が近づくと投げ売りが出尽くして需給が改善する。</figcaption>
 </figure>
-<p><b>ズバリ、今回の下げは米国の感謝祭（11/26）・ブラックフライデー（11/27）、FOMC（12/9）、クリスマス（12/25）といった節目まで続く可能性がある</b>と見ている。ブラックフライデーは年末商戦の売れ行きで<b>米国の消費の強さ</b>を確かめる場。FOMCは<b>利上げか据え置き（利下げ）か</b>の分かれ目で、市場は25bp（0.25%）の利上げをほぼ織り込んでいる。0.5%の大幅利上げを主張する理事もいる<sup>[7][8]</sup>。仮に「利上げ見送り」や「今回の利上げで打ち止め」といったメッセージが出れば、反転のきっかけになりうる。逆に大幅利上げなら下げは年末まで長引く。</p>
-<div class="grid2" style="grid-template-columns:1.5fr 1fr">
+<div class="verdict">
+  <div class="t">櫻庭の読み：年末が反転のタイミング</div>
+  <p style="margin:0">信用買い残が過去最高を記録し、日経平均も最高値をつけた<b>2026年6月下旬がバイイング・クライマックス（買いの熱狂のピーク）</b>だったと考える。このとき制度信用で買われた株は、<b>6か月後の12月下旬に返済期限</b>を迎える。期限までに売り（投げ）が出て、耐えきれない人が相場から退場すれば、<b>「将来の売り」が消えて需給が改善する</b>。<span class="big">感謝祭・FOMC・信用期日・クリスマスを通過する年末が反転のタイミング</span>と櫻庭は読んでいる。</p>
+  <p style="margin:4px 0 0; font-size:8pt; color:var(--gray)">※注意：キオクシアの信用買いの約3分の2は「一般信用」（返済期限を証券会社が決める。無期限のものもある）で、6か月ルールがそのまま当てはまるのは制度信用の分に限られる。期日はあくまで需給の目安の一つである。</p>
+</div>
+<div class="box warn">
+  <div class="t">⚠ 櫻庭からの警鐘：信用取引には安易に手を出さないこと</div>
+  <ul>
+    <li>信用取引は担保の<b>約3.3倍</b>まで取引できる。損失も3.3倍の速さで膨らむ。</li>
+    <li>損失で担保が足りなくなると<b>追証（追加の保証金）</b>を求められ、期限までに払えなければ<b>強制的に決済</b>される。<b>入金した額を超える借金が残る</b>こともある。</li>
+    <li>今回のキオクシアのように、<b>ナンピン買いを信用で重ねると、下げ相場で真っ先に退場させられる</b>側になる。</li>
+    <li>空売りは<b>損失が青天井</b>。貸株料・金利・逆日歩（株の借り賃の上乗せ）などのコストも毎日かかる。</li>
+    <li><b>下落に備えたいなら、現物で買えるベアETFを少額で。</b>損失は投資額までに限られる。仕組みとリスクを十分に理解するまで、信用取引は使わない。</li>
+  </ul>
+</div>
+
+<!-- ===================== 7 ===================== -->
+<h2><span class="no">7</span>底はいつか ― 節目のカレンダーとVIXという「温度計」</h2>
+<figure class="w85">
+  <img src="figs/diag4_timeline.svg" alt="年末までの節目カレンダー">
+  <figcaption><b>図12</b>　年末までの節目。大きなイベントの前後で「反発→再下落」を繰り返しながら底を探る展開を想定。これに加えて、6月の高値から6か月後の信用期日が12月下旬に来る。</figcaption>
+</figure>
+<p><b>ズバリ、今回の下げは米国の感謝祭（11/26）・ブラックフライデー（11/27）、FOMC（12/9）、クリスマス（12/25）といった節目まで続く可能性がある</b>と見ている。ブラックフライデーは年末商戦の売れ行きで<b>米国の消費の強さ</b>を確かめる場。FOMCは<b>利上げか据え置き（利下げ）か</b>の分かれ目で、市場は25bp（0.25%）の利上げをほぼ織り込んでいる。0.5%の大幅利上げを主張する理事もいる<sup>[7][8]</sup>。仮に「利上げ見送り」や「今回の利上げで打ち止め」といったメッセージが出れば、反転のきっかけになりうる。逆に大幅利上げなら下げは長引く。そしてその後に、<b>6章で見た信用の返済期限（12月下旬）</b>が控えている。</p>
+<div class="grid2" style="grid-template-columns:1.4fr 1fr">
   <div>
     <h3>VIX（恐怖指数）とは</h3>
     <p>VIXは、S&amp;P500のオプション価格から計算される<b>「今後30日間に市場がどれだけ揺れると予想されているか」</b>の指標で、恐怖指数とも呼ばれる。平常時は<b>10〜20</b>。株価が急落して投資家が保険（プットオプション）を買いに走るほど上がる。目安として<b>VIX÷16が「1日に動くと予想される幅（%）」</b>で、今の36なら1日±2.2%、50なら±3.1%の揺れを市場が見込んでいる。</p>
-    <p>VIXが50を超えるのは、多くの投資家が<b>投げ売り（セリングクライマックス）</b>している時だ。2020年3月はVIXのピーク（3/16）から1週間後に株価が底を打ち、2025年4月はVIXのピーク（4/8）と株価の底が同じ日だった<sup>[9]</sup>。</p>
+    <p>VIXが50を超えるのは、多くの投資家が<b>投げ売り（セリングクライマックス）</b>している時だ。2020年3月はVIXのピーク（3/16）から1週間後に株価が底を打ち、2025年4月はVIXのピーク（4/8）と株価の底が同じ日だった<sup>[9]</sup>。信用の投げ売りとVIXの急上昇は、同じ現象を別の角度から見たものでもある。</p>
   </div>
   <figure>
     <img src="figs/fig4_vix_history.svg" alt="過去のVIXのピークと今回">
-    <figcaption><b>図8</b>　過去の急落時のVIXのピーク。今回の35.89は過去の危機に比べるとまだ途中段階。</figcaption>
+    <figcaption><b>図13</b>　過去の急落時のVIXのピーク。今回の35.89は過去の危機に比べるとまだ途中段階。</figcaption>
   </figure>
 </div>
 <div class="box good">
   <div class="t">反転の狙い目：「VIX 50超え → ピークアウト」を合図に分割で買う</div>
   <ul>
     <li><b>VIXが50を超えたら準備</b>する。ただし、超えた瞬間に飛びつかない。2008年はVIXのピーク（11月）から株価の底（翌年3月）まで4か月かかった。</li>
-    <li>VIXが<b>前日の高値から下がり始めた日</b>（長い上ヒゲが出た日など）を起点に、<b>3〜4回に分けて</b>買い下がる。</li>
-    <li>買いを始めると同時に、持っているインバースETFは<b>利益確定</b>する（上昇局面では2倍・3倍で損をするため）。</li>
+    <li>VIXが<b>前日の高値から下がり始めた日</b>（長い上ヒゲが出た日など）を起点に、<b>3〜4回に分けて</b>買い下がる。信用評価損益率が−20%前後まで悪化していれば、なお確度が上がる。</li>
+    <li>買いを始めると同時に、持っているベアETFは<b>利益確定</b>する（上昇局面では2倍・3倍で損をするため）。</li>
   </ul>
 </div>
 
-<h2><span class="no">7</span>まとめ ― 新人のための「急落相場の行動指針」</h2>
+<!-- ===================== 8 ===================== -->
+<h2><span class="no">8</span>まとめ ― 急落相場の行動指針</h2>
 <table>
-  <thead><tr><th style="width:22%">局面</th><th style="width:30%">サイン</th><th>やること</th></tr></thead>
+  <thead><tr><th style="width:20%">局面</th><th style="width:32%">サイン</th><th>やること</th></tr></thead>
   <tbody>
-    <tr><td><b>いま（下げの途中）</b></td><td>VIX 30〜40、SOXが安値を更新</td><td>慌てて買わない。保有株が多い人は、<b>1357／1360／2249を保有額の1/4〜1/2</b>だけ買ってヘッジする。SOXSは値動きが激しいので少額に限る</td></tr>
-    <tr><td><b>節目（11/27・12/9）</b></td><td>ブラックフライデーの売上、FOMCの結果と声明の内容</td><td>イベントの前にヘッジの量を見直す。結果を確認してから動く</td></tr>
-    <tr><td><b>投げ売り</b></td><td><b>VIXが50を超える</b>、日経平均54,000〜50,500円、S&amp;P500 6,650〜6,250</td><td>買う銘柄の候補リストを用意しておく。インバースETFの利益確定を始める</td></tr>
-    <tr><td><b>反転</b></td><td>VIXのピークアウト、SOXが前の安値を割らずに反発</td><td>3〜4回に分けて買い出動する。<span class="em">信用取引・空売りは使わない</span></td></tr>
+    <tr><td><b>下げ始め</b></td><td>指数が25日移動平均線を終値で割り込む</td><td>保有株の<b>1/4〜1/2</b>を目安に、1357／1360／2249でヘッジ。半導体株を多く持つならSOXSを少額で</td></tr>
+    <tr><td><b>いま（下げの途中）</b></td><td>VIX 30〜40、SOXが安値を更新、人気株の信用買い残が増加</td><td>慌てて買わない。信用でのナンピンは厳禁。ベアETFは利益確定のルールを確認</td></tr>
+    <tr><td><b>節目（11/27・12/9）</b></td><td>ブラックフライデーの売上、FOMCの結果と声明</td><td>イベントの前にヘッジの量を見直す。結果を確認してから動く</td></tr>
+    <tr><td><b>投げ売り</b></td><td><b>VIXが50を超える</b>、信用評価損益率−20%前後、信用買い残の急減、日経平均54,000〜50,500円、S&amp;P500 6,650〜6,250</td><td>買う銘柄の候補リストを用意しておく。ベアETFの利益確定を始める</td></tr>
+    <tr><td><b>反転（年末）</b></td><td>VIXのピークアウト、12月下旬の信用期日通過、SOXが前の安値を割らずに反発</td><td>3〜4回に分けて買い出動する。<span class="em">信用取引・空売りは使わない</span></td></tr>
   </tbody>
 </table>
-<p>下げ相場は「何もできない時間」ではない。<b>守る手段（インバースETF）を知り、反転の合図（VIX）を待ち、次の上昇相場に備えて資金を残しておく時間</b>である。一番やってはいけないのは、焦って信用取引で取り返そうとすること。<b>相場から退場しなければ、チャンスは必ずまた来る。</b></p>
+<p>下げ相場は「何もできない時間」ではない。<b>ブルとベアの両方の道具を知り、守る手段（ベアETF）を持ち、需給（信用買い残）と温度計（VIX）で反転の合図を待ち、次の上昇相場に備えて資金を残しておく時間</b>である。一番やってはいけないのは、焦って信用取引で取り返そうとすること。<b>相場から退場しなければ、チャンスは必ずまた来る。</b></p>
 
 <div class="refs">
-  <b>出典</b>（2026年11月20〜21日時点の報道・公表資料）
+  <b>出典</b>（2026年11月20〜21日時点の報道・公表資料。価格はYahoo! Financeの終値データ〔分割・配当調整済み〕から作成）
   <ol>
     <li>OANDA証券「日経平均が1日で3,008円安」(11/20)、日テレNEWS</li>
     <li>株探「日経平均 大引け 3日ぶり急反落」(11/20)、東京報道新聞</li>
@@ -267,10 +393,18 @@ td.c{ text-align:center; white-space:nowrap; font-weight:bold; }
     <li>The Register "AI's trillion dollar deal wheel"(2025/11/4)</li>
     <li>CNBC（ウォラー理事発言 11/18）、rateprobability.com（11/20）</li>
     <li>外為どっとコム 来週の日経平均見通し(11/20)、note やまのらぼ</li>
-    <li>Cboe VIX（11/20終値35.89、過去ピークはCboe公表値）</li>
+    <li>Cboe VIX（11/20終値35.89、過去のピークはCboe公表値）</li>
     <li>大和AM 2249商品ページ、JPX レバレッジ・インバースETF資料</li>
+    <li>日本取引所グループ「制度信用取引と一般信用取引の比較」</li>
+    <li>Yahoo!ファイナンス 信用残時系列、IRBANK 信用取引情報（285A・9984・8035・6920）</li>
+    <li>日本経済新聞（2026/11/5、11/10 キオクシアの信用買い残・含み損率）</li>
+    <li>日本経済新聞（2026/6/30 信用買い残 初の7兆円台）</li>
+    <li>JPX 信用取引現在高（11/13申込分）、日本経済新聞（QUICK信用評価損益率 11/6・11/13）</li>
+    <li>Wolf Street／Investing.com（NYSE証拠金債務 2000年）、INTERNET Watch（光通信 2000年）</li>
+    <li>日本経済新聞（2026/2 信用買い残 2006年5月以来の高水準）</li>
+    <li>日本経済新聞（2024/8 信用買い残の過去最大の減少、評価損益率）</li>
   </ol>
-  <div class="disclaimer">※勉強会用資料であり売買を勧めるものではない。下値目途・節目の想定は櫻庭の見解で将来を保証しない。レバレッジ型・インバース型ETFは長期保有に向かず元本割れのおそれがある。投資は目論見書を確認のうえ自己責任で。</div>
+  <div class="disclaimer">※勉強会用資料であり売買を勧めるものではない。下値目途・節目・反転時期の想定は櫻庭の見解で、将来を保証しない。4-4の検証は結果を知ったうえでの事後検証であり、同じ結果を保証するものではない。レバレッジ型・インバース型ETFは長期保有に向かず元本割れのおそれがある。投資は目論見書を確認のうえ自己責任で。</div>
 </div>
 
 </div>
