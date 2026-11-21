@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="268.193273pt" height="210.07912pt" viewBox="0 0 268.193273 210.07912" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 210.07912 
+L 268.193273 210.07912 
+L 268.193273 -0 
+L 0 -0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 134.38 179.19912 
+L 262.72 179.19912 
+L 262.72 23.96712 
+L 134.38 23.96712 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 167.251727 179.19912 
+L 167.251727 23.96712 
+" clip-path="url(#pbe710ed15c)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m681b1e1626" d="M 0 0 
+L 0 3.5 
+" style="stroke: #444444; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m681b1e1626" x="167.251727" y="179.19912" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="167.251727" y="193.678124" transform="rotate(-0 167.251727 193.678124)">-30</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 202.683734 179.19912 
+L 202.683734 23.96712 
+" clip-path="url(#pbe710ed15c)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m681b1e1626" x="202.683734" y="179.19912" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="202.683734" y="193.678124" transform="rotate(-0 202.683734 193.678124)">0</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 238.115742 179.19912 
+L 238.115742 23.96712 
+" clip-path="url(#pbe710ed15c)" style="fill: none; stroke: #dde2ea; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m681b1e1626" x="238.115742" y="179.19912" style="fill: #444444; stroke: #444444; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="238.115742" y="193.678124" transform="rotate(-0 238.115742 193.678124)">30</text>
+     </g>
+    </g>
+    <g id="text_4">
+     <text style="font-size: 8.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: middle; fill: #444444" x="198.55" y="206.178124" transform="rotate(-0 198.55 206.178124)">11/20の騰落率（%）</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7"/>
+     <g id="text_5">
+      <text style="font-weight: 700; font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="39.314127" transform="rotate(-0 130.88 39.314127)">日経平均</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8"/>
+     <g id="text_6">
+      <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="53.773143" transform="rotate(-0 130.88 53.773143)">1570 日経レバ（ブル2倍）</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9"/>
+     <g id="text_7">
+      <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="68.232159" transform="rotate(-0 130.88 68.232159)">1357 ダブルインバース（ベア2倍）</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10"/>
+     <g id="text_8">
+      <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="82.691176" transform="rotate(-0 130.88 82.691176)">1360 日経平均ベア2倍</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11"/>
+     <g id="text_9">
+      <text style="font-weight: 700; font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="105.102651" transform="rotate(-0 130.88 105.102651)">S&amp;P500</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_12"/>
+     <g id="text_10">
+      <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="119.561668" transform="rotate(-0 130.88 119.561668)">2249 S&amp;P500ベア2倍</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_13"/>
+     <g id="text_11">
+      <text style="font-weight: 700; font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="141.973143" transform="rotate(-0 130.88 141.973143)">SOX指数</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_14"/>
+     <g id="text_12">
+      <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="156.432159" transform="rotate(-0 130.88 156.432159)">SOXL 半導体ブル3倍</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_15"/>
+     <g id="text_13">
+      <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #444444" x="130.88" y="170.891176" transform="rotate(-0 130.88 170.891176)">SOXS 半導体ベア3倍</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 202.683734 31.02312 
+L 196.708161 31.02312 
+L 196.708161 40.566071 
+L 202.683734 40.566071 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #8a94a6"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 202.683734 45.482136 
+L 190.809108 45.482136 
+L 190.809108 55.025087 
+L 202.683734 55.025087 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #1f3a5f"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 202.683734 59.941153 
+L 214.384023 59.941153 
+L 214.384023 69.484104 
+L 202.683734 69.484104 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #2e8b57"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 202.683734 74.400169 
+L 214.554511 74.400169 
+L 214.554511 83.94312 
+L 202.683734 83.94312 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #2e8b57"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 202.683734 96.811645 
+L 198.314869 96.811645 
+L 198.314869 106.354595 
+L 202.683734 106.354595 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #8a94a6"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 202.683734 111.270661 
+L 210.604104 111.270661 
+L 210.604104 120.813612 
+L 202.683734 120.813612 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #2e8b57"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 202.683734 133.682136 
+L 190.005947 133.682136 
+L 190.005947 143.225087 
+L 202.683734 143.225087 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #8a94a6"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 202.683734 148.141153 
+L 165.08774 148.141153 
+L 165.08774 157.684104 
+L 202.683734 157.684104 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #1f3a5f"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 202.683734 162.600169 
+L 240.132206 162.600169 
+L 240.132206 172.14312 
+L 202.683734 172.14312 
+z
+" clip-path="url(#pbe710ed15c)" style="fill: #2e8b57"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 134.38 179.19912 
+L 262.72 179.19912 
+" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="195.527094" y="38.833658" transform="rotate(-0 195.527094 38.833658)">-5.1%</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="189.628041" y="53.292674" transform="rotate(-0 189.628041 53.292674)">-10.1%</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="215.56509" y="67.751691" transform="rotate(-0 215.56509 67.751691)">+9.9%</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="215.735578" y="82.210707" transform="rotate(-0 215.735578 82.210707)">+10.1%</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="197.133802" y="104.622182" transform="rotate(-0 197.133802 104.622182)">-3.7%</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="211.785171" y="119.081199" transform="rotate(-0 211.785171 119.081199)">+6.7%</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="188.82488" y="141.492674" transform="rotate(-0 188.82488 141.492674)">-10.7%</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: end; fill: #222222" x="163.906673" y="155.951691" transform="rotate(-0 163.906673 155.951691)">-31.8%</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 8px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="241.313273" y="170.410707" transform="rotate(-0 241.313273 170.410707)">+31.7%</text>
+   </g>
+   <g id="line2d_16">
+    <path d="M 202.683734 179.19912 
+L 202.683734 23.96712 
+" clip-path="url(#pbe710ed15c)" style="fill: none; stroke: #666666; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+   <g id="legend_1">
+    <g id="patch_13">
+     <path d="M 45.5308 12.479121 
+L 53.0308 12.479121 
+L 53.0308 7.229121 
+L 45.5308 7.229121 
+z
+" style="fill: #8a94a6; stroke: #8a94a6; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_23">
+     <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="56.0308" y="12.479121" transform="rotate(-0 56.0308 12.479121)">指数</text>
+    </g>
+    <g id="patch_14">
+     <path d="M 77.0308 12.479121 
+L 84.5308 12.479121 
+L 84.5308 7.229121 
+L 77.0308 7.229121 
+z
+" style="fill: #1f3a5f; stroke: #1f3a5f; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_24">
+     <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="87.5308" y="12.479121" transform="rotate(-0 87.5308 12.479121)">ブル型（レバレッジ）</text>
+    </g>
+    <g id="patch_15">
+     <path d="M 168.5308 12.479121 
+L 176.0308 12.479121 
+L 176.0308 7.229121 
+L 168.5308 7.229121 
+z
+" style="fill: #2e8b57; stroke: #2e8b57; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_25">
+     <text style="font-size: 7.5px; font-family: 'Meiryo UI', 'IPAGothic'; text-anchor: start; fill: #222222" x="179.0308" y="12.479121" transform="rotate(-0 179.0308 12.479121)">ベア型（インバース）</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pbe710ed15c">
+   <rect x="134.38" y="23.96712" width="128.34" height="155.232"/>
+  </clipPath>
+ </defs>
+</svg>
