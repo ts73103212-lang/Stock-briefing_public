@@ -38,11 +38,14 @@ ArtifactData で `<WEEKEND_PICKER_URL>` を読む（今日 = JST の実行日）
 ## フェーズ2: 深掘り（並列）
 
 - plan.json の `assignee` に入っている担当をすべて並列起動。全員に「**選ばれた見どころ（`highlights`）のうち自分の担当分野のものの裏取りと肉付けから始めること。`extra` も調べること**」と伝える。出力は `deep/paid_market.md`（相場分析）、`deep/paid_jp.md`（日本株）、`deep/paid_us.md`（米国株）、`deep/paid_<コード>.md`（個別株分析）。
+- **同じメッセージで** `note-tech`（モード: 会社と技術の解説）を起動し、記事で取り上げる銘柄（日本株・米国株の深掘りなら主役の1社を厚く、ほかは関連銘柄）の会社と技術の解説を書かせる → `deep/tech_paid.md`（編集ルール 4a。図にできる仕組みがあれば型Fの中身の案も）。
+- **米国株の深掘り**（`genre: "米国株の深掘り"`）は、`note-us-equity` に `deep/paid_us.md` として株価（Yahoo!ファイナンスの時系列ページ、`{ティッカー}`）・業績（報道で出典を確認できたもの）・同業比較・日本の関連銘柄への波及を任せる。SEC の資料はこの環境では取れない（編集ルール 2a）。
 
 ## フェーズ3: 執筆 → 図
 
 - `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える）→ `note-viz`（図5〜6枚。うちグラフ4枚以上。`figure_requests` に型H があれば、先に `note-quant`（モード: レーダーの点数化）で `quant/radar_a{id}.json` を作る）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
 - 図と**同じメッセージで** `note-quant`（モード: 統計チェック）を起動し、下書きの数字の使い方を確かめさせる → `$WORK/review/quant.md`（失敗・時間切れならファイルなしで先へ進む）。
+- 同じく図と**同じメッセージで** `note-tech`（モード: 技術チェック）を起動し、技術の説明と型Fの図解の中身を確かめさせる → `$WORK/review/tech.md`（失敗・時間切れならファイルなしで先へ進む）。
 
 ## フェーズ4: レビュー（差戻し2回まで）
 

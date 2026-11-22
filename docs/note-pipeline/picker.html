@@ -91,7 +91,7 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
 <div class="wrap">
   <header>
     <h1>noteネタ選び</h1>
-    <p class="sub">平日12:10ごろに候補10本、遅くとも12:30に各候補の「見どころ」（記事に入れると面白い要素）が届きます。16:15までに「通常記事」を1〜3本、「長文（有料）記事」を1本まで選んで確定すると、その分だけ書きます。選んだ候補の下で、入れたい見どころにチェックし、「これも入れて」を書けます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
+    <p class="sub">平日12:10ごろに候補7本、遅くとも12:30に各候補の「見どころ」（記事に入れると面白い要素）が届きます（見どころが5点に届かない候補は外れ、5〜7本が残ります）。16:15までに「通常記事」を1〜3本、「長文（有料）記事」を1本まで選んで確定すると、その分だけ書きます。選んだ候補の下で、入れたい見どころにチェックし、「これも入れて」を書けます。自由記述の枠も1つあります。選ばなければその日はお休みです。</p>
     <div class="days" id="days" aria-label="日付"></div>
     <div class="status" id="status"></div>
   </header>
@@ -274,12 +274,12 @@ h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
     renderDays(); renderStatus();
     const main = $("main"); main.textContent = "";
     if (!current){
-      main.appendChild(el("div","empty","まだ候補がありません。平日の12:10ごろに、その日の候補10本がここに届きます。"));
+      main.appendChild(el("div","empty","まだ候補がありません。平日の12:10ごろに、その日の候補（5〜7本）がここに届きます。"));
       $("bar").hidden = true; return;
     }
     const cands = Array.isArray(current.candidates) ? current.candidates : [];
     const topics = cands.filter(c => c.kind !== "stock"), stocks = cands.filter(c => c.kind === "stock");
-    if (topics.length){ main.appendChild(el("h2",null,`話題・用語・トリッキー（${topics.length}）`)); const g = el("div","grid"); topics.forEach(c => g.appendChild(card(c))); main.appendChild(g); }
+    if (topics.length){ main.appendChild(el("h2",null,`相場・話題・用語（${topics.length}）`)); const g = el("div","grid"); topics.forEach(c => g.appendChild(card(c))); main.appendChild(g); }
     if (stocks.length){ main.appendChild(el("h2",null,`個別銘柄（${stocks.length}）`)); const g = el("div","grid"); stocks.forEach(c => g.appendChild(card(c))); main.appendChild(g); }
     main.appendChild(el("h2",null,"自由記述（1枠）")); main.appendChild(freeCard());
     const p = picks[current.date];
