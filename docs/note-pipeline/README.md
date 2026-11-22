@@ -4,7 +4,12 @@
 実装計画: `docs/superpowers/plans/2026-11-04-note-content-pipeline.md`
 
 体制（サブエージェント）: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
-- 進行役プロンプト: `daily-task-prompt.md`（平日16:15）、`weekly-paid-prompt.md`（土曜午前）
+- 進行役プロンプト: `candidates-task-prompt.md`（平日11:47、ネタ候補10本を12:10ごろ掲載 → 見どころを遅くとも12:30に書き足して通知（昼休みに選ぶ前提））、`daily-task-prompt.md`（平日16:15、選ばれた分だけ執筆）、`weekend-candidates-prompt.md`（土日8:05、有料記事のテーマ候補5本を8:35ごろ掲載 → 見どころを9:30までに書き足し）、`weekly-paid-prompt.md`（土日16:30、選ばれた1本を執筆）
+- ネタ選びページ: `picker.html`（公開先 https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir 。データベース `days/<日付>`＝候補、`picks/<日付>`＝選択、`notes/<日付>`＝12時の調査メモ。本人だけが読み書きできる）
+- 週末のネタ選びページ: `weekend-picker.html`（公開先 https://claude.ai/artifact/CFwy1xxH6MQMp5V64fHHP1 。`days`・`picks`・`notes` の構造は平日と同じ。土日とも 16:00 締切、1日1本）
+- 見どころ下調べ（`highlights-plan.md`）: 各候補に `highlights`（出典付きの見どころ。平日3〜5点、週末5〜10点）を書き足し、ユーザーがページのチェックボックスで入れるものを選び、「これも入れて」を書く。`picks` に `highlights`・`extra` として保存され、執筆チームは選ばれた見どころの裏取りと肉付けから始める
+- 見どころの視点分担（2026-11-19〜、平日）: 数字・需給（note-jp-equity）／歴史・アノマリー（note-market-analyst）／海外・マクロ（note-us-equity）／統計（note-quant）の4体が、PM の `highlight_plan` で割り当てられた項目だけを調べる。各候補に「数字＋歴史か比較＋意外か反対」をそろえ、`python -m note_pipeline.highlights --work WORK --cap 6` で検査・並べ替えして6点まで。note-quant は16:15の日次タスクで統計チェック（`review/quant.md`）も行う。
+- 平日の流れ: 11:47 候補10本（話題・用語・トリッキー4＋個別銘柄6）＋見どころ → 16:15 までにユーザーが「通常1〜3本・長文（有料）1本まで・自由記述1枠」と見どころを選ぶ → 16:15 選ばれた分だけ書く（通常は17:30まで、長文は19:30までに通知。選ばれなければお休み）
 - 役割定義: `.claude/agents/note-*.md`（PM・相場分析・日本株・米国株・個別株分析・証券アナリスト・視覚化）
 - 全員が読む編集ルール: `editorial-rules.md`
 
@@ -73,14 +78,19 @@ python3 -m venv .venv && .venv/bin/python -m pip install -r requirements-note.tx
 
 共通キー: `title`（結論を一言で）, `subtitle`, `source`, 任意 `web_search: true`（出典に「Web検索値」）, 任意 `alt`
 
+**グラフ＝A・B・E・G・H・I、文字中心の図＝C・D・F**（`charts.GRAPH_TYPES` / `charts.TEXT_TYPES`）。記事に入れる比率は `editorial-rules.md` の 8。
+
 | 型 | 用途 | キー |
 |---|---|---|
-| A | 株価（終値線）＋出来高、重要日に注釈 | `dates`(ISO), `close`, `volume`（欠損は null）, `annotations: [{date, text, pos?, y?, style?, highlight?}]`, `hlines: [{y, label?, color?, style?}]`, `ylim: [lo, hi]` |
+| A | 株価（終値線）＋出来高、重要日に注釈。指数・為替も可（出来高がすべて null か省略なら下の段を出さない） | `dates`(ISO), `close`, `volume`（欠損は null、指数・為替は省略可）, `annotations: [{date, text, pos?, y?, style?, highlight?}]`, `hlines: [{y, label?, color?, style?}]`, `ylim: [lo, hi]` |
 | B | 売上・営業利益（予想は斜線） | `periods`, `sales`, `op_income`, `forecast_from`(予想が始まる添字), 任意 `unit`, `series_labels`（例 ["売上収益","営業利益"]） |
 | C | 同業比較表（大小を色の濃さで） | `columns`, `rows: [{name, values}]`, `shade_cols`(濃淡を付ける列の添字) |
 | D | 指標カード（最大6枚） | `cards: [{label, value, sub, tone: up/down/navy}]` |
 | E | 横棒の順位（騰落率） | `labels`, `values`, `highlight`(ゴールドにする1本), 任意 `unit` |
 | F | 図解（フロー）または表 | `boxes: [{text, note?, emphasis?}]` + `arrows: [[i, j]]`、または `table: {header, rows, emphasis_col}` |
+| G | 折れ線の比較（2〜4本）。右端に最後の値のラベル、イベントの縦線 | `dates`(ISO), `series: [{label, values}]`（欠損は null、1本目が主役で太線）, 任意 `normalize: true`（起点＝100にそろえる。ラベルは起点からの騰落率）, `annotations: [{date, text}]`（2つまで）, `unit`（指数化しないときの単位）, `hlines` |
+| H | レーダーチャート（2〜3銘柄 × 5〜6項目、0〜100点） | `axes: [{label, raw?}]`（`raw` は点数の元になった実際の値。項目名の下に小さく出る）, `series: [{label, scores}]`, 任意 `note`（右下の注記） |
+| I | 縦棒（時系列・カテゴリ）。正負で緑・赤、強調1本はゴールド、値ラベル付き | `labels`, `values`（欠損は null）, `highlight`(ゴールドにする1本のラベル), 任意 `unit`（既定 "%"）, `decimals`, `signed`, `color_by_sign`（false で全部ネイビー。売上など正の値だけの推移向け）, `hlines`（平均線など） |
 
 ### 型A の追加オプション
 
@@ -89,6 +99,13 @@ python3 -m venv .venv && .venv/bin/python -m pip install -r requirements-note.tx
 - 注釈の `y`: 終値以外の点を指す（場中高値、ストップ高の値など）。
 - 注釈の `style: "note"`: 枠なしの小さな注記（点と出来高の色付けもしない）。`highlight: false` で金の点・出来高の色付けだけを止める。
 - `ylim`: 縦軸の範囲。
+- 指数・為替: `volume` を省略するか全部 null にすると、出来高の段を出さずに上の段を全面に使う。縦軸の小数桁は値幅に合わせて自動（ドル円なら小数1桁など）。
+
+### 型G・H・I の使い方
+
+- **型G（折れ線の比較）**: 銘柄・同業・日経平均、日経平均とドル円のように**単位や水準が違う系列は `normalize: true`**（起点＝100）。軸の上に「起点（日付）＝100」、右端に「名前／起点からの騰落率」が出る。指数化しないときは `unit`（例 "円"）を付けると右端の値に単位が付く。`dates` は全系列で共通（休場日のずれは null で埋める）。系列名は8字以内（例「三菱UFJ」）。長いと自動で小さくなる。
+- **型H（レーダー）**: 点数は統計担当（`.claude/agents/note-quant.md` のモード3）が出す。既定は「比べる会社群の中での順位を0〜100点」（`charts.radar_scores`）。`subtitle` に点数の出し方（例「同業8社の中の順位を0〜100点に。PERは低いほど高得点」）を必ず書く。`raw` には表示銘柄の実際の値（例「PER 12.3倍 / 18.5倍」）。
+- **型I（縦棒）**: 月ごとの推移、過去◯回のその後の騰落率、季節性（例: 過去20年の11月）など。`unit` が "%" 以外（"億円" など）のときは軸の上に「単位：億円」が出て、目盛り・値ラベルは数字だけになる。棒は12本までが読みやすい（20本まで描けるが文字が小さくなる）。
 
 ## 動作確認（設計書 §10）
 

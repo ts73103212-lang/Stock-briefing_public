@@ -1,5 +1,8 @@
 # 日次タスク 進行役プロンプト（平日 16:15 JST）
 
+> 2026-11-12 から「選んだネタだけ書く」運用。11:47 の候補出しタスク（`candidates-task-prompt.md`）がネタ選びページ `<PICKER_URL>`（https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir ）に候補10本を出し、ユーザーが 16:15 までに1〜3本を選ぶ。**このタスクは選ばれた分だけ書く。選ばれなければ何も書かない。**
+> 2026-11-16 から候補に**見どころ**（記事に入れると面白い要素、出典付き）が付き、ユーザーが入れたい見どころと「これも入れて」を選ぶ。選ばれた見どころを柱に、裏取りと肉付けから始める（一から調べ直さない）。設計: `highlights-plan.md`
+
 > 定期タスク（毎回新しいセッション）に貼る本文。`<DELIVERY_URL>` は納品ページの固定URL。
 > 体制: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
 
@@ -16,6 +19,24 @@
 - エージェントが失敗・時間切れになった記事は見送り、残りで進める。
 - 記事本文・調査メモをリポジトリに書かない・コミットしない。
 
+## フェーズ-1: 選択の確認（最初に。venv を作るより前）
+
+ArtifactData で `<PICKER_URL>` を読む（今日 = JST の実行日 `YYYY-MM-DD`）:
+
+1. `action: get`, `collection: days`, `doc_id: <今日>` — 今日の候補
+2. `action: get`, `collection: picks`, `doc_id: <今日>` — ユーザーの選択（`{"ids": ["c2", "c7"], ...}`）
+
+`picks/<今日>` の形: `{"ids": ["c2", "c7"], "long": "c4" | null, "free": {"title", "memo", "mode": "normal" | "long"} | null, "highlights": {"c2": ["h1", "h3"], ...}, "extra": {"c2": "自由記述", ...}, ...}`
+- `ids`＝通常記事にする候補（最大3本）、`long`＝長文（有料）記事にする候補（1本まで）、`free`＝ユーザーの自由記述（1枠。`mode` で通常か長文か）。
+- `highlights`＝候補ごとに、記事に入れる見どころの id（`days` の候補の `highlights[].id`）。`extra`＝候補ごとの「これも入れて」。どちらも無い・候補のキーが無いこともある（見どころが届かなかった日、古いページで選んだ日）。
+
+- `days` がない（休場日、または候補出しが失敗した日）→ **何もせず終了**（通知なし。候補出しの失敗はそのタスクが通知済み）。
+- `picks` がない、または `ids` が空・`long` が null・`free` が null のすべて → PushNotification `🐾 本日はネタの選択がなかったので、記事はお休みです` を送って**終了**（調査も執筆もしない）。
+- 選択がある → 以降のフェーズへ。フェーズ0で `$WORK/inputs/picks.json` に次の形で保存する:
+  `{"date": ..., "normal": [ids の順に候補...（free.mode が normal なら末尾に {"id": "free", "kind": "free", "title", "memo"}）], "long": 候補 または {"id": "free", "kind": "free", ...} または null, "others": [選ばれなかった候補...]}`
+  - 選ばれた候補には、`days` の候補の `highlights` のうち **`picks.highlights[候補id]` に入っている id のものだけ**を `highlights` として残し（キーが無ければ候補の見どころを全部残す。`[]` なら見どころなし）、`picks.extra[候補id]` を `extra`（文字列、無ければ ""）として付ける。`others` の候補からは `highlights` を消してよい。
+  通常は最大3本、長文は1本まで。**通常が0本で長文だけ**の日は、フェーズ1〜8を飛ばしてフェーズ9だけを行う。
+
 ## フェーズ0: 準備（16:15〜）
 
 ```bash
@@ -26,26 +47,40 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 ```
 
 - `True` なら何もせず終了（通知もしない）。
-- `mkdir -p $WORK/{inputs,research,deep,drafts,figs,review,out}`、引けJSON3つを `$WORK/inputs/` にコピー。
+- `mkdir -p $WORK/{inputs,research,deep,drafts,figs,review,out,quant}`、引けJSON3つを `$WORK/inputs/` にコピー。
 - 鮮度: `.venv/bin/python -c "import json,sys; from datetime import date; from pathlib import Path; from note_pipeline.market import check_closing_freshness as c; json.dump(c(Path('.'), date.today()), sys.stdout)" > $WORK/inputs/status.json`
 - 前回ページ: Artifact ツールで `<DELIVERY_URL>` を `action: read`。保存された HTML を `$WORK/inputs/prev.html` にコピー。
   - `.venv/bin/python -c "import sys; from datetime import date; from note_pipeline.history import parse_history, recent_codes; print('\n'.join(sorted(recent_codes(parse_history(open(sys.argv[1]).read()), date.today()))))" $WORK/inputs/prev.html > $WORK/inputs/recent_codes.txt`
 - メール（Gmail）:
   - 新天地メルマガ（`from:mailmag@mag2premium.com`）直近3〜4通（当日の東京版は夜の配信なので、16:15 時点で届いているのは前日の東京版と前夜のNY版まで）。HTML の青字・赤字の強調箇所から**話題の語句・銘柄名だけ**を `$WORK/inputs/mail.md` に箇条書き（本文の文章は書き写さない）。未着なら「未着」と書く。
   - 当日の「【今日の相場振り返り】」メールの要点を `$WORK/inputs/review_mail.md` に。
+- 12時の調査メモ: ArtifactData `get` で `<PICKER_URL>` の `notes/<今日>` を読み、`market`, `jp`, `us`, `mail` を `$WORK/research/market.md`, `jp.md`, `us.md`, `$WORK/inputs/mail_midday.md` に書き出す（前場時点のメモ。数字は深掘りで引け値に更新する）。
 - ここで1回目の時刻を記録。
 
 ## 所要時間の目安（2026-11-08 手動テストの実測）
 
 フェーズ0〜公開まで約26分（調査 2分、ネタ決定 1分、深掘り 2〜5分、執筆 2分、図 1分、レビュー 4分、差戻し対応 5分、最終精査 1分）。75分の枠には余裕があるが、差戻しは1回までを守る。
 
-## フェーズ1: 調査（並列3）
+## フェーズ1: 調査（原則スキップ）
 
-- `note-market-analyst`（モード: 調査）、`note-jp-equity`、`note-us-equity`
+- 12時の調査メモ（`research/*.md`）がそろっていれば**スキップ**する（トークン節約）。
+- メモが取れなかったときだけ、従来どおり `note-market-analyst`（モード: 調査）、`note-jp-equity`、`note-us-equity` を並列で起動する。
 
-## フェーズ2: ネタ決定
+## フェーズ2: ネタ確定（選択から plan.json を組み立てる）
 
-- `note-pm`（モード: ネタ決定）→ `$WORK/plan.json`。メルマガ未着なら `notes` に注記が入っているか確認。
+PM は呼ばない（自由記述があるときだけ呼ぶ）。`picks.json` の `normal` から機械的に `$WORK/plan.json` を作る（内容は書き換えない）:
+
+- 自由記述（`kind: "free"`）が含まれていれば、先に `note-pm`（モード: 自由記述、通常）を起動し、`$WORK/free_article.json`（記事1本分のエントリ）を作ってもらう。ユーザーの `title` と `memo` を切り口として尊重する。
+- `articles`: 選ばれた順に `id` を `"1"`, `"2"`, `"3"`（自由記述は `free_article.json` の内容をそのまま入れる）。
+  - `kind: "topic"` の候補 → `{"id", "kind": "theme", "topic": title, "angle", "facts_needed", "highlights", "extra", "assignee": "note-market-analyst"}`
+  - `kind: "stock"` の候補 → `{"id", "kind": "stock", "code", "name", "angle", "facts_needed", "highlights", "extra", "assignee": "note-stock-analyst"}`
+  - `highlights`（選ばれた見どころ）と `extra`（これも入れて）は `picks.json` のものをそのまま入れる。
+- `candidates`（選外）: 選ばれなかった候補を `{"title": title, "reason": "今回は選ばれず"}` で並べる。
+- `notes`: メルマガ未着などの注記があれば入れる。
+- `{"date": "<今日>", "mode": "daily", ...}` の形は従来の `plan.json` と同じ。
+
+深掘りの担当には「**12時の候補出しは前場時点。株価・騰落率は引けの数字で確かめ直すこと**」と必ず伝える。
+あわせて「**選ばれた見どころ（`highlights`）の裏取りと肉付けから始めること。`extra`（これも入れて）も調べること**」と伝える。見どころが無い記事（見どころが届かなかった日など）は「見どころを3点、自分で探して `deep/` の冒頭に書くこと」と伝える。
 
 ## フェーズ3: 深掘り（並列、記事ごと）
 
@@ -54,11 +89,14 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 
 ## フェーズ4: 執筆（並列、記事ごと）
 
-- `note-securities-analyst`（記事id）を記事の数だけ
+- `note-securities-analyst`（記事id）を記事の数だけ。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える。
 
 ## フェーズ5: 図（並列、記事ごと）
 
-- `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。続けて仮ビルド:
+- `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。
+- `drafts/a{id}.json` の `figure_requests` に型H（レーダー）がある記事だけは、先に `note-quant`（モード: レーダーの点数化、記事id）を起動し、`quant/radar_a{id}.json` ができてからその記事の `note-viz` を起動する（ほかの記事の図は待たずに進める）。
+- **同じメッセージで** `note-quant`（モード: 統計チェック）を1体だけ起動し、全記事の下書きの数字の使い方を確かめさせる → `$WORK/review/quant.md`（図と並行なので待ち時間は増えない。失敗・時間切れならファイルなしで先へ進む）。
+- 両方が終わったら仮ビルド:
 
 ```bash
 .venv/bin/python -m note_pipeline.assemble --work $WORK --out $WORK/day.json
@@ -68,6 +106,7 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 ## フェーズ6: レビュー
 
 - `note-pm`（モード: レビュー、n=1）。17:20 を過ぎていたら「差戻し不可（時間切れ）」と伝える。
+- `review/quant.md` があれば「統計担当の指摘も読むこと」と伝える。
 
 ## フェーズ7: 差戻し（1回まで、並列）
 
@@ -84,9 +123,19 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 - 終了コード 2 の警告が残っていても、PM が承認済みなら納品してよい（警告は通知に書かない）。
 - Artifact ツールで `$WORK/out/index.html` を `url: <DELIVERY_URL>` に publish。`files` に `img/*.jpg` をすべて（例 `{"img/a1_fig1.jpg": "$WORK/out/img/a1_fig1.jpg"}`）。`action: list, scope: files` で見た前回の画像のうち今日使わないものは `null` で消す。
 - PushNotification:
-  - 成功: `🐾 今日のnote 3本ができました：①<タイトル> ②<タイトル> ③<タイトル>`
+  - 成功: `🐾 今日のnote <選ばれた本数>本ができました：①<タイトル> ②<タイトル> …`（選ばれた本数だけ）
   - 本数不足: `🐾 今日のnote 2本ができました（1本は見送り）：①… ②…`
   - 全体失敗: `🐾 本日は失敗：<理由>`
+
+## フェーズ9: 長文（有料）記事（`picks.json` の `long` があるときだけ）
+
+通常記事の納品（フェーズ8）が終わってから始める。通常が0本の日はフェーズ0の準備の直後に始める。目安は **19:30 JST までに通知**（2時間以内）。手順は `weekly-paid-prompt.md` と同じで、違いは次の点だけ:
+
+- 作業ディレクトリ `WORK2=$WORK/paid`（`mkdir -p $WORK2/{inputs,research,deep,drafts,figs,review,out,quant}`）。`$WORK/inputs/*` と `$WORK/research/*.md` をコピーして使い回す（`digest.json` は不要）。
+- ネタ決定の代わりに `note-pm`（モード: 自由記述、長文）を起動し、`long` の候補（または自由記述）から `$WORK2/plan.json`（記事1本、`kind: "paid"`、`price`、`meta`、`facts_needed` を担当に割り振り）を作る。候補の `angle`・`facts_needed`・選ばれた `highlights`・`extra`、自由記述の `memo` を尊重する。平日の候補の見どころは3〜5点なので、7,000字に足りない分は PM が `facts_needed` に見どころ探しを足す（執筆側で見どころを足す）。
+- 深掘り（並列）→ 執筆（週末モード）→ 図5〜6枚と統計チェック（並行、`$WORK2/review/quant.md`）→ レビュー（差戻し1回まで。時間がなければ「差戻し不可」）→ 納品。
+- 納品は `--mode paid` でビルドし、Artifact で**新規に** publish（`url` なし、`icon` は "article"）。
+- PushNotification: `🐾 長文記事ができました：<タイトル> <URL>`（失敗時は `🐾 長文記事は失敗：<理由>`）。通常記事の通知（フェーズ8）とは別に送る。
 
 ## 失敗時の動き（設計書 §8）
 
@@ -97,4 +146,6 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 | メルマガ未着 | mail.md に「未着」。PM がページに注記 |
 | 銘柄材料が裏付けできない | PM が次の候補に差し替え（時間がなければ見送り） |
 | 3本そろわない | できた本数だけ納品し、通知に本数を明記 |
+| 自由記述の内容が編集ルールに反する（売買推奨など） | PM が切り口を編集ルールの範囲に直し、`notes` に注記 |
+| 長文が19:30までに終わらない | 差戻しを省いて納品。それでも無理なら「長文記事は失敗：時間切れ」 |
 | 全体失敗 | 「本日は失敗：理由」を通知 |

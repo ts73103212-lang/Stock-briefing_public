@@ -1,4 +1,7 @@
-# 週末タスク 進行役プロンプト（有料記事、土曜午前）
+# 週末タスク 進行役プロンプト（有料記事、土日 16:30 JST）
+
+> 2026-11-14 から「週末のネタ選びページで選ばれた1本だけを書く」運用。土日 8:05 の候補出しタスク（`weekend-candidates-prompt.md`）が `<WEEKEND_PICKER_URL>` に候補5本を出し、ユーザーが 16:00 までに1本（または自由記述）を選ぶ。**このタスクは選ばれた1本だけを書く。選ばれなければ何も書かない。**
+> 候補には**見どころ**（5〜10点、出典付き）が付き、ユーザーが入れたい見どころと「これも入れて」を選ぶ。選ばれた見どころを柱に、裏取りと肉付けから始める。設計: `highlights-plan.md`
 
 > 定期タスク（毎回新しいセッション）に貼る本文。`<DELIVERY_URL>` は日次の納品ページの固定URL。有料記事は毎週**新しいアーティファクト**として公開する（記事ごとにURLを分けて残す）。
 > 体制: `docs/superpowers/plans/2026-11-08-note-subagent-organization.md`
@@ -10,6 +13,16 @@
 
 共通の約束（作業ディレクトリ、サブエージェントの起動方法、要約は10行以内、本文をリポジトリに置かない）は `docs/note-pipeline/daily-task-prompt.md` の「共通の約束」と同じ。`WORK=<スクラッチパッド>/note-run/paid-<日付>`。
 
+## フェーズ-1: 選択の確認（最初に。venv を作るより前）
+
+ArtifactData で `<WEEKEND_PICKER_URL>` を読む（今日 = JST の実行日）:
+1. `action: get`, `collection: days`, `doc_id: <今日>` — 候補5本
+2. `action: get`, `collection: picks`, `doc_id: <今日>` — 選択 `{"id": "w3" | null, "free": {"title", "memo", "mode": "long"} | null, "highlights": ["h1", "h2"], "extra": "自由記述"}`（`highlights`・`extra` は無いこともある）
+
+- `days` がない → **何もせず終了**（通知なし）。
+- `picks` がない、または `id` も `free` も null → PushNotification `🐾 本日の有料記事はネタの選択がなかったのでお休みです` を送って**終了**。
+- 選択がある → `$WORK/inputs/pick.json` に選ばれた候補（または自由記述）を保存して以降へ。候補の `highlights` は **`picks.highlights` に入っている id のものだけ**を残し（`picks.highlights` が無ければ全部残す。`[]` なら見どころなし）、`picks.extra` を `extra`（無ければ ""）として付ける。`notes/<今日>` の `market`・`jp`・`mail`・`digest` も `$WORK/research/market.md`, `jp.md`, `$WORK/inputs/mail.md`, `digest.json` に書き出す（フェーズ0の同じ項目は省略できる）。
+
 ## フェーズ0: 準備
 
 - 日次プロンプトのフェーズ0のうち、コード取得・pip install・ディレクトリ作成・引けJSONのコピーを行う（休場日判定はしない）。
@@ -17,21 +30,23 @@
   `.venv/bin/python -c "import json,sys; from note_pipeline.history import parse_meta, DIGEST_META; json.dump(parse_meta(open(sys.argv[1]).read(), DIGEST_META), sys.stdout, ensure_ascii=False, indent=1)" $WORK/inputs/prev.html > $WORK/inputs/digest.json`
 - 今週のメルマガ（話題の語句・銘柄名だけ）を `$WORK/inputs/mail.md` に。
 
-## フェーズ1: ネタ決定
+## フェーズ1: ネタ確定
 
-- `note-pm`（モード: ネタ決定、mode: paid）→ `plan.json`（記事1本、kind: paid、facts_needed を担当に割り振り）。digest が空なら、相場分析の調査（モード: 調査）を先に1回走らせてから PM に渡す。
+- `note-pm`（モード: 自由記述、長文）→ `plan.json`（記事1本、kind: paid、`price`・`meta`、facts_needed を担当に割り振り）。`pick.json` の候補の `angle`・`outline`・`facts_needed`・選ばれた `highlights`・`extra`、または自由記述の `title`・`memo` を尊重し、テーマを変えない。`plan.json` の記事に `highlights` と `extra` をそのまま引き継ぐ。
+- （旧運用の名残）選択の仕組みを使わない場合だけ `note-pm`（モード: ネタ決定、mode: paid）で PM が選ぶ。
 
 ## フェーズ2: 深掘り（並列）
 
-- plan.json の `assignee` に入っている担当をすべて並列起動。出力は `deep/paid_market.md`（相場分析）、`deep/paid_jp.md`（日本株）、`deep/paid_us.md`（米国株）、`deep/paid_<コード>.md`（個別株分析）。
+- plan.json の `assignee` に入っている担当をすべて並列起動。全員に「**選ばれた見どころ（`highlights`）のうち自分の担当分野のものの裏取りと肉付けから始めること。`extra` も調べること**」と伝える。出力は `deep/paid_market.md`（相場分析）、`deep/paid_jp.md`（日本株）、`deep/paid_us.md`（米国株）、`deep/paid_<コード>.md`（個別株分析）。
 
 ## フェーズ3: 執筆 → 図
 
-- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う）→ `note-viz`（図5〜6枚）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
+- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う。「`plan.json` の `highlights` は全部本文に入れ、`extra` も反映すること」と伝える）→ `note-viz`（図5〜6枚。うちグラフ4枚以上。`figure_requests` に型H があれば、先に `note-quant`（モード: レーダーの点数化）で `quant/radar_a{id}.json` を作る）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
+- 図と**同じメッセージで** `note-quant`（モード: 統計チェック）を起動し、下書きの数字の使い方を確かめさせる → `$WORK/review/quant.md`（失敗・時間切れならファイルなしで先へ進む）。
 
 ## フェーズ4: レビュー（差戻し2回まで）
 
-- `note-pm`（レビュー n=1）→ 差戻しがあれば担当を起動 → `note-pm`（レビュー n=2）→ 必要ならもう1回 → `note-pm`（最終精査）。
+- `note-pm`（レビュー n=1。`review/quant.md` があれば「統計担当の指摘も読むこと」と伝える）→ 差戻しがあれば担当を起動 → `note-pm`（レビュー n=2）→ 必要ならもう1回 → `note-pm`（最終精査）。
 
 ## フェーズ5: 納品
 
@@ -41,4 +56,4 @@
 ```
 
 - Artifact で `$WORK/out/index.html` と `img/*.jpg`（`files`）を**新規に** publish する（`url` は付けない）。`icon` は "article"。
-- PushNotification: `🐾 今週の有料記事ができました：<タイトル> <URL>`（失敗時は `🐾 有料記事は失敗：<理由>`）。
+- PushNotification: `🐾 今日の有料記事ができました：<タイトル> <URL>`（失敗時は `🐾 有料記事は失敗：<理由>`）。目安は 19:00 JST まで。
