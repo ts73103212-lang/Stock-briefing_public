@@ -28,6 +28,9 @@ def _check_article(a: dict) -> list[str]:
         problems += [f"{where}: {p}" for p in lint.check_text(t)]
     for i, x in enumerate(a.get("xposts", []), 1):
         problems += [f"{where} X案{i}: {p}" for p in lint.check_xpost(x)]
+    problems += [f"{where}: {p}" for p in lint.check_style(_TAG_RE.sub("", a.get("body_html", "")))]
+    if a.get("kind") == "stock" and "どんな会社か" not in a.get("body_html", ""):
+        problems.append(f"{where}: 注目銘柄記事に「どんな会社か」の節がありません（編集ルール 4a）")
     if DISCLAIMER not in a.get("body_html", ""):
         problems.append(f"{where}: 末尾の免責文「🐾投資判断はご自身で🐾」がありません")
     return problems

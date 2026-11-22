@@ -1,14 +1,19 @@
 """見どころの検査とまとめ（候補出しタスクのフェーズ4）。
 
-視点ごとの担当（数字・需給／歴史・アノマリー／海外・マクロ／統計）が書いた
+視点ごとの担当（数字・需給／歴史・アノマリー／海外・マクロ／統計／技術）が書いた
 `WORK/highlights/*.json` を候補ごとに集め、空の項目・売買推奨の表現・重複を外し、
 「数字＋歴史か比較＋意外か反対」の3グループが先頭に来るよう並べて上限で切る。
 直さず、外して並べるだけ。
 
-    python -m note_pipeline.highlights --work WORK [--cap 6]
+    python -m note_pipeline.highlights --work WORK [--cap 8] [--min-points 5 --min-keep 5]
 
 `WORK/day_doc.json` に見どころを足して `WORK/day_doc_hl.json` に書き、
 状態と候補ごとの点数・足りないグループを JSON で標準出力に出す。
+
+`--min-points` を付けると、見どころがその点数に満たない候補を PM の順位（`rank`、
+小さいほど上位）の低いものから外す。ただし `--min-keep` 本は必ず残す（足りなければ、
+外した候補のうち見どころが2点以上のものを優先し、順位の高い順に戻す）。
+外した候補は `dropped` に残す（2026-11-22 ユーザー指示: 平日は7本から5点未満を削る）。
 """
 
 from __future__ import annotations
@@ -87,7 +92,28 @@ def missing_groups(highlights: list[dict]) -> list[str]:
     return [g for g in REQUIRED if g not in have]
 
 
-def merge_work(work: Path, cap: int = 6) -> tuple[dict, dict]:
+def _rank(c: dict, i: int) -> tuple[int, int]:
+    r = c.get("rank")
+    return (r if isinstance(r, int) else 999, i)
+
+
+def prune(candidates: list[dict], counts: dict[str, int], min_points: int, min_keep: int) -> tuple[list[dict], list[dict]]:
+    """見どころが min_points 点未満の候補を外す。min_keep 本は必ず残す。並び順は元のまま。"""
+    if min_points <= 0:
+        return candidates, []
+    order = sorted(range(len(candidates)), key=lambda i: _rank(candidates[i], i))
+    keep = {i for i in order if counts.get(candidates[i]["id"], 0) >= min_points}
+    if len(keep) < min_keep:
+        rest = [i for i in order if i not in keep]
+        rest.sort(key=lambda i: (counts.get(candidates[i]["id"], 0) <= 1, _rank(candidates[i], i)))
+        keep |= set(rest[: min_keep - len(keep)])
+    kept = [c for i, c in enumerate(candidates) if i in keep]
+    dropped = [{"id": c["id"], "title": c.get("title", ""), "count": counts.get(c["id"], 0)}
+               for i, c in enumerate(candidates) if i not in keep]
+    return kept, dropped
+
+
+def merge_work(work: Path, cap: int = 6, min_points: int = 0, min_keep: int = 5) -> tuple[dict, dict]:
     raw: dict[str, list] = {}
     unreadable = []
     for f in sorted((work / "highlights").glob("*.json")):
@@ -110,17 +136,27 @@ def merge_work(work: Path, cap: int = 6) -> tuple[dict, dict]:
             lack = missing_groups(got)
             if lack:
                 missing[c["id"]] = lack
+    doc["candidates"], dropped = prune(doc["candidates"], counts, min_points, min_keep)
+    if dropped:
+        doc["dropped"] = dropped
+    kept_ids = {c["id"] for c in doc["candidates"]}
+    n = sum(1 for c in doc["candidates"] if c.get("highlights"))
+    missing = {k: v for k, v in missing.items() if k in kept_ids}
     doc["highlights_status"] = "done" if n == len(doc["candidates"]) else ("partial" if n else "failed")
     doc["highlights_at"] = datetime.now(timezone.utc).isoformat()
-    return doc, {"status": doc["highlights_status"], "counts": counts, "missing": missing, "unreadable": unreadable}
+    short = [c["id"] for c in doc["candidates"] if min_points > 0 and counts.get(c["id"], 0) < min_points]
+    return doc, {"status": doc["highlights_status"], "counts": counts, "missing": missing,
+                 "dropped": dropped, "kept_below_min": short, "unreadable": unreadable}
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--work", required=True, type=Path)
     ap.add_argument("--cap", type=int, default=6)
+    ap.add_argument("--min-points", type=int, default=0, help="これ未満の候補を外す（0=外さない）")
+    ap.add_argument("--min-keep", type=int, default=5, help="外しても必ず残す本数")
     a = ap.parse_args(argv)
-    doc, report = merge_work(a.work, a.cap)
+    doc, report = merge_work(a.work, a.cap, a.min_points, a.min_keep)
     (a.work / "day_doc_hl.json").write_text(json.dumps(doc, ensure_ascii=False, indent=1))
     json.dump(report, sys.stdout, ensure_ascii=False)
     print()

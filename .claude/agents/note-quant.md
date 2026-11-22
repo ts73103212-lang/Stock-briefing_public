@@ -12,7 +12,7 @@ model: sonnet
 
 候補出しタスク（平日・週末）で、候補の掲載直後に呼ばれる。**週末**は、取得の上限が合計12回、1項目につき1〜2点、締切 9:20。入力: `WORK/candidates.json`（全候補）、`WORK/inputs/` のスクリーニング・マクロの JSON、`WORK/research/*.md`
 - 全候補の `highlight_plan` のうち、`lens` が「統計」の項目**だけ**を調べる。割り当てのない候補は飛ばす。`type` は割り当てどおりに出す。
-- データの取り方: 個別株の日足は Yahoo!ファイナンスの時系列ページ（`curl -s -m 20 "https://finance.yahoo.co.jp/quote/{コード}.T/history?page=N"`、1ページ20営業日）。指数・為替は `research/` と JSON の数字を優先。**取得は合計7回まで**。計算は `.venv/bin/python` で行い、作業用スクリプトは `WORK/highlights/` の外（`WORK/quant/`）に置く。
+- データの取り方: 個別株の日足は Yahoo!ファイナンスの時系列ページ（`curl -s -m 20 "https://finance.yahoo.co.jp/quote/{コード}.T/history?page=N"`、1ページ20営業日）。指数・為替は `research/` と JSON の数字を優先。**取得は合計9回まで**（平日）。計算は `.venv/bin/python` で行い、作業用スクリプトは `WORK/highlights/` の外（`WORK/quant/`）に置く。
 - 出すものの例:
   - 平常時からの外れ方: 「今日の出来高は過去60日平均の4.2倍（60日で最大）」「今日の値幅は過去1年で上位2%」
   - 過去の似た場面のその後: 「過去3年で1日+15%以上が6回、その20営業日後に上だったのは2回」（回数が少ないことも書く）
