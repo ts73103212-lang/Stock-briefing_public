@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-21 13:01 JST",
+  "fetched_at": "2026-11-23 15:35 JST",
   "status": "OK",
   "total_hits": 2,
   "stocks": [
@@ -10,7 +10,7 @@
       "volume": 1065000,
       "vol_ratio": 2.4,
       "turnover_mil": 253.5,
-      "market_cap_bil": 140.0,
+      "market_cap_bil": 146.2,
       "rsi": 78.2,
       "vwap": 233.3,
       "ema5": 227.7,
