@@ -18,10 +18,10 @@ def test_daily_renders_three_cards_and_index():
     day = load("daily_sample.json")
     html = page.render_daily(day, names(day, "daily"), "")
     for i in (1, 2, 3):
-        assert f'id="a{i}"' in html
-        assert f'href="#a{i}"' in html
-    assert 'src="img/a1_fig1.jpg"' in html
-    assert 'src="img/a2_header.jpg"' in html
+        assert f'id="a20261104-{i}"' in html
+        assert f'href="#a20261104-{i}"' in html
+    assert 'src="img/2026-11-04/a1_fig1.jpg"' in html
+    assert 'src="img/2026-11-04/a2_header.jpg"' in html
     assert "選外ダミーA" in html and "材料が裏付けできない" in html
     assert "ダミーの注記" in html
 

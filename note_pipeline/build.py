@@ -14,16 +14,16 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import charts, header, history, lint, page
+from . import archive, charts, header, history, lint, page
 
 DISCLAIMER = "投資判断はご自身で"
 _TAG_RE = re.compile(r"<[^>]+>")
 
 
-def _check_article(a: dict, mode: str = "daily") -> list[str]:
+def _check_article(a: dict) -> list[str]:
     where = f"記事{a['id']}"
     problems = []
-    if mode == "daily" and not (a.get("header_proposal") or {}).get("prompt"):
+    if not (a.get("header_proposal") or {}).get("prompt"):
         problems.append(f"{where}: 見出し画像の提案（画像生成AI用プロンプト）がありません。"
                         f"note-viz に figs/a{a['id']}_header.json を作らせて assemble からやり直してください")
     texts = list(a.get("titles", [])) + [a.get("summary", ""), _TAG_RE.sub("", a.get("body_html", ""))]
@@ -45,11 +45,12 @@ def build(day: dict, out: Path, mode: str, prev_page: Path | None = None) -> lis
     for a in day["articles"]:
         n = names[str(a["id"])]
         h = a.get("header", {})
+        (img_dir / n["header"]).parent.mkdir(parents=True, exist_ok=True)
         header.render_header(a["kind"], a.get("label", ""), h.get("title") or a["titles"][0], h.get("lead", ""),
                              img_dir / n["header"], callouts=h.get("callouts"))
         for k, spec in enumerate(a.get("figures", []), 1):
             charts.render(spec, img_dir / n["figs"][k - 1], number=k)
-        problems += _check_article(a, mode)
+        problems += _check_article(a)
     prev_html = prev_page.read_text(encoding="utf-8") if prev_page else ""
     today = date.fromisoformat(day["date"])
     codes = [c for a in day["articles"] if a["kind"] == "stock" for c in a.get("codes", [])]
@@ -58,7 +59,12 @@ def build(day: dict, out: Path, mode: str, prev_page: Path | None = None) -> lis
     dig = history.update_digest(history.parse_meta(prev_html, history.DIGEST_META), today, items)
     meta = "\n".join(t for t in (history.meta_tag(hist) if hist else "",
                                   history.meta_tag(dig, name=history.DIGEST_META) if dig else "") if t)
-    (out / "index.html").write_text(page.render(day, mode, names, meta), encoding="utf-8")
+    past = archive.parse_days(prev_html) if mode == "daily" else None
+    html_text = page.render(day, mode, names, meta, past)
+    (out / "index.html").write_text(html_text, encoding="utf-8")
+    manifest = {"publish": sorted(p.relative_to(out).as_posix() for p in img_dir.rglob("*.jpg")),
+                "referenced": page.referenced_images(html_text)}
+    (out / "img_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
     return problems
 
 

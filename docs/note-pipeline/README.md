@@ -25,7 +25,7 @@ python3 -m venv .venv && .venv/bin/python -m pip install -r requirements-note.tx
 .venv/bin/python -m note_pipeline.build --input day.json --out out/ [--mode daily|paid] [--prev-page prev.html]
 ```
 
-- `out/index.html` と `out/img/*.jpg`（JPEG 品質90）ができる。日次は `a{記事id}_header.jpg` / `a{記事id}_fig{n}.jpg`、有料は `header.jpg` / `fig{n}.jpg`。
+- `out/index.html` と `out/img/*.jpg`（JPEG 品質90）ができる。日次は `<日付>/a{記事id}_header.jpg` / `<日付>/a{記事id}_fig{n}.jpg`（日次ページは日付タブで直近14日分を残すため日付のフォルダに分ける。公開用の一覧は `out/img_manifest.json`）、有料は `header.jpg` / `fig{n}.jpg`。
 - 終了コード: 0＝OK、2＝警告あり（推奨表現・X投稿文の字数/タグ数・免責文の欠落。出力は作られる）、1＝入力エラー。
 - `--prev-page`: 前回の納品ページ HTML。埋め込まれた銘柄履歴（`<meta name="note-pipeline:history">`）を引き継ぎ、14日より古い分を消して今日の `codes` を足す。
 

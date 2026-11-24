@@ -28,3 +28,20 @@ document.querySelectorAll('[data-copy-plain]').forEach(function(b){b.addEventLis
   navigator.clipboard.writeText(t).then(function(){say(st,'プレーンテキストでコピーしました')}).catch(function(){fallbackSelect(document.getElementById(id),st)});
 })});
 })();
+// 日付タブ。#d-YYYY-MM-DD または記事の #a… で開いたときはその日を表示する。
+(function(){
+var tabs=[].slice.call(document.querySelectorAll('[data-day-tab]'));
+if(!tabs.length)return;
+function show(day,push){
+  tabs.forEach(function(t){var on=t.dataset.dayTab===day;t.setAttribute('aria-selected',on?'true':'false');
+    var p=document.getElementById('d-'+t.dataset.dayTab);if(p)p.hidden=!on;if(on)t.scrollIntoView({block:'nearest',inline:'nearest'})});
+  if(push){try{history.replaceState(null,'','#d-'+day)}catch(e){}}
+}
+tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.dayTab,true);window.scrollTo(0,0)})});
+function fromHash(){
+  var h=decodeURIComponent(location.hash.slice(1));if(!h)return;
+  var el=document.getElementById(h);if(!el)return;
+  var d=el.closest('.day');if(d){show(d.dataset.day,false);if(el!==d)el.scrollIntoView()}
+}
+fromHash();window.addEventListener('hashchange',fromHash);
+})();

@@ -27,7 +27,7 @@
 
 ## フェーズ3: 執筆 → 図
 
-- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う）→ `note-viz`（図5〜6枚）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
+- `note-securities-analyst`（記事id、週末モード: `deep/paid_*.md` をすべて使う）→ `note-viz`（図5〜6枚と、見出し画像の提案 `figs/a{id}_header.json`）→ `figs/a{id}_header.json` があり `prompt` が空でないか確認（なければ note-viz を再起動。ないと納品ページに画像生成AI用プロンプト欄が出ず、ビルドも警告する）→ 仮ビルド（`--mode paid`、`--prev-page` は付けない）。
 
 ## フェーズ4: レビュー（差戻し2回まで）
 

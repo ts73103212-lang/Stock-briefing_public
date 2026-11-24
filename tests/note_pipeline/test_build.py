@@ -26,17 +26,45 @@ def test_build_writes_index_and_images(tmp_path):
     tmp_path = tmp_path / "o"
     assert rc == 0
     assert (tmp_path / "index.html").exists()
-    imgs = sorted(p.name for p in (tmp_path / "img").iterdir())
-    assert imgs == sorted([f"a{i}_{n}.jpg" for i in (1, 2, 3) for n in ("header", "fig1", "fig2")])
-    for p in (tmp_path / "img").iterdir():
+    imgs = sorted(p.relative_to(tmp_path / "img").as_posix() for p in (tmp_path / "img").rglob("*.jpg"))
+    assert imgs == sorted([f"2026-11-04/a{i}_{n}.jpg" for i in (1, 2, 3) for n in ("header", "fig1", "fig2")])
+    manifest = json.loads((tmp_path / "img_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["publish"] == ["img/" + p for p in imgs] == manifest["referenced"]
+    for p in (tmp_path / "img").rglob("*.jpg"):
         assert p.stat().st_size <= 250_000, p
         assert Image.open(p).format == "JPEG"
 
 
 def test_build_paid_mode(tmp_path):
-    rc = build.main(["--input", str(FIX / "paid_sample.json"), "--out", str(tmp_path), "--mode", "paid"])
+    day = json.loads((FIX / "paid_sample.json").read_text(encoding="utf-8"))
+    day["articles"][0]["header_proposal"] = {"concept": "狙い", "prompt": "3パターン作ってください。"}
+    rc = build.main(["--input", str(_write(tmp_path, day)), "--out", str(tmp_path / "o"), "--mode", "paid"])
+    tmp_path = tmp_path / "o"
     assert rc == 0
     assert sorted(p.name for p in (tmp_path / "img").iterdir()) == ["fig1.jpg", "fig2.jpg", "header.jpg"]
+
+
+def test_build_paid_missing_header_proposal_warns(tmp_path, capsys):
+    rc = build.main(["--input", str(FIX / "paid_sample.json"), "--out", str(tmp_path), "--mode", "paid"])
+    assert rc == 2
+    assert "見出し画像の提案" in capsys.readouterr().err
+
+
+def test_build_keeps_past_days_as_tabs(tmp_path):
+    build.main(["--input", str(_write(tmp_path, _daily_with_proposals())), "--out", str(tmp_path / "d1")])
+    second = _daily_with_proposals()
+    second["date"] = "2026-11-05"
+    second["articles"] = second["articles"][:1]
+    second["articles"][0]["titles"][0] = "翌日の記事"
+    assert build.main(["--input", str(_write(tmp_path, second)), "--out", str(tmp_path / "d2"),
+                       "--prev-page", str(tmp_path / "d1" / "index.html")]) == 0
+    html = (tmp_path / "d2" / "index.html").read_text(encoding="utf-8")
+    assert html.index('data-day-tab="2026-11-05"') < html.index('data-day-tab="2026-11-04"')
+    assert 'id="d-2026-11-04" data-day="2026-11-04" hidden' in html
+    assert "翌日の記事" in html and 'id="a20261104-3"' in html
+    manifest = json.loads((tmp_path / "d2" / "img_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["publish"] and all(p.startswith("img/2026-11-05/") for p in manifest["publish"])
+    assert "img/2026-11-04/a3_header.jpg" in manifest["referenced"]
 
 
 def test_build_lint_exit_code(tmp_path, capsys):

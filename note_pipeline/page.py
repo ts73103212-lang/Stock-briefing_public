@@ -15,6 +15,7 @@ from datetime import date
 from html import escape
 from pathlib import Path
 
+from . import archive
 from .style import circled
 
 TEMPLATES = Path(__file__).parent / "templates"
@@ -36,10 +37,12 @@ def jp_date(iso: str) -> str:
 
 
 def image_names(day: dict, mode: str) -> dict[str, dict]:
-    """記事 id → {"header": ファイル名, "figs": [ファイル名…]}。有料は試作と同じ header.jpg / fig{n}.jpg。"""
+    """記事 id → {"header": ファイル名, "figs": [ファイル名…]}。有料は試作と同じ header.jpg / fig{n}.jpg。
+
+    日次は過去の日もタブで残すため、日付のフォルダに分ける（例 2026-11-25/a1_header.jpg）。"""
     out = {}
     for a in day["articles"]:
-        prefix = "" if mode == "paid" else f"a{a['id']}_"
+        prefix = "" if mode == "paid" else f"{day['date']}/a{a['id']}_"
         out[str(a["id"])] = {
             "header": f"{prefix}header.jpg",
             "figs": [f"{prefix}fig{n}.jpg" for n in range(1, len(a.get("figures", [])) + 1)],
@@ -78,8 +81,8 @@ def add_section_dividers(body: str) -> str:
     return out
 
 
-def _article_block(a: dict, names: dict, heading_tag: str = "h2") -> str:
-    aid = _e(a["id"])
+def _article_block(a: dict, names: dict, heading_tag: str = "h2", uid: str | None = None) -> str:
+    aid = _e(uid or a["id"])
     titles = "\n".join(
         f'<div class="row"><p id="t{aid}-{i}">{_e(t)}</p><button data-copy="t{aid}-{i}">コピー</button></div>'
         for i, t in enumerate(a.get("titles", []), 1))
@@ -172,39 +175,69 @@ def render_paid(day: dict, img_names: dict, history_meta: str = "") -> str:
     return _document(a["header"].get("title") or a["titles"][0], history_meta, content)
 
 
-def render_daily(day: dict, img_names: dict, history_meta: str) -> str:
+def _uid(day_iso: str, aid) -> str:
+    """要素の id。過去の日と同じページに並ぶので日付を入れて重複を防ぐ。"""
+    return f"{day_iso.replace('-', '')}-{aid}"
+
+
+def render_day(day: dict, img_names: dict) -> str:
+    """1日分のブロックの中身（一覧・記事カード・選外候補）。"""
     arts = day["articles"]
+    d = day["date"]
     toc = "\n".join(
-        f'<li class="toc-item"><a href="#a{_e(a["id"])}"><img src="img/{img_names[str(a["id"])]["header"]}" alt="">'
+        f'<li class="toc-item"><a href="#a{_e(_uid(d, a["id"]))}"><img src="img/{img_names[str(a["id"])]["header"]}" alt="">'
         f'<div><span class="kind kind-{_e(a["kind"])}">{_e(KIND_LABEL.get(a["kind"], a["kind"]))}</span>'
         f'<b>{_e(a["titles"][0])}</b><span>{_e(a.get("summary", ""))}</span></div></a></li>'
         for a in arts)
     notices = "\n".join(f'<p class="notice">{_e(n)}</p>' for n in day.get("notes", []))
     cards = "\n".join(
-        f"""<section class="card" id="a{_e(a['id'])}" aria-labelledby="h{_e(a['id'])}">
+        f"""<section class="card" id="a{_e(_uid(d, a['id']))}" aria-labelledby="h{_e(_uid(d, a['id']))}">
   <span class="kind kind-{_e(a['kind'])}">{_e(a.get('label') or KIND_LABEL.get(a['kind'], ''))}</span>
-  <h2 id="h{_e(a['id'])}">{i}. {_e(a['titles'][0])}</h2>
-  {_article_block(a, img_names[str(a['id'])], heading_tag='h3')}
+  <h2 id="h{_e(_uid(d, a['id']))}">{i}. {_e(a['titles'][0])}</h2>
+  {_article_block(a, img_names[str(a['id'])], heading_tag='h3', uid=_uid(d, a['id']))}
 </section>""" for i, a in enumerate(arts, 1))
     cands = day.get("candidates", [])
     cand_html = ""
     if cands:
         items = "\n".join(f"<li>{_e(c['title'])}<br><span>{_e(c.get('reason', ''))}</span></li>" for c in cands)
         cand_html = f'<section class="panel"><h2>選外のネタ候補</h2><ol class="cands">{items}</ol></section>'
-    jd = jp_date(day["date"])
-    content = f"""<div class="eyebrow">今日のnote ・ {jd}</div>
-<h1>今日のnote {len(arts)}本</h1>
-<p class="meta">各記事の「本文をコピー」で note に貼り付け、図は［図○］の位置に差し込んでください。画像は長押し（PCは右クリック）で保存できます。</p>
+    return f"""<div class="eyebrow">{jp_date(d)}のnote ・ {len(arts)}本</div>
 {notices}
 <ul class="toc">
 {toc}
 </ul>
 {cards}
 {cand_html}"""
-    return _document(f"今日のnote {jd}", history_meta, content)
 
 
-def render(day: dict, mode: str, img_names: dict, history_meta: str = "") -> str:
+def render_daily(day: dict, img_names: dict, history_meta: str, past_days: dict[str, str] | None = None) -> str:
+    """日付タブつきの日次ページ。past_days は前回ページから取り出した {日付: ブロックの中身}。"""
+    days = archive.merge_days(past_days or {}, day["date"], render_day(day, img_names))
+    latest = next(iter(days))
+    tabs = "\n".join(
+        f'<button type="button" role="tab" data-day-tab="{k}" aria-controls="d-{k}" '
+        f'aria-selected="{"true" if k == latest else "false"}">{archive.tab_label(k)}</button>'
+        for k in days)
+    blocks = "\n".join(archive.wrap(k, v, hidden=(k != latest)) for k, v in days.items())
+    content = f"""<h1>今日のnote</h1>
+<p class="meta">上の日付を選ぶと、その日の記事が出ます。各記事の「本文をコピー」で note に貼り付け、図は［図○］の位置に差し込んでください。画像は長押し（PCは右クリック）で保存できます。</p>
+<nav class="days" role="tablist" aria-label="日付">
+{tabs}
+</nav>
+{blocks}"""
+    return _document(f"今日のnote {jp_date(day['date'])}", history_meta, content)
+
+
+def render(day: dict, mode: str, img_names: dict, history_meta: str = "",
+           past_days: dict[str, str] | None = None) -> str:
     if mode == "paid":
         return render_paid(day, img_names, history_meta)
-    return render_daily(day, img_names, history_meta)
+    return render_daily(day, img_names, history_meta, past_days)
+
+
+_IMG_SRC_RE = re.compile(r'src="(img/[^"]+)"')
+
+
+def referenced_images(page_html: str) -> list[str]:
+    """ページが参照している画像の公開パス。公開時に、これ以外の古い画像を消すのに使う。"""
+    return sorted(set(_IMG_SRC_RE.findall(page_html)))

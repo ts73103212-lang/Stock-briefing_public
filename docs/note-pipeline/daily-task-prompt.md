@@ -82,7 +82,9 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 ```
 
 - 終了コード 2 の警告が残っていても、PM が承認済みなら納品してよい（警告は通知に書かない）。
-- Artifact ツールで `$WORK/out/index.html` を `url: <DELIVERY_URL>` に publish。`files` に `img/*.jpg` をすべて（例 `{"img/a1_fig1.jpg": "$WORK/out/img/a1_fig1.jpg"}`）。`action: list, scope: files` で見た前回の画像のうち今日使わないものは `null` で消す。
+- Artifact ツールで `$WORK/out/index.html` を `url: <DELIVERY_URL>` に publish。ページは日付タブつきで、前回ページ（`--prev-page`）から直近14日分の記事を引き継ぐ。**`--prev-page` を必ず付ける**（付け忘れると過去の日が消える）。
+  - `files` には `$WORK/out/img_manifest.json` の `publish`（今日の画像、例 `img/2026-11-25/a1_fig1.jpg`）をすべて載せる（例 `{"img/2026-11-25/a1_fig1.jpg": "$WORK/out/img/2026-11-25/a1_fig1.jpg"}`）。過去の日の画像は公開済みのまま残るので載せない。
+  - `action: list, scope: files` で見た公開済みの画像のうち、`img_manifest.json` の `referenced` に**ない**ものだけ `null` で消す（14日を過ぎた日の画像）。`referenced` にある画像は消さない。
 - PushNotification:
   - 成功: `🐾 今日のnote 3本ができました：①<タイトル> ②<タイトル> ③<タイトル>`
   - 本数不足: `🐾 今日のnote 2本ができました（1本は見送り）：①… ②…`
