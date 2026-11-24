@@ -118,3 +118,14 @@ def test_cli_prev_missing_is_ok(tmp_path):
                         "--out", str(tmp_path / "site"), "--prev", str(tmp_path / "nope.json")],
                        cwd=REPO, capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
+
+
+def test_index_follows_artifact_page_contract(tmp_path):
+    """Artifact は公開時に doctype/html/head/body を付けるので、ページ本体だけを出す。"""
+    m = build_manifest(datetime(2026, 11, 24, 18, 0, tzinfo=JST), "t", "term", EXPL, _rows(tmp_path), None)
+    html = render_index(m)
+    low = html.lower()
+    assert "<!doctype" not in low and "<html" not in low and "<body" not in low and "<head" not in low
+    assert html.lstrip().startswith("<title>朝マンガ納品</title>")
+    assert "max(16px, env(safe-area-inset-left, 0px))" in html
+    assert 'name="claude:viewport-fit-sides"' in html

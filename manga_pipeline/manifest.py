@@ -68,30 +68,26 @@ def render_index(manifest: dict) -> str:
     imgs = "\n".join(
         f'    <img src="manga/{html.escape(r["file"])}" alt="{title} {i}段目" width="1360" height="684">'
         for i, r in enumerate(manifest["rows"], 1))
-    return f"""<!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>朝マンガ納品</title>
+    return f"""<title>朝マンガ納品</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <style>
-  :root {{ --bg: #ffffff; --fg: #1a1a1a; --muted: #5f6b7a; --rule: #e3e7ec; --accent: #1e3a5f; }}
+  /* 1カラム・最大680px（メールの本文幅に合わせる） */
+  :root {{ --bg: #ffffff; --fg: #1a1f26; --muted: #5d6876; --rule: #e1e6ec; --accent: #1e3a5f; }}
   @media (prefers-color-scheme: dark) {{
-    :root:not([data-theme="light"]) {{ --bg: #15181c; --fg: #ececec; --muted: #a3adb8; --rule: #2c3238; --accent: #8fb3e0; }}
+    :root:not([data-theme="light"]) {{ --bg: #14181d; --fg: #e9edf1; --muted: #a2adb9; --rule: #2b333c; --accent: #94b6e0; color-scheme: dark; }}
   }}
-  :root[data-theme="dark"] {{ --bg: #15181c; --fg: #ececec; --muted: #a3adb8; --rule: #2c3238; --accent: #8fb3e0; }}
+  :root[data-theme="dark"] {{ --bg: #14181d; --fg: #e9edf1; --muted: #a2adb9; --rule: #2b333c; --accent: #94b6e0; color-scheme: dark; }}
   * {{ box-sizing: border-box; }}
   body {{ margin: 0; background: var(--bg); color: var(--fg);
          font-family: 'Meiryo UI', 'Noto Sans JP', sans-serif; line-height: 1.7; }}
-  main {{ max-width: 680px; margin: 0 auto; padding: 20px 16px 40px; }}
+  main {{ max-width: 680px; margin: 0 auto; padding-block: 20px 40px;
+          padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }}
   .meta {{ color: var(--muted); font-size: 13px; margin: 0 0 4px; }}
-  h1 {{ font-size: 20px; margin: 0 0 14px; color: var(--accent); }}
+  h1 {{ font-size: 20px; margin: 0 0 14px; color: var(--accent); text-wrap: balance; }}
   img {{ width: 100%; height: auto; display: block; margin: 4px 0; }}
   h2 {{ font-size: 16px; margin: 22px 0 6px; padding-top: 14px; border-top: 1px solid var(--rule); }}
   .expl p {{ margin: 0 0 10px; }}
 </style>
-</head>
-<body>
 <main>
   <p class="meta">{html.escape(manifest["for_date"])} の朝に掲載 ・ 作成 {html.escape(manifest["made_at"])} ・ {html.escape(manifest["kind"])}</p>
   <h1>🐾 コーギー先生の8コマ相場教室「{title}」</h1>
@@ -101,8 +97,6 @@ def render_index(manifest: dict) -> str:
   <h2>📝 解説</h2>
   <div class="expl">{manifest["explanation_html"]}</div>
 </main>
-</body>
-</html>
 """
 
 
