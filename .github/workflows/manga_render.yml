@@ -11,6 +11,11 @@ on:
         description: 'render 依頼 JSON {"date":"YYYY-MM-DD","run_id":"r1","panels":[{"n":1,"prompt":"...","refs":["corgi"]}]}'
         required: true
         type: string
+      persist_check:
+        description: 'auth.json が変わっていなくても Secrets に書き戻す（SECRETS_PAT の動作確認用）'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -86,9 +91,10 @@ jobs:
         if: always() && steps.auth.outputs.restored == 'true'
         env:
           GH_TOKEN: ${{ secrets.SECRETS_PAT }}
+          PERSIST_CHECK: ${{ inputs.persist_check }}
         run: |
           after=$(sha256sum ~/.codex/auth.json | cut -d' ' -f1)
-          if [ "$after" = "$(cat "$RUNNER_TEMP/auth_before.sha")" ]; then
+          if [ "$after" = "$(cat "$RUNNER_TEMP/auth_before.sha")" ] && [ "$PERSIST_CHECK" != "true" ]; then
             echo "auth.json unchanged; nothing to persist"
             exit 0
           fi

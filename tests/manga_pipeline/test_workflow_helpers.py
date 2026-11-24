@@ -78,3 +78,15 @@ def test_workflow_is_dispatch_only_and_persists_always():
     text = (REPO / ".github/workflows/manga_render.yml").read_text()
     assert "set -x" not in text and "${{ inputs.request }}" in wf["jobs"]["render"]["env"]["REQUEST"]
     assert "@openai/codex@0.171.0" in text
+
+
+def test_workflow_has_persist_check_input():
+    """SECRETS_PAT の書き戻しを、auth.json が変わっていなくても1回試せる（設計書 §8 の1往復確認）。"""
+    yaml = pytest.importorskip("yaml")
+    wf = yaml.safe_load((REPO / ".github/workflows/manga_render.yml").read_text())
+    on = wf[True] if True in wf else wf["on"]
+    inp = on["workflow_dispatch"]["inputs"]["persist_check"]
+    assert inp["type"] == "boolean" and inp["default"] is False and inp["required"] is False
+    persist = {s.get("name"): s for s in wf["jobs"]["render"]["steps"]}["Persist refreshed Codex login"]
+    assert persist["env"]["PERSIST_CHECK"] == "${{ inputs.persist_check }}"
+    assert '"$PERSIST_CHECK" != "true"' in persist["run"]
