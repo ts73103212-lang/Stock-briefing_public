@@ -1,7 +1,63 @@
 {
-  "fetched_at": "2026-11-24 10:23 JST",
-  "status": "NO_DATA",
-  "note": "スクリーニング通過銘柄なし（祝日または市場閑散の可能性）",
-  "total_hits": 0,
-  "stocks": []
+  "fetched_at": "2026-11-25 06:35 JST",
+  "status": "OK",
+  "total_hits": 17,
+  "stocks": [
+    {
+      "ticker": "3187",
+      "close": 409.0,
+      "change": 13.3,
+      "volume": 129800,
+      "vol_ratio": 2.7,
+      "turnover_mil": 53.1,
+      "market_cap_bil": 67.5,
+      "rsi": 62.5,
+      "vwap": 392.3,
+      "ema5": 383.4,
+      "ema25": 377.4,
+      "atr": 20.1
+    },
+    {
+      "ticker": "6772",
+      "close": 1100.0,
+      "change": 4.76,
+      "volume": 8500,
+      "vol_ratio": 3.9,
+      "turnover_mil": 9.3,
+      "market_cap_bil": 71.5,
+      "rsi": 59.7,
+      "vwap": 1083.7,
+      "ema5": 1069.4,
+      "ema25": 1049.4,
+      "atr": 26.7
+    },
+    {
+      "ticker": "9818",
+      "close": 1750.0,
+      "change": 3.86,
+      "volume": 21200,
+      "vol_ratio": 1.8,
+      "turnover_mil": 37.1,
+      "market_cap_bil": 128.4,
+      "rsi": 71.8,
+      "vwap": 1711.3,
+      "ema5": 1692.0,
+      "ema25": 1598.8,
+      "atr": 64.0
+    },
+    {
+      "ticker": "9206",
+      "close": 1940.0,
+      "change": 3.14,
+      "volume": 4500,
+      "vol_ratio": 2.4,
+      "turnover_mil": 8.7,
+      "market_cap_bil": 71.3,
+      "rsi": 61.8,
+      "vwap": 1925.0,
+      "ema5": 1907.3,
+      "ema25": 1903.9,
+      "atr": 17.7
+    }
+  ]
 }
