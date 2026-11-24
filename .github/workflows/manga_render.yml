@@ -1,0 +1,132 @@
+# 朝マンガのコマ画像を Codex CLI（ChatGPT ログイン）で描き、ブランチ manga に置く。
+# 設計書: docs/superpowers/specs/2026-11-23-morning-manga-design.md §7.2
+# 起動は workflow_dispatch のみ（夕方の漫画タスクが GitHub MCP の actions_run_trigger で起動する）。
+# 外部から起動できるトリガー（pull_request など）は付けない。秘密情報を守るため。
+name: manga_render
+
+on:
+  workflow_dispatch:
+    inputs:
+      request:
+        description: 'render 依頼 JSON {"date":"YYYY-MM-DD","run_id":"r1","panels":[{"n":1,"prompt":"...","refs":["corgi"]}]}'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+# auth.json は同時に1か所でしか使えないので、キャンセルせずに順番待ちにする。
+concurrency:
+  group: manga-render
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      REQUEST: ${{ inputs.request }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Codex CLI (pinned)
+        run: npm i -g @openai/codex@0.171.0 && codex --version
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: pip install -r requirements-note.txt
+
+      - name: Validate request and build jobs
+        id: req
+        run: |
+          printf '%s' "$REQUEST" > "$RUNNER_TEMP/request.json"
+          python -m manga_pipeline.request --request-file "$RUNNER_TEMP/request.json" --repo . --out "$RUNNER_TEMP/jobs.json"
+          python - >> "$GITHUB_OUTPUT" <<'PY'
+          import json, os
+          r = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "request.json")))
+          print(f"date={r['date']}")
+          print(f"run_id={r['run_id']}")
+          PY
+
+      - name: Restore Codex login
+        id: auth
+        env:
+          CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
+        run: |
+          if [ -z "$CODEX_AUTH_JSON" ]; then
+            echo "::error::Secret CODEX_AUTH_JSON is not set (docs/manga/README.md)"
+            exit 1
+          fi
+          mkdir -p ~/.codex && chmod 700 ~/.codex
+          umask 077
+          printf '%s' "$CODEX_AUTH_JSON" | base64 -d > ~/.codex/auth.json
+          # auth.json の中のトークン類をログでマスクする（Secrets 自体は GitHub が自動でマスクする）
+          python manga_pipeline/mask_auth.py ~/.codex/auth.json
+          sha256sum ~/.codex/auth.json | cut -d' ' -f1 > "$RUNNER_TEMP/auth_before.sha"
+          echo "restored=true" >> "$GITHUB_OUTPUT"
+
+      - name: Render panels
+        if: steps.auth.outputs.restored == 'true'
+        env:
+          MANGA_DATE: ${{ steps.req.outputs.date }}
+          MANGA_RUN_ID: ${{ steps.req.outputs.run_id }}
+          PYTHON: python
+        run: bash manga_pipeline/render.sh "$RUNNER_TEMP/jobs.json" "$RUNNER_TEMP/panels"
+
+      # Codex がトークンを更新したら、更新後の auth.json を Secrets に保存し直す（OpenAI の CI/CD ガイドの方式）。
+      # 書き戻せないと翌日からログインできなくなるので、描画の成否にかかわらず必ず動かす。
+      - name: Persist refreshed Codex login
+        if: always() && steps.auth.outputs.restored == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_PAT }}
+        run: |
+          after=$(sha256sum ~/.codex/auth.json | cut -d' ' -f1)
+          if [ "$after" = "$(cat "$RUNNER_TEMP/auth_before.sha")" ]; then
+            echo "auth.json unchanged; nothing to persist"
+            exit 0
+          fi
+          python manga_pipeline/mask_auth.py ~/.codex/auth.json
+          if [ -n "$GH_TOKEN" ] && base64 -w0 ~/.codex/auth.json | gh secret set CODEX_AUTH_JSON --repo "$GITHUB_REPOSITORY"; then
+            echo "refreshed auth.json persisted to CODEX_AUTH_JSON"
+          else
+            echo "::error::Could not persist refreshed auth.json (check SECRETS_PAT)"
+            python manga_pipeline/status_fix.py "$RUNNER_TEMP/panels/status.json" --persist-failed
+            exit 1
+          fi
+
+      # charts と同じ方式（docs/briefing-charts.md）。前回の内容を取り込み、manga/<date>/ を追加・上書きし、
+      # 直近7日分だけを残して、1コミットに squash して force push する。
+      - name: Publish panels to branch "manga"
+        if: always() && steps.req.outputs.date != ''
+        env:
+          MANGA_DATE: ${{ steps.req.outputs.date }}
+          MANGA_RUN_ID: ${{ steps.req.outputs.run_id }}
+          AUTH_RESTORED: ${{ steps.auth.outputs.restored }}
+        run: |
+          python manga_pipeline/status_fix.py "$RUNNER_TEMP/panels/status.json" \
+            --ensure --jobs "$RUNNER_TEMP/jobs.json" --auth-restored "${AUTH_RESTORED:-false}"
+          PUB="$RUNNER_TEMP/manga_pub"
+          rm -rf "$PUB" && mkdir -p "$PUB"
+          if git fetch -q origin manga 2>/dev/null; then
+            git archive FETCH_HEAD | tar -x -C "$PUB"
+          fi
+          mkdir -p "$PUB/manga/$MANGA_DATE"
+          cp "$RUNNER_TEMP"/panels/p*.png "$PUB/manga/$MANGA_DATE/" 2>/dev/null || true
+          cp "$RUNNER_TEMP/panels/status.json" "$PUB/manga/$MANGA_DATE/status.json"
+          ls -1 "$PUB/manga" | sort | head -n -7 | while read -r old; do rm -rf "$PUB/manga/$old"; done
+          rm -rf "$PUB/.git"
+          cd "$PUB"
+          git init -q -b manga
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "manga $MANGA_DATE $MANGA_RUN_ID $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M JST')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" manga:manga
+          cat "manga/$MANGA_DATE/status.json"
