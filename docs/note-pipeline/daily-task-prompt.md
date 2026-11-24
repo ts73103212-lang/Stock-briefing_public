@@ -58,7 +58,7 @@ python3 -m venv .venv && .venv/bin/python -m pip install -q -r requirements-note
 
 ## フェーズ5: 図（並列、記事ごと）
 
-- `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。続けて仮ビルド:
+- `note-viz`（記事id）を記事の数だけ。図に加えて見出し画像の提案（`figs/a{id}_header.json`）も作る。**仮ビルドの前に、記事の数だけ `figs/a{id}_header.json` があり `prompt` が空でないか確認する。なければ note-viz をその記事だけ再起動する**（ないと納品ページに画像生成AI用プロンプト欄が出ない。ビルドも警告する）。続けて仮ビルド:
 
 ```bash
 .venv/bin/python -m note_pipeline.assemble --work $WORK --out $WORK/day.json

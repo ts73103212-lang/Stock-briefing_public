@@ -20,9 +20,12 @@ DISCLAIMER = "投資判断はご自身で"
 _TAG_RE = re.compile(r"<[^>]+>")
 
 
-def _check_article(a: dict) -> list[str]:
+def _check_article(a: dict, mode: str = "daily") -> list[str]:
     where = f"記事{a['id']}"
     problems = []
+    if mode == "daily" and not (a.get("header_proposal") or {}).get("prompt"):
+        problems.append(f"{where}: 見出し画像の提案（画像生成AI用プロンプト）がありません。"
+                        f"note-viz に figs/a{a['id']}_header.json を作らせて assemble からやり直してください")
     texts = list(a.get("titles", [])) + [a.get("summary", ""), _TAG_RE.sub("", a.get("body_html", ""))]
     for t in texts:
         problems += [f"{where}: {p}" for p in lint.check_text(t)]
@@ -46,7 +49,7 @@ def build(day: dict, out: Path, mode: str, prev_page: Path | None = None) -> lis
                              img_dir / n["header"], callouts=h.get("callouts"))
         for k, spec in enumerate(a.get("figures", []), 1):
             charts.render(spec, img_dir / n["figs"][k - 1], number=k)
-        problems += _check_article(a)
+        problems += _check_article(a, mode)
     prev_html = prev_page.read_text(encoding="utf-8") if prev_page else ""
     today = date.fromisoformat(day["date"])
     codes = [c for a in day["articles"] if a["kind"] == "stock" for c in a.get("codes", [])]

@@ -8,8 +8,22 @@ from note_pipeline import build, history
 FIX = Path(__file__).parent / "fixtures"
 
 
+def _daily_with_proposals() -> dict:
+    day = json.loads((FIX / "daily_sample.json").read_text(encoding="utf-8"))
+    for a in day["articles"]:
+        a["header_proposal"] = {"concept": "狙い", "prompt": "note記事の見出し画像を3パターン作ってください。"}
+    return day
+
+
+def _write(tmp_path, day) -> Path:
+    inp = tmp_path / "day.json"
+    inp.write_text(json.dumps(day, ensure_ascii=False), encoding="utf-8")
+    return inp
+
+
 def test_build_writes_index_and_images(tmp_path):
-    rc = build.main(["--input", str(FIX / "daily_sample.json"), "--out", str(tmp_path)])
+    rc = build.main(["--input", str(_write(tmp_path, _daily_with_proposals())), "--out", str(tmp_path / "o")])
+    tmp_path = tmp_path / "o"
     assert rc == 0
     assert (tmp_path / "index.html").exists()
     imgs = sorted(p.name for p in (tmp_path / "img").iterdir())
@@ -26,7 +40,7 @@ def test_build_paid_mode(tmp_path):
 
 
 def test_build_lint_exit_code(tmp_path, capsys):
-    day = json.loads((FIX / "daily_sample.json").read_text(encoding="utf-8"))
+    day = _daily_with_proposals()
     day["articles"][0]["body_html"] += "<p>今が買い場です。</p>"
     inp = tmp_path / "day.json"
     inp.write_text(json.dumps(day, ensure_ascii=False), encoding="utf-8")
@@ -37,7 +51,7 @@ def test_build_lint_exit_code(tmp_path, capsys):
 
 
 def test_build_missing_disclaimer_warns(tmp_path, capsys):
-    day = json.loads((FIX / "daily_sample.json").read_text(encoding="utf-8"))
+    day = _daily_with_proposals()
     day["articles"][1]["body_html"] = "<p>免責なし</p>"
     day["articles"][1]["figures"] = []
     inp = tmp_path / "day.json"
@@ -46,12 +60,21 @@ def test_build_missing_disclaimer_warns(tmp_path, capsys):
     assert "免責文" in capsys.readouterr().err
 
 
+def test_build_missing_header_proposal_warns(tmp_path, capsys):
+    day = _daily_with_proposals()
+    del day["articles"][0]["header_proposal"]
+    inp = tmp_path / "day.json"
+    inp.write_text(json.dumps(day, ensure_ascii=False), encoding="utf-8")
+    assert build.main(["--input", str(inp), "--out", str(tmp_path / "out")]) == 2
+    assert "見出し画像の提案" in capsys.readouterr().err
+
+
 def test_history_carried(tmp_path):
     prev = tmp_path / "prev.html"
     prev.write_text(f"<html><head>{history.meta_tag({'2026-11-02': ['9999'], '2026-10-01': ['0000']})}</head></html>",
                     encoding="utf-8")
     out = tmp_path / "out"
-    assert build.main(["--input", str(FIX / "daily_sample.json"), "--out", str(out), "--prev-page", str(prev)]) == 0
+    assert build.main(["--input", str(_write(tmp_path, _daily_with_proposals())), "--out", str(out), "--prev-page", str(prev)]) == 0
     h = history.parse_history((out / "index.html").read_text(encoding="utf-8"))
     assert h == {"2026-11-02": ["9999"], "2026-11-04": ["1111", "2222"]}
 
