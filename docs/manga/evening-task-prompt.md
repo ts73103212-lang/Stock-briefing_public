@@ -29,6 +29,10 @@ TZ=Asia/Tokyo .venv/bin/python -c "from datetime import date; from note_pipeline
 
 - `True`（今日が東証の休場日）なら、何もせず終了する（通知もしない）。
 - `mkdir -p WORK/panels WORK/out`
+- **GitHub を使えるようにする（描画の起動に必要）。** 定期タスクのセッションには、最初は GitHub のツールが付いていない。
+  1. ToolSearch で `actions_run_trigger` を探す。見つかればそのまま進む。
+  2. 見つからなければ、`mcp__claude-code-remote__add_repo` を `owner: "ts73103212-lang"`, `repo: "Stock-briefing_public"`, `access: "push"` で呼び、もう一度 ToolSearch で `actions_run_trigger` を探す。
+  3. それでも使えなければ、ここで見送る（理由「GitHub の描画を起動できず」）。題材や台本を作る前に判断して、時間と生成枠を無駄にしない。
 - 前回の manifest: Artifact ツールで `action: read, url: https://claude.ai/artifact/9m4Jxvrm3aj12NaojgBiUW, path: "manga/manifest.json"` を読み、保存先のファイルを `WORK/prev_manifest.json` にコピーする。読めなければ前回なしとして進める。
 - 載せる日: 漫画は**次の営業日の朝**に載る（金曜・祝日前日は連休明け）。
   `TZ=Asia/Tokyo .venv/bin/python -c "from datetime import date; from manga_pipeline.manifest import next_business_day; print(next_business_day(date.today()))"` → `FOR_DATE`
@@ -113,6 +117,9 @@ GitHub MCP の `actions_run_trigger` を使う。
 - `method: run_workflow`、`owner: ts73103212-lang`、`repo: Stock-briefing_public`、`workflow_id: manga_render.yml`、`ref: main`
 - `inputs: {"request": "<WORK/request.json の中身を1行の文字列にしたもの>"}`
 
+- 依頼の**直前に**時刻を控える（待つときに、古い `status.json` と取り違えないため）:
+  `TZ=Asia/Tokyo date +%FT%T+09:00 > WORK/t0_<run_id>`
+
 1回の描画は 8コマで約10分。
 
 ## フェーズ4: 完了を待つ（19:15 で打ち切り）
@@ -120,8 +127,10 @@ GitHub MCP の `actions_run_trigger` を使う。
 Bash を `run_in_background` で実行し、終わりの通知を待つ（その間ほかの作業はしない）。`RUN_ID` は今回の `run_id`（r1 / r2 / r3）。
 
 ```bash
-D=$(TZ=Asia/Tokyo date +%F); RUN_ID=r1
-until git fetch -q origin manga 2>/dev/null && git show FETCH_HEAD:manga/$D/status.json 2>/dev/null | grep -q "\"run_id\": \"$RUN_ID\""; do
+D=$(TZ=Asia/Tokyo date +%F); RUN_ID=r1; T0=$(cat WORK/t0_$RUN_ID)
+# run_id が一致し、かつ finished_at が依頼した時刻より後のものだけを今回の結果とみなす
+until git fetch -q origin manga 2>/dev/null && git show FETCH_HEAD:manga/$D/status.json 2>/dev/null \
+  | .venv/bin/python -c "import json,sys; s=json.load(sys.stdin); sys.exit(0 if s.get('run_id')==sys.argv[1] and s.get('finished_at','')>sys.argv[2] else 1)" "$RUN_ID" "$T0"; do
   [ "$(TZ=Asia/Tokyo date +%H%M)" -ge 1915 ] && { echo TIMEOUT; exit 1; }
   sleep 60
 done
