@@ -30,9 +30,13 @@ TZ=Asia/Tokyo .venv/bin/python -c "from datetime import date; from note_pipeline
 - `True`（今日が東証の休場日）なら、何もせず終了する（通知もしない）。
 - `mkdir -p WORK/panels WORK/out`
 - **GitHub を使えるようにする（描画の起動に必要）。** 定期タスクのセッションには、最初は GitHub のツールが付いていない。
-  1. ToolSearch で `actions_run_trigger` を探す。見つかればそのまま進む。
-  2. 見つからなければ、`mcp__claude-code-remote__add_repo` を `owner: "ts73103212-lang"`, `repo: "Stock-briefing_public"`, `access: "push"` で呼び、もう一度 ToolSearch で `actions_run_trigger` を探す。
-  3. それでも使えなければ、ここで見送る（理由「GitHub の描画を起動できず」）。題材や台本を作る前に判断して、時間と生成枠を無駄にしない。
+  1. `mcp__claude-code-remote__add_repo` は**最初から読み込まれている普通のツール**なので、ToolSearch で探さずに**そのまま呼ぶ**。
+     引数は `owner: "ts73103212-lang"`, `repo: "Stock-briefing_public"`, `access: "push"`。返ってきた文面を `WORK/add_repo.txt` に控える。
+     （ToolSearch は「後から読み込むツール」しか探せないので、add_repo を ToolSearch で探しても見つからない。2026-11-25 の本番はこれで止まった）
+  2. 続けて ToolSearch で `select:mcp__github__actions_run_trigger` と、キーワード `actions_run_trigger` を試す。
+     見つからなければ `sleep 20` の後にもう一度だけ試す（GitHub のツールは少し遅れてつながることがある）。
+  3. それでも使えなければ、ここで見送る（理由「GitHub の描画を起動できず」）。通知の本文に add_repo の返答の要点を1行入れる。
+     題材や台本を作る前に判断して、時間と生成枠を無駄にしない。
 - 前回の manifest: Artifact ツールで `action: read, url: https://claude.ai/artifact/9m4Jxvrm3aj12NaojgBiUW, path: "manga/manifest.json"` を読み、保存先のファイルを `WORK/prev_manifest.json` にコピーする。読めなければ前回なしとして進める。
 - 載せる日: 漫画は**次の営業日の朝**に載る（金曜・祝日前日は連休明け）。
   `TZ=Asia/Tokyo .venv/bin/python -c "from datetime import date; from manga_pipeline.manifest import next_business_day; print(next_business_day(date.today()))"` → `FOR_DATE`
