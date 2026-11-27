@@ -6,6 +6,10 @@ CLI:
   → C.json は {"candidates": [...4件]}、M.json は {"c1": "<下調べメモ>", ...}。
     DAY.json（候補の日の文書）と NOTES.json（下調べメモ）を書き、概要を標準出力に出す。
     問題があれば1行1件で標準エラーに出し、終了コード 1。
+  python -m manga_pipeline.topics resolve --day DAY.json --pick PICK.json --notes NOTES.json \
+      --prev 前回の manifest.json --out RESOLVED.json [--today 2026-11-27]
+  → ユーザーの選択を読み分けて RESOLVED.json に書き、{"mode","for_date","id","notices"} を標準出力に出す。
+    どのファイルも無ければ None 扱い（--prev は履歴なし）。--today の既定は JST の今日。
 """
 from __future__ import annotations
 
@@ -133,6 +137,91 @@ def _cmd_build_day(a: argparse.Namespace) -> int:
     return 0
 
 
+def _clean(v) -> str | None:
+    if not isinstance(v, str):
+        return None
+    v = v.strip()
+    return v or None
+
+
+def _is_stale(picked_at, created_at) -> bool:
+    try:
+        return datetime.fromisoformat(picked_at) < datetime.fromisoformat(created_at)
+    except (TypeError, ValueError):
+        return False   # 読めなければこの判定は飛ばす（naive と aware の比較も TypeError）
+
+
+def resolve_pick(today: date, day: dict | None, pick: dict | None, notes: dict | None,
+                 history: list[dict]) -> dict:
+    """ユーザーの選択を user / free / auto に読み分ける。"""
+    for_date = next_business_day(today)
+    if not day or day.get("date") != today.isoformat():
+        day = None
+    pick = pick or {}
+    request = _clean(pick.get("request"))
+    free = _clean(pick.get("free"))
+    pid = pick.get("id")
+    notices: list[str] = []
+    mode = "auto"
+    candidate = None
+
+    if pid:
+        candidate = next((c for c in (day or {}).get("candidates", []) if c.get("id") == pid), None)
+        if candidate is None:
+            notices.append(f"選択した候補 {pid} が見つからないため、おまかせで描きます")
+        elif _is_stale(pick.get("picked_at"), day.get("created_at")):
+            candidate = None
+            notices.append("候補が選択の後に作り直されたため、おまかせで描きます")
+        else:
+            mode = "user"
+            if free:
+                free = None
+                notices.append("自由記述は、候補を選んだので使いません")
+    elif free:
+        mode = "free"
+        request = None
+
+    if mode != "user":
+        request = None
+    if mode != "free":
+        free = None
+    memo = None
+    if mode == "user":
+        m = (notes or {}).get("memos", {}).get(pid)
+        memo = m if isinstance(m, str) else None
+    warnings = []
+    for text in (request, free):
+        if text:
+            warnings += check_text(text)
+    return {
+        "mode": mode,
+        "for_date": for_date.isoformat(),
+        "candidate": candidate if mode == "user" else None,
+        "memo": memo,
+        "request": request,
+        "free": free,
+        "caution_cap_applies": mode == "auto",
+        "caution_count": caution_count(history, for_date),
+        "notices": notices,
+        "warnings": warnings,
+    }
+
+
+def _load(path: Path):
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+def _cmd_resolve(a: argparse.Namespace) -> int:
+    today = date.fromisoformat(a.today) if a.today else datetime.now(JST).date()
+    prev = _load(a.prev) or {}
+    r = resolve_pick(today, _load(a.day), _load(a.pick), _load(a.notes), prev.get("history", []))
+    a.out.write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(json.dumps({"mode": r["mode"], "for_date": r["for_date"],
+                      "id": r["candidate"]["id"] if r["candidate"] else None,
+                      "notices": r["notices"]}, ensure_ascii=False))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -144,6 +233,14 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--notes-out", required=True, type=Path)
     b.add_argument("--made-at", help="ISO8601（既定は現在時刻 JST）")
     b.set_defaults(func=_cmd_build_day)
+    r = sub.add_parser("resolve", help="ユーザーの選択を読み分ける")
+    r.add_argument("--day", required=True, type=Path)
+    r.add_argument("--pick", required=True, type=Path)
+    r.add_argument("--notes", required=True, type=Path)
+    r.add_argument("--prev", required=True, type=Path, help="前回の manifest.json（無ければ履歴なし）")
+    r.add_argument("--out", required=True, type=Path)
+    r.add_argument("--today", help="YYYY-MM-DD（既定は JST の今日）")
+    r.set_defaults(func=_cmd_resolve)
     a = ap.parse_args(argv)
     return a.func(a)
 

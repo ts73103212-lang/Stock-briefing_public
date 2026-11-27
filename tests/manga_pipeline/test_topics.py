@@ -7,9 +7,10 @@ from pathlib import Path
 import pytest
 
 from manga_pipeline.manifest import JST
-from manga_pipeline.topics import build_day, caution_count, caution_note
+from manga_pipeline.topics import build_day, caution_count, caution_note, resolve_pick
 
 REPO = Path(__file__).resolve().parents[2]
+TODAY = date(2026, 11, 27)
 
 
 def _cands() -> list[dict]:
@@ -20,6 +21,14 @@ def _cands() -> list[dict]:
 
 def _memos() -> dict[str, str]:
     return {f"c{n}": f"メモ{n}" for n in range(1, 5)}
+
+
+def _day() -> dict:
+    return build_day(datetime(2026, 11, 27, 14, 5, tzinfo=JST), _cands(), _memos(), [])[0]
+
+
+def _notes() -> dict:
+    return build_day(datetime(2026, 11, 27, 14, 5, tzinfo=JST), _cands(), _memos(), [])[1]
 
 
 def test_caution_count_same_week_only():
@@ -121,3 +130,89 @@ def test_cli_build_day_error_exit(tmp_path):   # 3件の候補で returncode 1�
     assert r.returncode == 1
     assert "4" in r.stderr
     assert not (tmp_path / "day.json").exists()
+
+
+def test_resolve_user_pick_with_request():
+    r = resolve_pick(TODAY, _day(), {"id": "c2", "request": " PTSの時間帯も ", "free": None,
+                     "picked_at": "2026-11-27T06:12:00Z"}, _notes(), [])
+    assert r["mode"] == "user" and r["candidate"]["id"] == "c2" and r["memo"] == _memos()["c2"]
+    assert r["request"] == "PTSの時間帯も" and r["free"] is None
+    assert r["caution_cap_applies"] is False and r["notices"] == [] and r["for_date"] == "2026-11-30"
+
+
+def test_resolve_free_only():
+    r = resolve_pick(TODAY, _day(), {"id": None, "request": "x", "free": "ゴンダ先輩の失敗談", "picked_at": "2026-11-27T06:00:00Z"}, _notes(), [])
+    assert r["mode"] == "free" and r["free"] == "ゴンダ先輩の失敗談" and r["request"] is None and r["candidate"] is None
+    assert r["caution_cap_applies"] is False
+
+
+def test_resolve_free_without_day():
+    r = resolve_pick(TODAY, None, {"id": None, "free": "PTSの話", "picked_at": "2026-11-27T06:00:00Z"}, None, [])
+    assert r["mode"] == "free"
+
+
+def test_resolve_no_pick_is_auto():
+    h = [{"for_date": "2026-11-24", "kind": "caution"}]
+    r = resolve_pick(TODAY, _day(), None, _notes(), h)
+    assert r["mode"] == "auto" and r["caution_cap_applies"] is True and r["notices"] == []
+    assert r["caution_count"] == 0   # for_date 11/30 は翌週
+
+
+def test_resolve_cleared_pick_is_auto():
+    assert resolve_pick(TODAY, _day(), {"id": None, "request": None, "free": None}, _notes(), [])["mode"] == "auto"
+
+
+def test_resolve_unknown_id_falls_back_with_notice():
+    r = resolve_pick(TODAY, _day(), {"id": "c5", "picked_at": "2026-11-27T06:00:00Z"}, _notes(), [])
+    assert r["mode"] == "auto" and "c5" in r["notices"][0]
+
+
+def test_resolve_day_of_other_date_is_no_candidates():
+    d = _day(); d["date"] = "2026-11-26"
+    r = resolve_pick(TODAY, d, {"id": "c1", "picked_at": "2026-11-27T06:00:00Z"}, _notes(), [])
+    assert r["mode"] == "auto" and r["notices"]
+
+
+def test_resolve_pick_older_than_candidates():
+    r = resolve_pick(TODAY, _day(), {"id": "c1", "picked_at": "2026-11-27T04:00:00Z"}, _notes(), [])  # 13:00 JST < 14:05
+    assert r["mode"] == "auto" and "作り直" in r["notices"][0]
+
+
+def test_resolve_id_wins_over_free():
+    r = resolve_pick(TODAY, _day(), {"id": "c3", "free": "別の話", "picked_at": "2026-11-27T06:00:00Z"}, _notes(), [])
+    assert r["mode"] == "user" and r["free"] is None and r["notices"]
+
+
+def test_resolve_blank_strings_are_none():
+    r = resolve_pick(TODAY, _day(), {"id": None, "request": "  ", "free": " \n", "picked_at": "2026-11-27T06:00:00Z"}, _notes(), [])
+    assert r["mode"] == "auto"
+
+
+def test_resolve_memo_missing_is_none():
+    r = resolve_pick(TODAY, _day(), {"id": "c1", "picked_at": "2026-11-27T06:00:00Z"}, None, [])
+    assert r["mode"] == "user" and r["memo"] is None
+
+
+def test_resolve_warns_on_advice_words():
+    r = resolve_pick(TODAY, _day(), {"id": None, "free": "今が買い時の株を教えて", "picked_at": "2026-11-27T06:00:00Z"}, _notes(), [])
+    assert r["mode"] == "free" and r["warnings"]
+
+
+def test_resolve_missing_picked_at_is_not_stale():
+    r = resolve_pick(TODAY, _day(), {"id": "c1"}, _notes(), [])
+    assert r["mode"] == "user"
+
+
+def test_cli_resolve_missing_files(tmp_path):   # どのファイルも無い → returncode 0、out の mode == "auto"
+    out = tmp_path / "resolved.json"
+    r = subprocess.run(
+        [sys.executable, "-m", "manga_pipeline.topics", "resolve",
+         "--day", str(tmp_path / "no-day.json"), "--pick", str(tmp_path / "no-pick.json"),
+         "--notes", str(tmp_path / "no-notes.json"), "--prev", str(tmp_path / "no-prev.json"),
+         "--out", str(out), "--today", "2026-11-27"],
+        cwd=REPO, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["mode"] == "auto" and doc["for_date"] == "2026-11-30"
+    summary = json.loads(r.stdout)
+    assert summary["mode"] == "auto" and summary["id"] is None and summary["notices"] == []
