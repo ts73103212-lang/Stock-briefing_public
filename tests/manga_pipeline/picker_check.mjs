@@ -25,6 +25,7 @@ const ok = (c, what) => { if (!c) fail(what); };
 const has = (s, sub, what) => ok(String(s).includes(sub), `${what}: ${JSON.stringify(s)} に ${JSON.stringify(sub)} が無い`);
 const stripAt = (o) => { const { picked_at, ...r } = o; ok(typeof picked_at === 'string' && picked_at.length > 0, 'picked_at が無い'); return r; };
 
+const DAY2 = { ...DAY, date: '2026-11-26', for_date: '2026-11-27', candidates: DAY.candidates.map((c) => ({ ...c, title: c.title + '（前日）' })) };
 const T = (s) => new Date(s + '+09:00');
 const SCENARIOS = {
   'render': { now: T('2026-11-27T15:12:00') },
@@ -36,6 +37,8 @@ const SCENARIOS = {
   'deadline': { now: T('2026-11-27T20:00:00') },
   'cross-deadline': { now: T('2026-11-27T19:59:00') },
   'no-today': { now: T('2026-11-30T10:00:00') },
+  'switch-day': { now: T('2026-11-27T15:12:00'), days: [DAY, DAY2] },
+  'live-update': { now: T('2026-11-27T15:12:00') },
   'no-db': { now: T('2026-11-27T15:12:00'), noDb: true },
 };
 
@@ -64,7 +67,10 @@ try {
         return {
           collection: () => ({
             orderBy() { return this; }, limit() { return this; },
-            onSnapshot(cb) { later(() => cb({ docs: days.map((d) => ({ data: () => d })) })); return () => {}; },
+            onSnapshot(cb) {
+              const push = (ds) => cb({ docs: ds.map((d) => ({ data: () => d })) });
+              window.__pushDays = push; later(() => push(days)); return () => {};
+            },
           }),
           doc: (k) => ({
             onSnapshot(cb) {
@@ -92,6 +98,29 @@ try {
   if (name === 'no-db') {
     await page.waitForFunction(() => document.body.innerText.includes('サインインした本人だけ'), null, { timeout: 5000 });
     has(await page.locator('body').innerText(), 'このページは、サインインした本人だけが使えます。', 'no-db');
+  } else if (name === 'switch-day' || name === 'live-update') {
+    await ready();
+    await page.locator('input[name=pick][value=c2]').check();
+    await page.fill('#request', 'PTSの時間帯も入れて');
+    const underC2 = () => page.evaluate(() => { const b = document.querySelector('#request-box'); return !b.hidden && b.previousElementSibling === document.querySelector('.card[data-id=c2]'); });
+    if (name === 'switch-day') {
+      await page.locator('#days button', { hasText: '11/26' }).click();
+      await page.waitForFunction(() => document.querySelector('#cards .title').innerText.includes('前日'));
+      await page.locator('#days button', { hasText: '11/27' }).click();
+      await page.waitForFunction(() => !document.querySelector('#cards .title').innerText.includes('前日'));
+      ok(await page.locator('input[name=pick][value=c2]').isChecked(), '日を戻したら c2 が選ばれたまま');
+    } else {
+      const changed = { ...DAY, candidates: DAY.candidates.map((c) => ({ ...c, title: c.title + '（更新）' })) };
+      await page.evaluate((d) => window.__pushDays([d]), changed);
+      await page.waitForFunction(() => document.querySelector('#cards .title').innerText.includes('更新'));
+      ok(await page.locator('input[name=pick][value=c2]').isChecked(), '更新後も c2 が選ばれたまま');
+    }
+    ok(await page.locator('#request').isVisible(), '要望欄が見えない');
+    ok(await underC2(), '要望欄が c2 の下にない');
+    eq(await page.inputValue('#request'), 'PTSの時間帯も入れて', '要望の保持');
+    await page.click('#save');
+    await page.waitForFunction(() => window.__sets.length > 0);
+    eq(stripAt(await lastSet()), { date: '2026-11-27', id: 'c2', request: 'PTSの時間帯も入れて', free: null }, 'set の中身');
   } else if (name === 'no-today') {
     await ready();
     has(await text('#status'), '今日の候補はまだありません', 'no-today status');

@@ -154,7 +154,8 @@ textarea:disabled{opacity:.5}
   }
 
   function buildCards(){
-    const box = $("cards"); box.textContent = "";
+    const box = $("cards"); $("board").insertBefore($("request-box"), box.nextSibling);   // 作り直しで要望欄が消えないよう、先に外へ出す
+    box.textContent = "";
     (current.candidates || []).forEach(c => {
       const lab = el("label","card"); lab.dataset.id = c.id;
       const r = el("input"); r.type = "radio"; r.name = "pick"; r.value = c.id;
@@ -272,7 +273,7 @@ textarea:disabled{opacity:.5}
       if (keep){ if (JSON.stringify(keep) !== shown){ current = keep; shown = JSON.stringify(keep); show(); } else renderDays(); }
       else if (!days.length){ select(null); }
       else select(days[0].date);
-    }, () => { clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","候補を読み込めませんでした。ページを開き直してください。")); });
+    }, () => { clearTimeout(timer); const l = $("loading"); l.hidden = false; l.textContent = "候補を読み込めませんでした。ページを開き直してください。"; });
     setInterval(() => { if (current) sync(); }, 60000);   // 開きっぱなしでも締切を過ぎたら入力を閉じる
   }
   if (window.claude && claude.use) start();

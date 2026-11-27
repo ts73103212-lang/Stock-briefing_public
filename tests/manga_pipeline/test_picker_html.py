@@ -8,7 +8,7 @@ REPO = Path(__file__).resolve().parents[2]
 PAGE = REPO / "docs" / "manga" / "picker.html"
 SCENARIOS = [
     "render", "pick-request", "free-exclusive", "blank-free", "auto",
-    "reload", "deadline", "cross-deadline", "no-today", "no-db",
+    "reload", "deadline", "cross-deadline", "no-today", "no-db", "switch-day", "live-update",
 ]
 
 
