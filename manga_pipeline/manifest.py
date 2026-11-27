@@ -2,6 +2,7 @@
 
 CLI:
   python -m manga_pipeline.manifest --title T --kind term --explanation E.html --rows DIR --out DIR \
+      --picked auto --difficulty 1 \
       [--prev 前回の manifest.json] [--made-at 2026-11-24T18:40:00+09:00]
   → DIR/index.html と DIR/manga/manifest.json を書き、row1〜4.jpg を DIR/manga/ にコピーする。
 """
@@ -19,6 +20,7 @@ from note_pipeline.market import is_tse_closed
 
 JST = timezone(timedelta(hours=9))
 KINDS = {"theme", "term", "stock", "caution"}   # 相場の振り返り・用語・話題の銘柄/テーマ・注意喚起
+PICKED = {"user", "free", "auto", "replaced"}   # 読者が選んだ / 自由入力 / 自動 / 選んだ題材を差し替えた
 DISCLAIMER = "※投資判断はご自身で。"
 HISTORY_LEN = 5
 ROW_FILES = [f"row{k}.jpg" for k in range(1, 5)]
@@ -37,9 +39,13 @@ def _sha256(path: Path) -> str:
 
 
 def build_manifest(made_at: datetime, title: str, kind: str, explanation_html: str,
-                   rows: list[Path], prev: dict | None) -> dict:
+                   rows: list[Path], prev: dict | None, *, picked: str, difficulty: int) -> dict:
     if kind not in KINDS:
         raise ValueError(f"kind must be one of {sorted(KINDS)}: {kind!r}")
+    if picked not in PICKED:
+        raise ValueError(f"picked must be one of {sorted(PICKED)}: {picked!r}")
+    if type(difficulty) is not int or not 1 <= difficulty <= 3:
+        raise ValueError(f"difficulty must be an int 1-3: {difficulty!r}")
     if not title or not title.strip():
         raise ValueError("title is empty")
     if DISCLAIMER not in explanation_html:
@@ -50,7 +56,7 @@ def build_manifest(made_at: datetime, title: str, kind: str, explanation_html: s
         made_at = made_at.replace(tzinfo=JST)
     for_date = next_business_day(made_at.astimezone(JST).date()).isoformat()
     history = [h for h in (prev or {}).get("history", []) if h.get("for_date") != for_date]
-    history = (history + [{"for_date": for_date, "kind": kind}])[-HISTORY_LEN:]
+    history = (history + [{"for_date": for_date, "kind": kind, "picked": picked, "difficulty": difficulty}])[-HISTORY_LEN:]
     return {
         "for_date": for_date,
         "made_at": made_at.astimezone(JST).isoformat(timespec="minutes"),
@@ -104,6 +110,8 @@ def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--title", required=True)
     ap.add_argument("--kind", required=True, choices=sorted(KINDS))
+    ap.add_argument("--picked", required=True, choices=sorted(PICKED))
+    ap.add_argument("--difficulty", required=True, type=int, choices=[1, 2, 3])
     ap.add_argument("--explanation", required=True, type=Path)
     ap.add_argument("--rows", required=True, type=Path)
     ap.add_argument("--out", required=True, type=Path)
@@ -117,7 +125,8 @@ def main(argv: list[str] | None = None) -> None:
     for r in rows:
         if not r.exists():
             raise FileNotFoundError(r)
-    manifest = build_manifest(made_at, a.title, a.kind, a.explanation.read_text(encoding="utf-8"), rows, prev)
+    manifest = build_manifest(made_at, a.title, a.kind, a.explanation.read_text(encoding="utf-8"), rows, prev,
+                              picked=a.picked, difficulty=a.difficulty)
     manga_dir = a.out / "manga"
     manga_dir.mkdir(parents=True, exist_ok=True)
     for r in rows:
