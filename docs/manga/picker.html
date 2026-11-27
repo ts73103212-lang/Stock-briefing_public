@@ -1,0 +1,281 @@
+<title>朝マンガ ネタ選び</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* レイアウト：1列のカード、選んだカードの下に要望欄、最後に自由記述、画面下に保存バー。スマホで片手で選べることを優先 */
+:root{
+  --bg:#F4F6F9; --card:#FFFFFF; --ink:#18202C; --muted:#5C6676; --line:#DCE1E8;
+  --navy:#1E3A5F; --gold:#C8961E; --gold-soft:#FBF2DC; --pick:#1E3A5F; --pick-soft:#E6EEF8;
+  --ok:#13803B; --warn:#B45309; --ng:#B91C1C;
+  --f:"Meiryo UI","メイリオ",Meiryo,"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F141B; --card:#18202B; --ink:#E7ECF3; --muted:#9AA6B6; --line:#2A3443;
+  --navy:#8FB4E3; --gold:#E2B54A; --gold-soft:#2C2616; --pick:#8FB4E3; --pick-soft:#1C2B3F;
+  --ok:#4ADE80; --warn:#F59E0B; --ng:#F87171; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F141B; --card:#18202B; --ink:#E7ECF3; --muted:#9AA6B6; --line:#2A3443;
+  --navy:#8FB4E3; --gold:#E2B54A; --gold-soft:#2C2616; --pick:#8FB4E3; --pick-soft:#1C2B3F;
+  --ok:#4ADE80; --warn:#F59E0B; --ng:#F87171; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-block:20px 190px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.top{display:flex;flex-direction:column;gap:10px}
+h1{font-size:22px;margin:0;color:var(--navy);text-wrap:balance}
+.sub{color:var(--muted);font-size:13px;margin:0}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.days button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+.days button[aria-pressed="true"]{background:var(--navy);color:var(--bg);border-color:var(--navy)}
+.status{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px}
+.pill{border-radius:999px;padding:2px 10px;font-weight:700;border:1px solid currentColor}
+.pill.open{color:var(--ok)} .pill.closed{color:var(--muted)}
+[hidden]{display:none!important}
+.lead{font-weight:700;font-size:14px}
+h2{font-size:15px;margin:22px 0 8px;color:var(--muted);letter-spacing:.04em}
+.cards{display:grid;gap:10px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;cursor:pointer;min-width:0}
+.card.on{border-color:var(--pick);background:var(--pick-soft)}
+.card input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--navy);grid-row:span 4}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+.kind{background:var(--gold-soft);color:var(--ink);border-radius:4px;padding:0 6px;font-weight:700}
+.diff{color:var(--gold);letter-spacing:.1em;font-size:14px}
+.note{color:var(--warn);font-weight:700}
+.title{font-size:16px;font-weight:700;line-height:1.45;min-width:0;overflow-wrap:anywhere}
+.sum,.hook{color:var(--muted);font-size:13.5px;min-width:0;overflow-wrap:anywhere}
+.ask{background:var(--card);border:1.5px solid var(--pick);border-radius:12px;padding:10px 14px;display:grid;gap:6px;margin-top:-4px}
+.ask label,.freebox label.t{font-size:12px;color:var(--muted)}
+textarea{font:inherit;font-size:14px;width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--ink);min-height:64px;resize:vertical}
+textarea:disabled{opacity:.5}
+.freebox{background:var(--card);border:1.5px dashed var(--gold);border-radius:12px;padding:12px 14px;display:grid;gap:8px}
+.freebox.on{border-style:solid;border-color:var(--pick);background:var(--pick-soft)}
+.freebox .row{display:flex;gap:10px;align-items:center;cursor:pointer;font-weight:700}
+.freebox input[type=radio]{width:22px;height:22px;margin:0;accent-color:var(--navy)}
+.count{font-size:12px;color:var(--muted);text-align:right}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding-block:10px calc(10px + env(safe-area-inset-bottom, 0px));padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.bar .in{max-width:760px;margin:0 auto;display:grid;gap:8px}
+.current{font-size:13px;overflow-wrap:anywhere}
+.current b{color:var(--navy)}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.bar button{font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;cursor:pointer;border:1.5px solid var(--navy)}
+.btn-main{background:var(--navy);color:var(--bg)} .btn-sub{background:transparent;color:var(--navy)}
+.bar button:disabled{opacity:.45;cursor:default}
+.msg{font-size:13px;color:var(--muted);min-height:1.4em;overflow-wrap:anywhere}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:24px;color:var(--muted);margin-top:16px}
+.card:has(:focus-visible),.freebox:has(:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
+.bar :focus-visible,.days :focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <h1>朝マンガ ネタ選び</h1>
+    <p class="sub">毎日の夕方に4つの候補が届きます。締切までに1つ選ぶと、次の営業日の朝のマンガになります。選ばなければおまかせです。</p>
+    <div class="days" id="days" aria-label="日付"></div>
+    <div class="status" id="status"></div>
+  </div>
+  <main id="main">
+    <div class="empty" id="loading">候補を読み込んでいます…</div>
+    <div id="board" hidden>
+      <div class="lead" id="lead"></div>
+      <h2>候補</h2>
+      <div class="cards" id="cards"></div>
+      <div class="ask" id="request-box" hidden>
+        <label for="request">この候補への要望（任意）</label>
+        <textarea id="request" maxlength="200" placeholder="例：時間外取引の時間帯も入れて"></textarea>
+        <div class="count" id="request-count"></div>
+      </div>
+      <h2>自由記述</h2>
+      <div class="freebox" id="freebox">
+        <label class="row"><input type="radio" name="pick" id="free-radio" value="free"><span>自由記述だけで頼む</span></label>
+        <label class="t" for="free">読みたいネタを自由に書く</label>
+        <textarea id="free" maxlength="300" placeholder="例：決算発表のしくみを、はじめての人向けに"></textarea>
+        <div class="count" id="free-count"></div>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="bar" id="bar" hidden>
+  <div class="in">
+    <div class="current" id="current" role="status"></div>
+    <div class="btns">
+      <button class="btn-main" id="save" type="button">この内容で保存</button>
+      <button class="btn-sub" id="auto" type="button">おまかせに戻す</button>
+    </div>
+    <div class="msg" id="msg" role="status"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DEADLINE = "20:00", REQUEST_MAX = 200, FREE_MAX = 300;
+  const KINDS = {theme:"振り返り", term:"用語", stock:"話題", caution:"注意喚起"};
+  const $ = (id) => document.getElementById(id);
+  let db = null, days = [], current = null, picks = {}, unsubPick = null, shown = "";
+  let sel = null, request = "", freeText = "";   // sel: "c1".."c4" | "free" | null
+
+  function jstNow(){
+    const p = new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
+    const g = (t) => p.find(x => x.type === t).value;
+    return {date:`${g("year")}-${g("month")}-${g("day")}`, time:`${g("hour")}:${g("minute")}`.replace(/^24/,"00")};
+  }
+  function isOpen(day){ const n = jstNow(); return !!day && day.date === n.date && n.time < (day.deadline || DEADLINE); }
+  function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function md(d){ const [y,m,dd] = d.split("-"); return `${+m}/${+dd}(${"日月火水木金土"[new Date(+y, +m - 1, +dd).getDay()]})`; }
+  function draftKey(){ return "manga-pick-draft-" + current.date; }
+  function loadDraft(){ try { const d = JSON.parse(localStorage.getItem(draftKey()) || "null"); if (d){ sel = d.sel || null; request = d.request || ""; freeText = d.free || ""; } } catch (e) {} }
+  function saveDraft(){ try { if (current) localStorage.setItem(draftKey(), JSON.stringify({sel, request, free: freeText})); } catch (e) {} }
+  function candOf(id){ return current && (current.candidates || []).find(c => c.id === id); }
+
+  function applyPick(p){
+    sel = null; request = ""; freeText = "";
+    if (current) loadDraft();
+    if (p){   // 保存済みの選択は下書きより優先して画面に戻す
+      if (p.id){ sel = p.id; request = p.request || ""; freeText = ""; }
+      else if (p.free){ sel = "free"; freeText = p.free; request = ""; }
+      else { sel = null; request = ""; freeText = ""; }
+    }
+  }
+
+  function renderDays(){
+    const box = $("days"); box.textContent = "";
+    days.forEach(d => {
+      const b = el("button", null, md(d.date)); b.type = "button";
+      b.setAttribute("aria-pressed", String(!!current && current.date === d.date));
+      b.addEventListener("click", () => select(d.date));
+      box.appendChild(b);
+    });
+  }
+  function renderStatus(){
+    const s = $("status"); s.textContent = "";
+    if (!current) return;
+    const open = isOpen(current), today = jstNow().date;
+    s.appendChild(el("span", open ? "pill open" : "pill closed", open ? `受付中・締切 ${current.deadline || DEADLINE}` : "締切済み"));
+    if (current.date !== today) s.appendChild(el("span", null, "今日の候補はまだありません（見るだけ）"));
+  }
+
+  function buildCards(){
+    const box = $("cards"); box.textContent = "";
+    (current.candidates || []).forEach(c => {
+      const lab = el("label","card"); lab.dataset.id = c.id;
+      const r = el("input"); r.type = "radio"; r.name = "pick"; r.value = c.id;
+      const meta = el("div","meta");
+      meta.appendChild(el("span","kind", KINDS[c.kind] || c.kind || ""));
+      const n = Number(c.difficulty) || 0;
+      const d = el("span","diff","☆".repeat(Math.max(0, Math.min(3, n)))); d.setAttribute("aria-label", `難易度${n}`); meta.appendChild(d);
+      if (c.caution_count_note) meta.appendChild(el("span","note", c.caution_count_note));
+      lab.append(r, meta, el("div","title", c.title || "（無題）"), el("div","sum", c.summary || ""), el("div","hook", c.hook ? "つかみ：" + c.hook : ""));
+      r.addEventListener("change", () => choose(c.id));
+      box.appendChild(lab);
+    });
+  }
+
+  function choose(id){
+    sel = id; $("msg").textContent = ""; saveDraft(); sync();
+    if (id !== "free" && !$("request").disabled) $("request").focus();
+  }
+
+  // 画面の状態（選択・入力・有効/無効・「いまの選択」）を、作り直さずにそろえる。毎分の再判定にも使う
+  function sync(){
+    const open = isOpen(current), has = !!current;
+    $("bar").hidden = !has;
+    if (!has) return;
+    document.querySelectorAll("#cards .card").forEach(lab => {
+      const r = lab.querySelector("input"); r.checked = sel === lab.dataset.id; r.disabled = !open; lab.classList.toggle("on", r.checked);
+    });
+    const fr = $("free-radio"); fr.checked = sel === "free"; fr.disabled = !open; $("freebox").classList.toggle("on", fr.checked);
+    const rb = $("request-box"), onCand = !!sel && sel !== "free" && !!candOf(sel);
+    rb.hidden = !onCand;
+    if (onCand){ const lab = document.querySelector(`#cards .card[data-id="${sel}"]`); if (lab && lab.nextElementSibling !== rb) lab.after(rb); }
+    if ($("request").value !== request) $("request").value = request;
+    if ($("free").value !== freeText) $("free").value = freeText;
+    $("request").disabled = !open; $("free").disabled = !open;
+    $("request-count").textContent = `${request.length}/${REQUEST_MAX}`; $("free-count").textContent = `${freeText.length}/${FREE_MAX}`;
+    const okSel = onCand || (sel === "free" && freeText.trim().length > 0);
+    $("save").disabled = !open || !okSel; $("auto").disabled = !open;
+    $("save").title = sel === "free" && !freeText.trim() ? "自由記述を書いてください" : "";
+    renderStatus();
+    $("lead").textContent = `${md(current.for_date || current.date)} 朝に掲載`;
+    renderCurrent();
+  }
+  function renderCurrent(){
+    const c = $("current"); c.textContent = "";
+    if (!current) return;
+    const p = picks[current.date];
+    c.appendChild(el("b", null, "いまの選択："));
+    if (p && p.id){ const cd = candOf(p.id); c.append(`${p.id}${cd ? "（" + cd.title + "）" : ""}`); if (p.request) c.append(`　要望：${p.request}`); }
+    else if (p && p.free) c.append(`自由記述：${p.free}`);
+    else c.append("おまかせ");
+  }
+
+  function show(){
+    renderDays();
+    $("loading").hidden = true;
+    $("board").hidden = !current;
+    if (!current){ renderStatus(); $("bar").hidden = true; $("main").appendChild(el("div","empty","まだ候補がありません。")); return; }
+    buildCards(); sync();
+  }
+  function select(date){
+    current = days.find(d => d.date === date) || null;
+    if (unsubPick){ unsubPick(); unsubPick = null; }
+    applyPick(current ? picks[current.date] : null);
+    $("msg").textContent = "";
+    shown = current ? JSON.stringify(current) : "";
+    show();
+    if (current && db){
+      let first = true; const date0 = current.date;
+      unsubPick = db.doc("picks/" + date0).onSnapshot(s => {
+        if (s.exists) picks[date0] = s.data(); else delete picks[date0];
+        if (first){ first = false; if (current && current.date === date0){ applyPick(picks[date0]); sync(); return; } }
+        if (current && current.date === date0) renderCurrent();
+      }, () => {});
+    }
+  }
+
+  async function write(doc, done){
+    if (!db || !current) return;
+    if (!isOpen(current)){ $("msg").textContent = `締切（${current.deadline || DEADLINE}）を過ぎたので保存できませんでした。`; sync(); return; }   // 開きっぱなしで締切をまたいだとき
+    $("save").disabled = $("auto").disabled = true;
+    $("msg").textContent = "保存しています…";
+    try {
+      await db.doc("picks/" + current.date).set(Object.assign({date: current.date}, doc, {picked_at: new Date().toISOString()}));
+      $("msg").textContent = done;
+    } catch (e) {
+      $("msg").textContent = "保存できませんでした。通信を確認して、もう一度押してください。";
+    } finally { sync(); }
+  }
+  $("save").addEventListener("click", () => {
+    if (!current) return;
+    if (sel === "free"){
+      const f = freeText.trim();
+      if (!f){ $("msg").textContent = "自由記述を書いてください。"; return; }
+      write({id: null, request: null, free: f}, "自由記述で保存しました。締切までは選び直せます。");
+    } else if (sel && candOf(sel)){
+      write({id: sel, request: request.trim() || null, free: null}, `${sel} で保存しました。締切までは選び直せます。`);
+    } else $("msg").textContent = "候補を選んでください。";
+  });
+  $("auto").addEventListener("click", () => {
+    sel = null; request = ""; freeText = ""; saveDraft();
+    write({id: null, request: null, free: null}, "おまかせに戻しました。");
+  });
+  $("free-radio").addEventListener("change", () => { choose("free"); if (!$("free").disabled) $("free").focus(); });
+  $("request").addEventListener("input", () => { request = $("request").value; saveDraft(); sync(); });
+  $("free").addEventListener("input", () => { freeText = $("free").value; saveDraft(); sync(); });
+
+  async function start(){
+    const timer = setTimeout(() => { if (!days.length) $("loading").textContent = "候補を読み込めませんでした。ページを開き直してください。"; }, 10000);
+    db = await claude.use("db");
+    if (!db){ clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","このページは、サインインした本人だけが使えます。")); return; }
+    db.collection("days").orderBy("date","desc").limit(7).onSnapshot(snap => {
+      clearTimeout(timer);
+      days = snap.docs.map(d => d.data()).filter(d => d && d.date);
+      const keep = current && days.find(d => d.date === current.date);
+      if (keep){ if (JSON.stringify(keep) !== shown){ current = keep; shown = JSON.stringify(keep); show(); } else renderDays(); }
+      else if (!days.length){ select(null); }
+      else select(days[0].date);
+    }, () => { clearTimeout(timer); $("main").textContent = ""; $("main").appendChild(el("div","empty","候補を読み込めませんでした。ページを開き直してください。")); });
+    setInterval(() => { if (current) sync(); }, 60000);   // 開きっぱなしでも締切を過ぎたら入力を閉じる
+  }
+  if (window.claude && claude.use) start();
+  else { $("loading").textContent = "claude.ai の中で開いてください。"; }
+})();
+</script>
