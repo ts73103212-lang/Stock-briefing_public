@@ -37,6 +37,8 @@ const SCENARIOS = {
   'deadline': { now: T('2026-11-27T20:00:00') },
   'cross-deadline': { now: T('2026-11-27T19:59:00') },
   'no-today': { now: T('2026-11-30T10:00:00') },
+  'past-day': { now: T('2026-11-27T15:12:00'), days: [DAY, DAY2] },
+  'pick-error': { now: T('2026-11-27T15:12:00'), pickErr: true },
   'switch-day': { now: T('2026-11-27T15:12:00'), days: [DAY, DAY2] },
   'live-update': { now: T('2026-11-27T15:12:00') },
   'no-db': { now: T('2026-11-27T15:12:00'), noDb: true },
@@ -54,7 +56,7 @@ try {
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
   await page.clock.setFixedTime(sc.now);
-  await page.addInitScript(({ days, picks, noDb }) => {
+  await page.addInitScript(({ days, picks, noDb, pickErr }) => {
     window.__sets = [];
     const store = new Map(Object.entries(picks || {}).map(([d, v]) => ['picks/' + d, v]));
     const subs = new Map();
@@ -73,7 +75,8 @@ try {
             },
           }),
           doc: (k) => ({
-            onSnapshot(cb) {
+            onSnapshot(cb, err) {
+              if (pickErr){ later(() => err && err(new Error('x'))); return () => {}; }
               if (!subs.has(k)) subs.set(k, new Set());
               subs.get(k).add(cb); later(() => cb(snapOf(k)));
               return () => subs.get(k).delete(cb);
@@ -86,7 +89,7 @@ try {
         };
       },
     };
-  }, { days: sc.days || [DAY], picks: sc.picks, noDb: !!sc.noDb });
+  }, { days: sc.days || [DAY], picks: sc.picks, noDb: !!sc.noDb, pickErr: !!sc.pickErr });
   await page.goto(PAGE);
 
   const text = (sel) => page.locator(sel).innerText();
@@ -121,6 +124,16 @@ try {
     await page.click('#save');
     await page.waitForFunction(() => window.__sets.length > 0);
     eq(stripAt(await lastSet()), { date: '2026-11-27', id: 'c2', request: 'PTSの時間帯も入れて', free: null }, 'set の中身');
+  } else if (name === 'past-day') {
+    await ready();
+    ok(!(await text('#status')).includes('見るだけ'), '今日を開いている間は「見るだけ」が出ない');
+    await page.locator('#days button', { hasText: '11/26' }).click();
+    await page.waitForFunction(() => document.querySelector('#cards .title').innerText.includes('前日'));
+    has(await text('#status'), '過去の候補です（見るだけ）', 'past-day status');
+    ok(!(await text('#status')).includes('今日の候補はまだありません'), '今日の doc があるのに「まだありません」');
+  } else if (name === 'pick-error') {
+    await ready();
+    await page.waitForFunction(() => document.querySelector('#msg').innerText.includes('読み込めませんでした'), null, { timeout: 5000 });
   } else if (name === 'no-today') {
     await ready();
     has(await text('#status'), '今日の候補はまだありません', 'no-today status');

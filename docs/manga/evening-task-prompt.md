@@ -47,35 +47,37 @@ TZ=Asia/Tokyo .venv/bin/python -c "from datetime import date; from note_pipeline
 ユーザーは 20:00 までに、ネタ選びページで候補（`c1`〜`c4`）を1つ選ぶ（任意で要望つき）か、自由記述だけで頼む。それをここで読む。
 
 1. 手元のツール一覧に `ArtifactData` が無ければ、ToolSearch で `select:ArtifactData` を呼んで読み込む。
-2. `rm -rf WORK/raw WORK/day.json WORK/notes.json WORK/pick.json`
+2. `rm -rf WORK/raw WORK/day.json WORK/notes.json WORK/pick.json WORK/extra_notices.txt`
 3. ArtifactData `get` を3回呼ぶ。どれも `url: https://claude.ai/artifact/LVZ7n7pqEzAdpfNWqUxjXM`、`doc_id: <今日 YYYY-MM-DD>`、`out_dir: <リポジトリの絶対パス>/WORK/raw`。
    - `collection: days`（その日の候補4件）
    - `collection: notes`（候補ごとの下調べメモ。`{"date", "memos": {"c1": …}}`）
    - `collection: picks`（ユーザーの選択。`{"date", "id", "request", "free", "picked_at"}`）
 
-   見つからない（not found のエラー、または結果が空）の文書は「無い」として扱い、何もしない（ファイルを作らない）。
-4. 保存されたファイルから、**文書の中身（`data` の部分）だけ**を `WORK/day.json`・`WORK/notes.json`・`WORK/pick.json` に書き出す
-   （`id`・`version` などの入れ物は入れない。無い文書のファイルは作らない）:
+   文書があれば `WORK/raw/<collection>/<今日>.json` に**文書の中身そのもの**（`{"date": …, …}`）が保存される。
+   `No document "<今日>" in collection "<collection>".` と返ったら、その文書は「無い」として扱い、何もしない（ファイルは作られない）。
+4. 保存されたファイルを `WORK/day.json`・`WORK/notes.json`・`WORK/pick.json` にコピーし、各文書の `date` が今日 `D` と同じか確かめる
+   （違う文書は読み違いなので、下の「読めなかった」扱いにする）:
 
 ```bash
 D=$(TZ=Asia/Tokyo date +%F)
 .venv/bin/python - "$D" <<'EOF'
-import json, sys
+import json, shutil, sys
 from pathlib import Path
 d = sys.argv[1]
+bad = False
 for col, name in (("days", "day"), ("notes", "notes"), ("picks", "pick")):
     src = Path("WORK/raw") / col / f"{d}.json"
     if not src.exists():
         print(col, "なし"); continue
     doc = json.loads(src.read_text(encoding="utf-8"))
-    if isinstance(doc, dict) and isinstance(doc.get("data"), dict):
-        doc = doc["data"]   # 入れ物（id・version つき）なら中身だけにする
-    Path("WORK", f"{name}.json").write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    if not isinstance(doc, dict) or doc.get("date") != d:
+        print(col, "date が", d, "と一致しない", file=sys.stderr); bad = True; continue
+    shutil.copy(src, Path("WORK", f"{name}.json"))
     print(col, "->", f"WORK/{name}.json")
+sys.exit(1 if bad else 0)
 EOF
 ```
 
-   `out_dir` に保存されず、結果に中身が直接返ってきた場合は、その文書の `data` の部分（`date` などのキーを持つオブジェクト）を自分で同じファイル名に書く。
 5. 読み分ける:
 
 ```bash
@@ -87,7 +89,8 @@ EOF
    - `WORK/choice.json` の `notices`（例：「選択した候補 c3 が見つからないため、おまかせで描きます」）は、**通知の2行目以降にそのまま入れる**
      （成功の通知では描き直しの記録の次、3行目から。フェーズ8）。黙って捨てない。
    - **ArtifactData が読み込めない・`get` がエラー（not found 以外）・上の書き出しや `resolve` が失敗した（エラーで止まった）** ときは、選択なし（`auto`）として進め、
-     通知の `notices` に `選択を読めなかったため、おまかせで描きます` を足す（ユーザーの選択を黙って無視しない）。`WORK/choice.json` は次で作る
+     `echo '選択を読めなかったため、おまかせで描きます' >> WORK/extra_notices.txt` で**ファイルに書き残す**（1行1件。通知はフェーズ8でここから作る。ユーザーの選択を黙って無視しない）。
+     書き出しの失敗や `date` の不一致で止まったときは、`WORK/day.json`・`WORK/notes.json`・`WORK/pick.json` を消してから次へ進む。`WORK/choice.json` は次で作る
      （無いファイルを渡すと「選択なし」になる。これも失敗したら `--prev` も `WORK/none.json` にする）:
      `.venv/bin/python -m manga_pipeline.topics resolve --day WORK/none.json --pick WORK/none.json --notes WORK/none.json --prev WORK/prev_manifest.json --out WORK/choice.json`
 
@@ -306,15 +309,16 @@ PushNotification で次のどれかを送る。
   - `replaced`：`（差し替え）`
 
   2行目に描き直しの記録を1行入れる（上限を決める材料にするため）。例：`描き直し：r2 4コマ（目×3・グラフ向き×1）、r3 なし／計12枚`
-  3行目以降に、`WORK/choice.json` の `notices`（と、フェーズ0で足した `選択を読めなかったため、おまかせで描きます`）を1件1行でそのまま入れ、
-  差し替えた日は `選択ネタは<理由>のため差し替え`、取り入れなかった要望があればその一言を入れる。
+  3行目以降は、**覚えているものではなくディスクから読んで**作る: `WORK/choice.json` の `notices` と `WORK/extra_notices.txt`（あれば。フェーズ0の読めなかった通知）を1件1行でそのまま入れ、
+  `WORK/topic.md` に書いた、差し替えの理由（`選択ネタは<理由>のため差し替え`）と取り入れなかった要望の一言も入れる。
+  （例：`.venv/bin/python -c "import json; print('\n'.join(json.load(open('WORK/choice.json')).get('notices', [])))"; cat WORK/extra_notices.txt WORK/topic.md`）
   例：
   ```
   🐾 明日の漫画ができました：PTSって何？（差し替え）
   描き直し：r2 2コマ（目×2）、r3 なし／計10枚
   選択ネタは数字の裏付けが取れなかったため差し替え
   ```
-- 見送り：`🐾 漫画は本日見送り：<理由>`（2行目以降に `notices` があれば、成功のときと同じように入れる）
+- 見送り：`🐾 漫画は本日見送り：<理由>`（2行目以降に、成功のときと同じく `WORK/choice.json` の `notices`・`WORK/extra_notices.txt` を入れる）
 - ログイン切れ（`auth` が `expired` / `persist_failed`）：`🐾 漫画は本日見送り：Codex の再ログインが必要（docs/manga/README.md）`
 
 見送りの日は納品先を更新しない（前回の manifest の `for_date` は過去の日なので、朝のブリーフィングは漫画欄を省く）。

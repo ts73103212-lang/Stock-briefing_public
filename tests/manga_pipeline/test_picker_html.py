@@ -9,6 +9,7 @@ PAGE = REPO / "docs" / "manga" / "picker.html"
 SCENARIOS = [
     "render", "pick-request", "free-exclusive", "blank-free", "auto",
     "reload", "deadline", "cross-deadline", "no-today", "no-db", "switch-day", "live-update",
+    "past-day", "pick-error",
 ]
 
 

@@ -69,7 +69,7 @@ textarea:disabled{opacity:.5}
 <div class="wrap">
   <div class="top">
     <h1>朝マンガ ネタ選び</h1>
-    <p class="sub">毎日の夕方に4つの候補が届きます。締切までに1つ選ぶと、次の営業日の朝のマンガになります。選ばなければおまかせです。</p>
+    <p class="sub">平日14時ごろに4つの候補が届きます（締切 20:00）。締切までに1つ選ぶと、次の営業日の朝のマンガになります。選ばなければおまかせです。</p>
     <div class="days" id="days" aria-label="日付"></div>
     <div class="status" id="status"></div>
   </div>
@@ -150,7 +150,7 @@ textarea:disabled{opacity:.5}
     if (!current) return;
     const open = isOpen(current), today = jstNow().date;
     s.appendChild(el("span", open ? "pill open" : "pill closed", open ? `受付中・締切 ${current.deadline || DEADLINE}` : "締切済み"));
-    if (current.date !== today) s.appendChild(el("span", null, "今日の候補はまだありません（見るだけ）"));
+    if (current.date !== today) s.appendChild(el("span", null, days[0] && days[0].date === today ? "過去の候補です（見るだけ）" : "今日の候補はまだありません（見るだけ）"));
   }
 
   function buildCards(){
@@ -212,7 +212,10 @@ textarea:disabled{opacity:.5}
     renderDays();
     $("loading").hidden = true;
     $("board").hidden = !current;
-    if (!current){ renderStatus(); $("bar").hidden = true; $("main").appendChild(el("div","empty","まだ候補がありません。")); return; }
+    let none = $("none");
+    if (!none){ none = el("div","empty","まだ候補がありません。"); none.id = "none"; $("main").appendChild(none); }
+    none.hidden = !!current;
+    if (!current){ renderStatus(); $("bar").hidden = true; return; }
     buildCards(); sync();
   }
   function select(date){
@@ -228,7 +231,7 @@ textarea:disabled{opacity:.5}
         if (s.exists) picks[date0] = s.data(); else delete picks[date0];
         if (first){ first = false; if (current && current.date === date0){ applyPick(picks[date0]); sync(); return; } }
         if (current && current.date === date0) renderCurrent();
-      }, () => {});
+      }, () => { if (current && current.date === date0) $("msg").textContent = "選択の状態を読み込めませんでした。開き直してください。"; });
     }
   }
 

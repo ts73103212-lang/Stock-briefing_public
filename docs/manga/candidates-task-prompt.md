@@ -34,9 +34,9 @@ mkdir -p WORK
 - `True`（今日が東証の休場日）なら、何もせず終了する（通知もしない）。以降の作業は `repo/` の中で行う。
 - **再実行のガード。** ArtifactData `get`（`url: https://claude.ai/artifact/LVZ7n7pqEzAdpfNWqUxjXM`, `collection: picks`, `doc_id: <今日>`）。
   - すでに選択がある → `days` を上書きしない。PushNotification で `🐾 漫画のネタ候補は作り直しませんでした（すでに選択があります）` を送って終了する。
-  - 無い → 続ける。次に `collection: days`, `doc_id: <今日>` を `get` し、すでにあれば返ってきた `version` を控える（フェーズ3の `set` で `if_version` に渡して上書きする）。無ければ新規。
+  - 無い（`No document "<今日>" in collection "picks".` と返る）→ 続ける。次に `collection: days`, `doc_id: <今日>` と `collection: notes`, `doc_id: <今日>` をそれぞれ `get` し、すでにあれば返ってきた `version` を控える（`DAYS_VER`・`NOTES_VER`。フェーズ3の `set` で `if_version` に渡して上書きする。無いと上書きは拒否される）。`No document …` と返れば新規（`if_version` なし）。
 - 前回の manifest: Artifact ツールで `action: read, url: https://claude.ai/artifact/9m4Jxvrm3aj12NaojgBiUW, path: "manga/manifest.json"` を読み、保存先のファイルを `WORK/prev_manifest.json` にコピーする。読めなければ無し（ファイルを作らない）。
-- 直近の候補（同じネタを繰り返さないため）: ArtifactData `query`（`url: https://claude.ai/artifact/LVZ7n7pqEzAdpfNWqUxjXM`, `collection: days`, `order_by: date desc`, `limit: 5`）。
+- 直近の候補（同じネタを繰り返さないため）: ArtifactData `query`（`url: https://claude.ai/artifact/LVZ7n7pqEzAdpfNWqUxjXM`, `collection: days`, `query: {"order_by": {"field": "date", "direction": "desc"}, "limit": 5}`）。
   返ってきた各日の候補の `title` を1行ずつ `WORK/recent_titles.txt` に書く。読めなければ空のまま進める。
 - note の今日の候補: ArtifactData `get`（`url: https://claude.ai/artifact/9VFKNAzE2WiupWAPoj7bir`, `collection: days`, `doc_id: <今日>`）。読めなければ飛ばす（これは読むだけ。書き込まない）。
 
@@ -109,12 +109,12 @@ mkdir -p WORK
 
 - 終了コード 1 なら、標準エラーに1行1件で問題が出る。`candidates.json`・`memos.json` を直して再実行する（**3回まで**）。3回でも通らなければ、通知して終了する（失敗時の表）。
 - 通ったら、ArtifactData `set` で2つ保存する（`url: https://claude.ai/artifact/LVZ7n7pqEzAdpfNWqUxjXM`）。
-  1. `collection: days`, `doc_id: <今日>`, `file_path: WORK/day_doc.json`（フェーズ0で `days/<今日>` の `version` を控えていれば `if_version` に渡す）
-  2. `collection: notes`, `doc_id: <今日>`, `file_path: WORK/notes_doc.json`
+  1. `collection: days`, `doc_id: <今日>`, `file_path: WORK/day_doc.json`（フェーズ0で `DAYS_VER` を控えていれば `if_version` に渡す）
+  2. `collection: notes`, `doc_id: <今日>`, `file_path: WORK/notes_doc.json`（フェーズ0で `NOTES_VER` を控えていれば `if_version` に渡す）
   - `file_path` は絶対パスにする。
 - 保存後、`days/<今日>` を ArtifactData `get` して、`candidates` が4件あることを確かめる。無ければ `set` をやり直す。
 - **一部だけ保存できた場合。** `days` の `set` が通り、`notes` の `set` が失敗したとき（または確認の `get` が失敗したとき）は、`notes` の `set` を1回やり直す。
-  それでも失敗するなら、`days/<今日>` を ArtifactData `delete`（`collection: days`, `doc_id: <今日>`。`if_version` に `set` の結果の `version` を渡す）で消してから、「本日なし」通知（理由：保存できず）を送る。
+  それでも失敗するなら（`if_version` の不足で拒否されていないか先に確かめる。再実行で `notes/<今日>` が既にあるのに `if_version` を渡し忘れた、が典型）、`days/<今日>` を ArtifactData `delete`（`collection: days`, `doc_id: <今日>`。`if_version` に `set` の結果の `version` を渡す）で消してから、「本日なし」通知（理由：保存できず）を送る。
   ページに候補だけが残り、通知は「本日なし」、夜の制作タスクが `days` だけあって `notes` が無い状態を見る、という食い違いを作らない。
 
 ## フェーズ4: 通知する（14:30 まで）
