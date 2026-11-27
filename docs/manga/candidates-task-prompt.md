@@ -113,6 +113,9 @@ mkdir -p WORK
   2. `collection: notes`, `doc_id: <今日>`, `file_path: WORK/notes_doc.json`
   - `file_path` は絶対パスにする。
 - 保存後、`days/<今日>` を ArtifactData `get` して、`candidates` が4件あることを確かめる。無ければ `set` をやり直す。
+- **一部だけ保存できた場合。** `days` の `set` が通り、`notes` の `set` が失敗したとき（または確認の `get` が失敗したとき）は、`notes` の `set` を1回やり直す。
+  それでも失敗するなら、`days/<今日>` を ArtifactData `delete`（`collection: days`, `doc_id: <今日>`。`if_version` に `set` の結果の `version` を渡す）で消してから、「本日なし」通知（理由：保存できず）を送る。
+  ページに候補だけが残り、通知は「本日なし」、夜の制作タスクが `days` だけあって `notes` が無い状態を見る、という食い違いを作らない。
 
 ## フェーズ4: 通知する（14:30 まで）
 
@@ -137,7 +140,9 @@ https://claude.ai/artifact/LVZ7n7pqEzAdpfNWqUxjXM
 | 直近の `days`・note の候補が読めない | 無しとして進める |
 | JSON・Web が古い／取れない | 確認できた数字だけ使う。確かめられなければ数字を使わない候補（用語など）にする |
 | `build-day` が3回直しても通らない | 「本日なし」通知（理由：候補の検証が通らず） |
-| ArtifactData に保存できない | 1回やり直す。だめなら「本日なし」通知（理由：保存できず） |
+| ArtifactData に保存できない | 1回やり直す。だめなら「本日なし」通知（理由：保存できず）。`days` だけ保存済みなら、上の「一部だけ保存できた場合」に従って `days` を消してから通知 |
+| clone・venv の準備（フェーズ0）に失敗 | 1回やり直す。だめなら「本日なし」通知（理由：準備に失敗） |
+| ツール（`ArtifactData`・`PushNotification`）が ToolSearch でも読み込めない | `PushNotification` が使えるなら「本日なし」通知（理由：準備に失敗）。`PushNotification` 自体が使えなければ、できることはもう無いので終了する |
 | 14:30 に間に合わない | 「本日なし」通知（理由：時間切れ） |
 
 「本日なし」の日は何も保存しない（夜の制作タスクが、候補なしとして Claude の選んだネタを描く）。
