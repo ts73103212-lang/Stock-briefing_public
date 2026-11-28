@@ -36,8 +36,9 @@
 1. `draft.html` の末尾に `review.md` の内容を「PMレビュー」として付け足す（なければ省略）。
 2. チャートを差し込む: `cd <リポジトリ> && .venv/bin/python mailmag_charts.py finalize --html $WORK/draft.html --charts WORK/mm_charts`
    本文の `{{chart:jp_8035}}` などが本文の出現順に `<img src="cid:attN">` に置き換わった `draft_final.html` と、`create_draft` の attachments にそのまま渡せる `attachments.json`（`sha256:<ハッシュ>:<絶対パス>` のファイル参照、`inline: true`）、画像を外した `draft_noimg.html` ができる。base64 は書かない。
+   Gmail の添付は**10件まで**なので、銘柄が多い日は続けて並ぶ銘柄を2〜3枚ずつ縦に重ねた1枚に自動でまとめる（先頭の銘柄の位置に画像、残りの銘柄には「上の画像のk段目」と入る）。`attachments.json` は必ず10件以内になる。
 3. Gmail の下書きを作り（`create_draft`。本文は `draft_final.html`、attachments は `attachments.json` の配列そのまま）、続けて `send_message` にその `draftId` を渡して送信する。宛先は settings.md の宛先、件名は `subject.txt`。
-   - 添付付きの下書き作成が失敗したら、`draft_noimg.html` の冒頭に「※本日はチャート添付に失敗」と1行入れ、添付なしで作り直して送る。メール自体は必ず送る。
+   - 添付付きの下書き作成が失敗したら（再試行はしない）、`draft_noimg.html` の冒頭に「※本日はチャート添付に失敗」と1行入れ、添付なしで作り直して送る。メール自体は必ず送る。
    - 送信に失敗したら1回だけ作り直して送る。それも失敗したら下書きを残し、通知で知らせる。
 4. PushNotification: `📩 新天地分析（チーム版）を送信しました：①<10選の1位> ③<日経の目線>`。送信だけ失敗したときは `📩 新天地分析（チーム版）送信失敗（下書きあり）：<理由>`、それ以外の失敗は `📩 新天地分析（チーム版）失敗：<理由>`。
 

@@ -68,3 +68,31 @@ def test_finalize_orders_attachments_and_handles_missing():
     assert final.count('cid:att0') == 2 and 'cid:att1' in final
     assert "チャート取得不可" in final
     assert noimg == "xyzw"
+
+
+def _png(path, color):
+    from PIL import Image
+    Image.new("RGB", (40, 20), color).save(path)
+    return str(path)
+
+
+def test_plan_groups_fits_gmail_limit():
+    keys = [f"jp_{i}" for i in range(20)] + [f"us_{i}" for i in range(4)]
+    groups = mc.plan_groups(keys, 10)
+    assert len(groups) <= 10
+    assert all(len({k.split("_")[0] for k in g}) == 1 for g in groups)  # 日米は混ぜない
+    assert [k for g in groups for k in g] == keys
+    assert mc.plan_groups(["jp_1", "us_1"], 10) == [["jp_1"], ["us_1"]]
+
+
+def test_finalize_stacks_when_over_limit(tmp_path):
+    manifest = {}
+    for i in range(14):
+        p = _png(tmp_path / f"jp_{i}.png", "red")
+        manifest[f"jp_{i}"] = {"file": f"jp_{i}.png", "path": p, "sha256": "c" * 64}
+    html = "".join(f"<h3>{i}</h3>{{{{chart:jp_{i}}}}}" for i in range(14))
+    final, atts, _ = mc.finalize(html, manifest, tmp_path, limit=10)
+    assert len(atts) == 7 and atts[0]["filename"] == "group_00.png"
+    from PIL import Image
+    assert Image.open(tmp_path / "group_00.png").size == (40, 40)
+    assert final.count("<img") == 7 and final.count("上の画像の2段目") == 7

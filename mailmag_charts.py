@@ -280,21 +280,65 @@ IMG = ('<img src="cid:att{n}" alt="{key} チャート" width="100%" '
 MISSING = '<div style="font-size:12px;color:#5E6470;">（チャート取得不可）</div>'
 
 
-def finalize(html: str, manifest: dict) -> tuple[str, list[dict], str]:
-    """{{chart:key}} を本文の出現順に cid:attN へ置き換え、添付リストを作る。"""
+MAX_ATTACHMENTS = 10  # Gmail の create_draft は添付10件まで（2026-11-28 の試し実行で確認）
+STACKED = '<div style="font-size:12px;color:#5E6470;margin:4px 0;">（チャートは上の画像の{k}段目）</div>'
+
+
+def plan_groups(keys: list[str], limit: int = MAX_ATTACHMENTS) -> list[list[str]]:
+    """添付が limit 件に収まるよう、出現順に並んだ同じ種類（jp_/us_）の銘柄を数枚ずつ束ねる。"""
+    segs: list[list[str]] = []
+    for k in keys:
+        if segs and segs[-1][0].split("_")[0] == k.split("_")[0]:
+            segs[-1].append(k)
+        else:
+            segs.append([k])
+    g = 1
+    while sum(-(-len(s) // g) for s in segs) > limit and g < max(len(s) for s in segs):
+        g += 1
+    return [s[i:i + g] for s in segs for i in range(0, len(s), g)]
+
+
+def stack_images(paths: list[Path], out: Path) -> Path:
+    from PIL import Image
+    ims = [Image.open(p).convert("RGB") for p in paths]
+    canvas = Image.new("RGB", (max(i.width for i in ims), sum(i.height for i in ims)), "white")
+    y = 0
+    for im in ims:
+        canvas.paste(im, (0, y))
+        y += im.height
+    canvas.save(out, optimize=True)
+    return out
+
+
+def finalize(html: str, manifest: dict, out_dir: Path | None = None,
+             limit: int = MAX_ATTACHMENTS) -> tuple[str, list[dict], str]:
+    """{{chart:key}} を本文の出現順に cid:attN へ置き換え、添付リストを作る。
+
+    銘柄が limit を超えるときは、続けて並ぶ銘柄を数枚ずつ縦に重ねた1枚にまとめ、
+    先頭の銘柄の位置に画像を置き、残りの銘柄には「上の画像のk段目」と書く。
+    """
+    keys = list(dict.fromkeys(k for k in PLACEHOLDER.findall(html) if k in manifest))
     atts: list[dict] = []
-    order: dict[str, int] = {}
+    where: dict[str, tuple[int, int, bool]] = {}  # key → (添付番号, 段, 画像を置く銘柄か)
+    for gi, grp in enumerate(plan_groups(keys, limit)):
+        if len(grp) == 1:
+            f = manifest[grp[0]]
+            path, name, sha = f["path"], f["file"], f["sha256"]
+        else:
+            out = Path(out_dir or Path(manifest[grp[0]]["path"]).parent) / f"group_{gi:02d}.png"
+            stack_images([Path(manifest[k]["path"]) for k in grp], out)
+            path, name, sha = str(out.resolve()), out.name, _sha(out)
+        for n, k in enumerate(grp):
+            where[k] = (len(atts), n + 1, n == 0)
+        atts.append({"content": f"sha256:{sha}:{path}", "filename": name,
+                     "mimeType": "image/png", "inline": True})
 
     def sub(m):
         key = m.group(1)
-        if key not in manifest:
+        if key not in where:
             return MISSING
-        if key not in order:
-            order[key] = len(atts)
-            f = manifest[key]
-            atts.append({"content": f"sha256:{f['sha256']}:{f['path']}", "filename": f["file"],
-                         "mimeType": "image/png", "inline": True})
-        return IMG.format(n=order[key], key=key)
+        n, k, head = where[key]
+        return IMG.format(n=n, key=key) if head else STACKED.format(k=k)
 
     final = PLACEHOLDER.sub(sub, html)
     noimg = PLACEHOLDER.sub("", html)
@@ -318,7 +362,7 @@ def main() -> None:
         html_path = Path(a.html)
         mpath = Path(a.charts) / "manifest.json"
         manifest = json.loads(mpath.read_text()) if mpath.exists() else {}
-        final, atts, noimg = finalize(html_path.read_text(), manifest)
+        final, atts, noimg = finalize(html_path.read_text(), manifest, Path(a.charts))
         html_path.with_name("draft_final.html").write_text(final)
         html_path.with_name("draft_noimg.html").write_text(noimg)
         html_path.with_name("attachments.json").write_text(json.dumps(atts, ensure_ascii=False, indent=1))
