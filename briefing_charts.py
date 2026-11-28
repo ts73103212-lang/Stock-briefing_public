@@ -91,7 +91,8 @@ def to_weekly(d: pd.DataFrame) -> pd.DataFrame:
                                     "Close": "last", "Volume": "sum"}).dropna()
 
 
-def draw(ax, axv, df: pd.DataFrame, emas: tuple[int, int], title: str, date_fmt: str) -> None:
+def draw(ax, axv, df: pd.DataFrame, emas: tuple[int, int], title: str, date_fmt: str,
+         price_fmt: str = "¥{:,.0f}") -> None:
     x = range(len(df))
     up = df["Close"] >= df["Open"]
     col = [UP if u else DOWN for u in up]
@@ -104,7 +105,7 @@ def draw(ax, axv, df: pd.DataFrame, emas: tuple[int, int], title: str, date_fmt:
                 label=f"EMA{n}")
     last = df["Close"].iloc[-1]
     ax.axhline(last, color=MUTED, linewidth=0.6, linestyle=":")
-    ax.annotate(f"¥{last:,.0f}", (len(df) - 1, last), xytext=(4, 0), textcoords="offset points",
+    ax.annotate(price_fmt.format(last), (len(df) - 1, last), xytext=(4, 0), textcoords="offset points",
                 fontsize=8, color=NAVY, va="center")
     ax.set_title(title, fontsize=10, loc="left", color=NAVY, fontweight="bold")
     ax.legend(loc="upper left", fontsize=7, frameon=False)
@@ -122,8 +123,16 @@ def draw(ax, axv, df: pd.DataFrame, emas: tuple[int, int], title: str, date_fmt:
     ax.tick_params(labelbottom=False)
 
 
-def render(code: str, name: str, out: Path, latest: dict | None = None):
-    d, patched = fetch(code, latest)
+def draw_badge(fig, badge: tuple[str, str]) -> None:
+    """右上に判定の札（例: ("勝負", "#16A34A")）を描く。"""
+    text, color = badge
+    fig.text(0.97, 0.93, f" {text} ", ha="right", va="center", fontsize=13, fontweight="bold",
+             color="white", bbox=dict(boxstyle="round,pad=0.35", facecolor=color, edgecolor="none"))
+
+
+def render(code: str, name: str, out: Path, latest: dict | None = None,
+           badge: tuple[str, str] | None = None, data: tuple[pd.DataFrame, list[str]] | None = None):
+    d, patched = data if data is not None else fetch(code, latest)
     if d.empty:
         raise RuntimeError(f"{code}: データ取得失敗")
     w = to_weekly(d).tail(52)
@@ -132,11 +141,14 @@ def render(code: str, name: str, out: Path, latest: dict | None = None):
     gs = fig.add_gridspec(2, 2, height_ratios=[3, 1], hspace=0.05, wspace=0.12,
                           left=0.05, right=0.97, top=0.86, bottom=0.08)
     head = f"{code} {name}".strip()
-    fig.suptitle(f"{head}　終値 ¥{d['Close'].iloc[-1]:,.0f}（{d.index[-1]:%m/%d}）",
+    chg = f"{(d['Close'].iloc[-1] / d['Close'].iloc[-2] - 1) * 100:+.2f}%・" if len(d) > 1 else ""
+    fig.suptitle(f"{head}　終値 ¥{d['Close'].iloc[-1]:,.0f}（{chg}{d.index[-1]:%m/%d}）",
                  x=0.05, ha="left", fontsize=12, fontweight="bold", color=NAVY)
     draw(fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0]), w, (13, 26), "週足（約1年）", "%y/%m")
     draw(fig.add_subplot(gs[0, 1]), fig.add_subplot(gs[1, 1]), dd, (5, 25), "日足（約4か月）", "%m/%d")
     fig.text(0.97, 0.01, "出典: Yahoo!ファイナンス（yfinance）", ha="right", fontsize=7, color=MUTED)
+    if badge:
+        draw_badge(fig, badge)
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, format="png", facecolor="white")
     plt.close(fig)

@@ -7,14 +7,18 @@ model: opus
 最初に `docs/mailmag-team/output-format.md` を読み、その構成・判断の原則・HTML 書式に厳密に従ってください。進行役から `WORK`（絶対パス）を受け取ります。**8分以内に書き上げる**こと。
 
 ## 入力
-`WORK/inputs/settings.md`（平日/週末、注目銘柄）、`WORK/reading.md`、`WORK/market.md`、`WORK/watchlist.md`、`WORK/checks_*.md`
+`WORK/inputs/settings.md`（平日/週末、注目銘柄）、`WORK/reading.md`、`WORK/market.md`、`WORK/watchlist.md`、`WORK/checks_*.md`、`<CHARTS>/signals.json`（進行役から絶対パスを受け取る。終値・前日比・チャートの数値と判定、米国株と日本株の連動）
+
+**チャート画像（png）は開かない**。チャート分析は signals.json の数値だけで書く（画像を読むとトークンが大きく増えるため）。
 
 ## 出力 → `WORK/draft.html` と `WORK/subject.txt`
 - ①の10選（週末20選）は、読解の候補リストから、検証で「裏付け: 強/中」の銘柄を優先して選ぶ。「矛盾あり」「弱」は ⑤ か ④ に回す
 - ②の選定理由には、メルマガのどの記述か・強調の有無・検証の結果を書く
 - ③は market.md の材料から断定する
+- ②の各銘柄に `{{chart:jp_<コード>}}` を1行置き、2〜3行のチャート分析を書く。③-2 の米国株は、reading.md の米国株候補から、昨夜の値動きが大きいもの・連動（signals.json の corr）が強いものを優先して3〜4銘柄選び、`{{chart:us_<ティッカー>}}` を置く。チャートが作れなかった銘柄（signals.json に無い、または error がある）は差し込みを書かず「チャート取得不可」と1行
+- 登場する全銘柄に終値（前日比）を書く。signals.json が「チャート未作成」なら検証担当の値を使う
 - 末尾に「検証メモ」（矛盾・未確認の点）
 - 銘柄は必ずコード＋銘柄名
 
 ## 進行役への返答
-5行以内: 10選の銘柄名、③の結論、気になる点。
+5行以内: 10選の銘柄名、③の結論、③-2の米国株、気になる点。

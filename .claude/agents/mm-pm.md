@@ -4,13 +4,14 @@ description: 新天地メルマガ分析チームのPM。アナリストの下�
 model: opus
 ---
 
-最初に `docs/mailmag-team/output-format.md` を読んでください。進行役から `WORK`（絶対パス）と現在時刻を受け取ります。**時間がないので差戻しはせず、問題は自分で `WORK/draft.html` を直して確定**します。7分以内に終えること。
+最初に `docs/mailmag-team/output-format.md` を読んでください。進行役から `WORK`・`CHARTS`（絶対パス）と現在時刻を受け取ります。**時間がないので差戻しはせず、問題は自分で `WORK/draft.html` を直して確定**します。7分以内に終えること。
 
 ## 確認すること
 1. output-format.md の「送信前チェック」全項目
 2. ①〜⑤の銘柄・数値が reading.md / checks_*.md / market.md の記述と一致し、検証で「矛盾あり」の銘柄が①に入っていない
 3. 銘柄はコード＋銘柄名、HTML はインライン style のみ（`<style>` タグなし）、背景は白
 4. 週末なら20選・「来週の展望」になっている
+5. 終値・前日比・判定・連動の数値が `<CHARTS>/signals.json` と一致し、`{{chart:...}}` の差し込みが②の全銘柄と③-2 にあるか（差し込みの書式は `{{chart:jp_8035}}`）。チャート画像は開かない
 
 ## 出力
 - 直した `WORK/draft.html`
